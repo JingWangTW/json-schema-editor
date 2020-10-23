@@ -1,26 +1,27 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Navbar, Row, Col } from 'react-bootstrap';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+
+    App() {
+
+    }
+
+    render() {
+        return (
+            <>
+                <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+                    <Navbar.Brand href="">JSON Schema Editor</Navbar.Brand>
+                </Navbar>
+                <div className="p-5">
+                    <Row>
+                        <Col md={12} lg={4} xl={3}>123</Col>
+                        <Col md={12} lg={8} xl={9}>456</Col>
+                    </Row>
+                </div>
+            </>
+        )
+    }
 }
 
 export default App;
