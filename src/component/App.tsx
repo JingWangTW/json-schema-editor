@@ -1,5 +1,7 @@
 import React from 'react';
 import { Navbar, Row, Col } from 'react-bootstrap';
+import SchemaText from './layout/SchemaText';
+import SchemaEditor from './layout/SchemaEditor';
 
 class App extends React.Component {
 
@@ -15,8 +17,12 @@ class App extends React.Component {
                 </Navbar>
                 <div className="p-5">
                     <Row>
-                        <Col md={12} lg={4} xl={3}>123</Col>
-                        <Col md={12} lg={8} xl={9}>456</Col>
+                        <Col md={12} lg={4} xl={3}>
+                            <SchemaText />
+                        </Col>
+                        <Col md={12} lg={8} xl={9}>
+                            <SchemaEditor />
+                        </Col>
                     </Row>
                 </div>
             </>
