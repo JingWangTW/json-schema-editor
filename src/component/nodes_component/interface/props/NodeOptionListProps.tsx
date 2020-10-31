@@ -1,4 +1,3 @@
-
 interface NodeOptionProps {
     field: string;
     type: string;
@@ -9,4 +8,4 @@ interface NodeOptionProps {
     option?: Array<String>;
 }
 
-export interface NodeOptionListProps extends Array<NodeOptionProps> { }
+export default interface NodeOptionListProps extends Array<NodeOptionProps> { }

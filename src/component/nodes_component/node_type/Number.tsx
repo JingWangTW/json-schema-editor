@@ -1,8 +1,9 @@
 import React from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
-import Node from './Node';
 
-class NumberNode extends Node {
+import Node from '../Node'
+
+class Number extends Node {
 
     constructor(props: any) {
         super(props)
@@ -59,4 +60,4 @@ class NumberNode extends Node {
 
 }
 
-export default NumberNode;
+export default Number;

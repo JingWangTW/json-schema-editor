@@ -1,8 +1,9 @@
 import React from 'react';
 import { Form, Col, Row } from 'react-bootstrap';
-import Node from './Node';
 
-class StringNode extends Node {
+import Node from '../Node'
+
+class String extends Node {
 
     constructor(props: any) {
         super(props)
@@ -56,4 +57,4 @@ class StringNode extends Node {
 
 }
 
-export default StringNode;
+export default String;

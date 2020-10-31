@@ -2,24 +2,24 @@ import React from 'react';
 import { FaRegTrashAlt, FaPlus } from 'react-icons/fa';
 import { AiOutlineSetting } from 'react-icons/ai';
 import '../../index.css';
-import { OverlayTrigger, Tooltip, Popover, ListGroup } from 'react-bootstrap';
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
-import { NodeOptionButtonsProps } from './interface/SchemaComponentProps';
+import { NodeOptionButtonsProps } from './interface/Props';
 
-const popover = (
-    <Popover id="popover-basic">
-        <ListGroup>
-            <ListGroup.Item>Add Sibling</ListGroup.Item>
-            <ListGroup.Item>Add Child</ListGroup.Item>
-        </ListGroup>
-    </Popover>
-);
+// const popover = (
+//     <Popover id="popover-basic">
+//         <ListGroup>
+//             <ListGroup.Item>Add Sibling</ListGroup.Item>
+//             <ListGroup.Item>Add Child</ListGroup.Item>
+//         </ListGroup>
+//     </Popover>
+// );
 
 class NodeOptionButtons extends React.Component<NodeOptionButtonsProps, {}> {
 
-    constructor(props: NodeOptionButtonsProps) {
-        super(props);
-    }
+    // constructor(props: NodeOptionButtonsProps) {
+    //     super(props);
+    // }
 
     clickAdd() {
     }

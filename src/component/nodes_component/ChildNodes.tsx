@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChildNodesProps } from './interface/SchemaComponentProps';
+import { ChildNodesProps } from './interface/Props';
 
 class ChildNodes extends React.Component {
 

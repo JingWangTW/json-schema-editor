@@ -1,8 +1,8 @@
 import React from 'react';
-import { NodeProps } from './interface/SchemaComponentProps';
-import Node from './Node';
 
-class BooleanNode extends Node {
+import Node from '../Node';
+
+class Boolean extends Node {
 
     constructor(props: any) {
 
@@ -18,4 +18,4 @@ class BooleanNode extends Node {
     }
 }
 
-export default BooleanNode;
+export default Boolean;

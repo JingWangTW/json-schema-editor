@@ -1,8 +1,9 @@
 import React from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
-import SchemaComponent from './Node'
 
-class ArrayNode extends SchemaComponent {
+import Node from '../Node'
+
+class Array extends Node {
 
     constructor(props: any) {
         super({
@@ -38,4 +39,4 @@ class ArrayNode extends SchemaComponent {
     }
 }
 
-export default ArrayNode;
+export default Array;

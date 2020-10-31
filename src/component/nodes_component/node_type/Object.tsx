@@ -1,8 +1,8 @@
 import React from 'react';
 
-import SchemaComponent from './Node'
+import Node from '../Node'
 
-class ObjectNode extends SchemaComponent {
+class Object extends Node {
 
     constructor(props: any) {
         super({
@@ -19,4 +19,4 @@ class ObjectNode extends SchemaComponent {
     }
 }
 
-export default ObjectNode;
+export default Object;

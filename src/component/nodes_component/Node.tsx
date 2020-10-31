@@ -1,8 +1,8 @@
 import React from 'react';
 import { Form, Col, InputGroup, Button, Modal } from 'react-bootstrap';
 import { FaFileAlt } from 'react-icons/fa';
-import { NodeState } from './interface/SchemaComponentState';
-import { NodeProps, NodeOptionListProps } from './interface/SchemaComponentProps';
+import { NodeState } from './interface/State';
+import { NodeProps, NodeOptionListProps } from './interface/Props';
 
 import NodeOptionButtons from './NodeOptionButtons';
 
