@@ -4,10 +4,18 @@ import SchemaComponent from './Node'
 
 class ObjectNode extends SchemaComponent {
 
-    constructor() {
+    constructor(props: any) {
         super({
+            ...props,
             hasChild: true,
+            optionExist: false,
         });
+    }
+
+    OptionModal(): JSX.Element {
+        return (
+            <div></div>
+        );
     }
 }
 

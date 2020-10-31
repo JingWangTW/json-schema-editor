@@ -28,6 +28,7 @@ class NodeOptionButtons extends React.Component<NodeOptionButtonsProps, {}> {
     }
 
     clickOption() {
+        this.props.clickOption();
     }
 
     render() {
@@ -49,14 +50,18 @@ class NodeOptionButtons extends React.Component<NodeOptionButtonsProps, {}> {
                         <span><FaRegTrashAlt color="red" /></span>
                     </OverlayTrigger>
                 </div>
-                <div className="node-option-btn-block" onClick={this.clickOption.bind(this)}>
-                    <OverlayTrigger
-                        trigger="hover"
-                        overlay={<Tooltip id="add-tooltip"> Option </Tooltip>}
-                    >
-                        <span><AiOutlineSetting /></span>
-                    </OverlayTrigger>
-                </div>
+                {
+                    this.props.optionExist && (
+                        <div className="node-option-btn-block" onClick={this.clickOption.bind(this)}>
+                            <OverlayTrigger
+                                trigger="hover"
+                                overlay={<Tooltip id="add-tooltip"> Option </Tooltip>}
+                            >
+                                <span><AiOutlineSetting /></span>
+                            </OverlayTrigger>
+                        </div>
+                    )
+                }
             </div>
         );
     }
