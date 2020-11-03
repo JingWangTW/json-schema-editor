@@ -1,5 +1,6 @@
 import React from 'react';
-import { Form, Col, Row } from 'react-bootstrap';
+import { Form, Col, Row, InputGroup, FormControl } from 'react-bootstrap';
+import { FaPlus } from 'react-icons/fa';
 
 import Node from '../Node'
 
@@ -14,6 +15,7 @@ class String extends Node {
             { field: "Format", type: "select", option: ["date-time", "time", "date", "email", "idn-email", "hostname", "idn-hostname", "ipv4", "ipv6", "uri", "uri-reference", "iri", "iri-reference", "uri-template", "json-pointer", "relative-json-pointer", "regex"] },
             { field: "Pattern", type: "number", placeholder: "Regular Expression" },
             { field: "Default", type: "text" },
+            { field: "Enum", type: "list" },
         ]
     }
 
@@ -60,6 +62,27 @@ class String extends Node {
                         </Form.Control>
                     </Col>
                 </Form.Group>
+
+                <Form.Group as={Row}>
+                    <Form.Label column lg="2" htmlFor="Enum">
+                        Enum
+                    </Form.Label>
+                    <Col lg="10">
+                        <Row>
+                            <Col lg="12">
+                                <InputGroup>
+                                    <FormControl type="text" id="Enum" />
+                                    <InputGroup.Append>
+                                        <InputGroup.Text>
+                                            <FaPlus />
+                                        </InputGroup.Text>
+                                    </InputGroup.Append>
+                                </InputGroup>
+                            </Col>
+                        </Row>
+                    </Col>
+                </Form.Group>
+
             </Form>
         );
     }

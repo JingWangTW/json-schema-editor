@@ -1,5 +1,6 @@
 import React from 'react';
-import { Form, Row, Col } from 'react-bootstrap';
+import { Form, Row, Col, InputGroup, FormControl } from 'react-bootstrap';
+import { FaPlus } from 'react-icons/fa';
 
 import Node from '../Node'
 
@@ -13,7 +14,8 @@ class Number extends Node {
             { field: "Minimum", type: "number" },
             { field: "Exclusive Minimum", type: "number" },
             { field: "Maximum", type: "number" },
-            { field: "Exclusive Maximum", type: "number" }
+            { field: "Exclusive Maximum", type: "number" },
+            { field: "Enum", type: "list" },
         ]
     }
 
@@ -45,14 +47,30 @@ class Number extends Node {
                 </Form.Group>
 
                 <Form.Group as={Row} controlId="Default">
-                    <Form.Label column lg="2">
+                    <Form.Label column lg="2" htmlFor="Default">
                         Default
                     </Form.Label>
-                    <Col lg="4">
+                    <Col lg="4" id="Default">
                         <Form.Control type="number" />
                     </Col>
+                    <Form.Label column lg="2" htmlFor="Enum">
+                        Enum
+                    </Form.Label>
+                    <Col lg="4">
+                        <Row>
+                            <Col lg="12">
+                                <InputGroup>
+                                    <FormControl type="text" id="Enum" />
+                                    <InputGroup.Append>
+                                        <InputGroup.Text>
+                                            <FaPlus />
+                                        </InputGroup.Text>
+                                    </InputGroup.Append>
+                                </InputGroup>
+                            </Col>
+                        </Row>
+                    </Col>
                 </Form.Group>
-
             </Form>
         );
     }
