@@ -13,7 +13,8 @@ class Integer extends Node {
             { field: "Minimum", type: "number" },
             { field: "Exclusive Minimum", type: "number" },
             { field: "Maximum", type: "number" },
-            { field: "Exclusive Maximum", type: "number" }
+            { field: "Exclusive Maximum", type: "number" },
+            { field: "Default", type: "number" }
         ]
     }
 
@@ -44,12 +45,18 @@ class Integer extends Node {
                     </Col>
                 </Form.Group>
 
-                <Form.Group as={Row} controlId="MultipleOf">
-                    <Form.Label column lg="2">
+                <Form.Group as={Row}>
+                    <Form.Label column lg="2" htmlFor="Default">
+                        Default
+                    </Form.Label>
+                    <Col lg="4">
+                        <Form.Control type="number" id="Default" />
+                    </Col>
+                    <Form.Label column lg="2" htmlFor="MultipleOf">
                         Multiple Of
                     </Form.Label>
                     <Col lg="4">
-                        <Form.Control type="number" />
+                        <Form.Control type="number" id="MultipleOf" />
                     </Col>
                 </Form.Group>
 

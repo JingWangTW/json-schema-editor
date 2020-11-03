@@ -13,12 +13,13 @@ class SchemaEditor extends React.Component {
     render() {
         return (
             <div>
-                <ArrayNode />
-                <StringNode />
-                <BooleanNode />
-                <IntegerNode />
-                <NumberNode />
-                <ObjectNode />
+                Array <ArrayNode />
+                Boolean<BooleanNode />
+                String<StringNode />
+
+                Intefer<IntegerNode />
+                Number<NumberNode />
+                Object<ObjectNode />
             </div>
         );
     }

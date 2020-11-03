@@ -9,7 +9,7 @@ class Number extends Node {
         super(props)
 
         this.option = [
-            { field: "Multiple Of", type: "number", minValue: 1 },
+            { field: "Default", type: "number" },
             { field: "Minimum", type: "number" },
             { field: "Exclusive Minimum", type: "number" },
             { field: "Maximum", type: "number" },
@@ -44,9 +44,9 @@ class Number extends Node {
                     </Col>
                 </Form.Group>
 
-                <Form.Group as={Row} controlId="MultipleOf">
+                <Form.Group as={Row} controlId="Default">
                     <Form.Label column lg="2">
-                        Multiple Of
+                        Default
                     </Form.Label>
                     <Col lg="4">
                         <Form.Control type="number" />
