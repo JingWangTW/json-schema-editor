@@ -17,6 +17,7 @@ class Integer extends Node {
             { field: "Exclusive Maximum", type: "number" },
             { field: "Default", type: "number" },
             { field: "Enum", type: "list" },
+            { field: "Constant", type: "number" }
         ]
     }
 
@@ -63,6 +64,13 @@ class Integer extends Node {
                 </Form.Group>
 
                 <Form.Group as={Row}>
+                    <Form.Label column lg="2" htmlFor="Constant">
+                        Constant
+                    </Form.Label>
+                    <Col lg="4">
+                        <Form.Control type="number" id="Constant" placeholder="Restricted Value" />
+                    </Col>
+
                     <Form.Label column lg="2" htmlFor="Enum">
                         Enum
                     </Form.Label>

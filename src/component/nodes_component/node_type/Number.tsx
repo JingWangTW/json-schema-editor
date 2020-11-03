@@ -16,6 +16,7 @@ class Number extends Node {
             { field: "Maximum", type: "number" },
             { field: "Exclusive Maximum", type: "number" },
             { field: "Enum", type: "list" },
+            { field: "Constant", type: "number" }
         ]
     }
 
@@ -46,13 +47,22 @@ class Number extends Node {
                     </Col>
                 </Form.Group>
 
-                <Form.Group as={Row} controlId="Default">
+                <Form.Group as={Row}>
                     <Form.Label column lg="2" htmlFor="Default">
                         Default
                     </Form.Label>
                     <Col lg="4" id="Default">
                         <Form.Control type="number" />
                     </Col>
+                    <Form.Label column lg="2" htmlFor="Constant">
+                        Constant
+                    </Form.Label>
+                    <Col lg="4">
+                        <Form.Control type="number" id="Constant" placeholder="Restricted Value" />
+                    </Col>
+                </Form.Group>
+
+                <Form.Group as={Row} controlId="Enum">
                     <Form.Label column lg="2" htmlFor="Enum">
                         Enum
                     </Form.Label>

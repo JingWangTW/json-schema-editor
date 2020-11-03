@@ -16,6 +16,7 @@ class String extends Node {
             { field: "Pattern", type: "number", placeholder: "Regular Expression" },
             { field: "Default", type: "text" },
             { field: "Enum", type: "list" },
+            { field: "Constant", type: "string" },
         ]
     }
 
@@ -58,8 +59,14 @@ class String extends Node {
                 <Form.Group as={Row} controlId="Pattern">
                     <Form.Label column lg="2">Pattern</Form.Label>
                     <Col lg="10">
-                        <Form.Control type="text" placeholder="Regular Expression">
-                        </Form.Control>
+                        <Form.Control type="text" placeholder="Regular Expression" />
+                    </Col>
+                </Form.Group>
+
+                <Form.Group as={Row} controlId="Constant">
+                    <Form.Label column lg="2">Constant</Form.Label>
+                    <Col lg="10">
+                        <Form.Control type="text" placeholder="Restricted Value" />
                     </Col>
                 </Form.Group>
 
