@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Col, InputGroup, Button, Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { Form, Col, InputGroup, Button, Modal, OverlayTrigger, Tooltip, FormControl } from 'react-bootstrap';
 import { TiPencil } from 'react-icons/ti';
 import { NodeState } from './interface/State';
 import { NodeProps, NodeOptionListProps } from './interface/Props';
@@ -57,20 +57,19 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
                             <Form.Control placeholder="Titile" />
                         </Col>
                         <Col lg={3}>
+
                             <InputGroup>
-                                <Form.Control placeholder="Description" />
-                                <InputGroup.Prepend>
-
-                                    <OverlayTrigger
-                                        trigger="hover"
-                                        overlay={<Tooltip id="add-tooltip"> Edit </Tooltip>}
-                                    >
-                                        <Button variant="outline-secondary" onClick={this.setShowDescriptionEditorModal.bind(this, true)}>
+                                <FormControl type="text" id="Description" placeholder="Description" />
+                                <OverlayTrigger
+                                    trigger="hover"
+                                    overlay={<Tooltip id="add-tooltip"> Edit </Tooltip>}
+                                >
+                                    <InputGroup.Append onClick={this.setShowDescriptionEditorModal.bind(this, true)} style={{ cursor: "pointer" }}>
+                                        <InputGroup.Text>
                                             <TiPencil />
-                                        </Button>
-                                    </OverlayTrigger>
-
-                                </InputGroup.Prepend>
+                                        </InputGroup.Text>
+                                    </InputGroup.Append>
+                                </OverlayTrigger>
                             </InputGroup>
 
                             <Modal
