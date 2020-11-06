@@ -1,10 +1,10 @@
 import React from 'react';
 import { Form, Col, InputGroup, Button, Modal, OverlayTrigger, Tooltip, FormControl } from 'react-bootstrap';
 import { TiPencil } from 'react-icons/ti';
-import { NodeState } from './interface/State';
-import { NodeProps, NodeOptionListProps } from './interface/Props';
+import { NodeState } from '../interface/State';
+import { NodeProps, NodeOptionListProps } from '../interface/Props';
 
-import NodeOptionButtons from './NodeOptionButtons';
+import NodeOptionButtons from '../NodeOptionButtons';
 
 abstract class Node extends React.Component<NodeProps, NodeState> {
 

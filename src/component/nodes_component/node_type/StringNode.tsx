@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Col, Row, InputGroup, FormControl } from 'react-bootstrap';
 import { FaPlus } from 'react-icons/fa';
 
-import Node from '../Node'
+import Node from './Node'
 
 class String extends Node {
 

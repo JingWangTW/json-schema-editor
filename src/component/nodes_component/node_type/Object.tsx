@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Node from '../Node'
+import Node from './Node'
 
 class Object extends Node {
 

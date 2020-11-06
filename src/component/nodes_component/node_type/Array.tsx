@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
 
-import Node from '../Node'
+import Node from './Node'
 
 class Array extends Node {
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Col, Row } from 'react-bootstrap';
 
-import Node from '../Node';
+import Node from './Node';
 
 class Boolean extends Node {
 
