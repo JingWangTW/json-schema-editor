@@ -42,16 +42,22 @@ class NodeOptionButtons extends React.Component<NodeOptionButtonsProps, {}> {
                         <span><FaPlus color="green" /></span>
                     </OverlayTrigger>
                 </div>
-                <div className="node-option-btn-block" onClick={this.clickDelete.bind(this)}>
-                    <OverlayTrigger
-                        trigger="hover"
-                        overlay={<Tooltip id="add-tooltip"> Delete </Tooltip>}
-                    >
-                        <span><FaRegTrashAlt color="red" /></span>
-                    </OverlayTrigger>
-                </div>
+
                 {
-                    this.props.optionExist && (
+                    this.props.isDeleteAble && (
+                        <div className="node-option-btn-block" onClick={this.clickDelete.bind(this)}>
+                            <OverlayTrigger
+                                trigger="hover"
+                                overlay={<Tooltip id="add-tooltip"> Delete </Tooltip>}
+                            >
+                                <span><FaRegTrashAlt color="red" /></span>
+                            </OverlayTrigger>
+                        </div>
+                    )
+                }
+
+                {
+                    this.props.isOptionExist && (
                         <div className="node-option-btn-block" onClick={this.clickOption.bind(this)}>
                             <OverlayTrigger
                                 trigger="hover"

@@ -1,4 +1,6 @@
 export default interface NodeProps {
-    hasChild?: boolean,
-    optionExist?: boolean,
+    hasChild?: Boolean;
+    isDeleteAble?: Boolean;
+    isOptionExist?: Boolean;
+    fieldName?: String;
 }

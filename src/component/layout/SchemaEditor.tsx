@@ -8,11 +8,16 @@ import {
     ObjectNode
 } from '../nodes_component/TypedNode';
 
+import RootNode from '../nodes_component/RootNode';
+
 class SchemaEditor extends React.Component {
 
     render() {
         return (
             <div>
+                Root <RootNode></RootNode>
+
+
                 Array <ArrayNode />
                 Boolean<BooleanNode />
                 String<StringNode />
@@ -20,6 +25,9 @@ class SchemaEditor extends React.Component {
                 Intefer<IntegerNode />
                 Number<NumberNode />
                 Object<ObjectNode />
+
+
+
             </div>
         );
     }

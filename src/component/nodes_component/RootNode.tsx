@@ -1,14 +1,14 @@
 import React from 'react';
+import Node from './node_type/Node';
 
-import Node from './Node'
-
-class Object extends Node {
+class RootNode extends Node {
 
     constructor(props: any) {
         super({
             ...props,
-            hasChild: true,
+            isDeleteAble: false,
             isOptionExist: false,
+            fieldName: "root",
         });
     }
 
@@ -19,4 +19,4 @@ class Object extends Node {
     }
 }
 
-export default Object;
+export default RootNode;

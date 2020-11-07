@@ -18,7 +18,10 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
         this.state = {
             showOptionModal: false,
             showDescriptionModal: false,
-            optionExist: props.optionExist === undefined ? true : props.optionExist
+            isDeleteAble: true,
+            isOptionExist: true,
+            ...props,
+            // isOptionExist: props.isOptionExist === undefined ? true : props.isOptionExist
         }
     }
 
@@ -42,7 +45,7 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
                 <Form>
                     <Form.Row>
                         <Col lg={3}>
-                            <Form.Control placeholder="items" />
+                            <Form.Control placeholder="items" readOnly={this.state.isDeleteAble ? false : true} />
                         </Col>
                         <Col lg={1}>
                             <Form.Control as="select" custom placeholder="DataType">
@@ -95,7 +98,11 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
                             </Modal>
                         </Col>
                         <Col lg={2}>
-                            <NodeOptionButtons optionExist={this.state.optionExist} clickOption={this.setShowOptionModal.bind(this, true)} />
+                            <NodeOptionButtons
+                                isDeleteAble={this.state.isDeleteAble}
+                                isOptionExist={this.state.isOptionExist}
+                                clickOption={this.setShowOptionModal.bind(this, true)}
+                            />
 
                             <Modal
                                 onHide={this.setShowOptionModal.bind(this, false)}
