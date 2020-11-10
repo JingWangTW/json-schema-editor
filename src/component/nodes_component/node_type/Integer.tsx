@@ -93,8 +93,6 @@ class Integer extends Node {
             </Form>
         );
     }
-
-
 }
 
 export default Integer;

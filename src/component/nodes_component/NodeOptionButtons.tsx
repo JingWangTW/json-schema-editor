@@ -17,13 +17,6 @@ import { NodeOptionButtonsProps } from './interface/Props';
 
 class NodeOptionButtons extends React.Component<NodeOptionButtonsProps, {}> {
 
-    // constructor(props: NodeOptionButtonsProps) {
-    //     super(props);
-    // }
-
-    clickAdd() {
-    }
-
     clickDelete() {
     }
 
@@ -34,9 +27,9 @@ class NodeOptionButtons extends React.Component<NodeOptionButtonsProps, {}> {
     render() {
         return (
             <div className="node-option-block">
-                <div className="node-option-btn-block" onClick={this.clickAdd.bind(this)}>
+                <div className="node-option-btn-block" onClick={this.props.clickAdd.bind(this)}>
                     <OverlayTrigger
-                        trigger="hover"
+                        trigger={["hover", "focus"]}
                         overlay={<Tooltip id="add-tooltip"> Add </Tooltip>}
                     >
                         <span><FaPlus color="green" /></span>
@@ -47,7 +40,7 @@ class NodeOptionButtons extends React.Component<NodeOptionButtonsProps, {}> {
                     this.props.isDeleteAble && (
                         <div className="node-option-btn-block" onClick={this.clickDelete.bind(this)}>
                             <OverlayTrigger
-                                trigger="hover"
+                                trigger={["hover", "focus"]}
                                 overlay={<Tooltip id="add-tooltip"> Delete </Tooltip>}
                             >
                                 <span><FaRegTrashAlt color="red" /></span>
@@ -60,7 +53,7 @@ class NodeOptionButtons extends React.Component<NodeOptionButtonsProps, {}> {
                     this.props.isOptionExist && (
                         <div className="node-option-btn-block" onClick={this.clickOption.bind(this)}>
                             <OverlayTrigger
-                                trigger="hover"
+                                trigger={["hover", "focus"]}
                                 overlay={<Tooltip id="add-tooltip"> Option </Tooltip>}
                             >
                                 <span><AiOutlineSetting /></span>

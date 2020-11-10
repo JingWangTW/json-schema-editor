@@ -3,5 +3,5 @@ export default interface NodeState {
     showDescriptionModal: Boolean,
     isOptionExist: Boolean,
     isDeleteAble: Boolean,
-    // children?: Array<ChildNode>,
+    hasChild: Boolean,
 };

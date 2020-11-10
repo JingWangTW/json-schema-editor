@@ -3,25 +3,32 @@ import { Form, Col, InputGroup, Button, Modal, OverlayTrigger, Tooltip, FormCont
 import { TiPencil } from 'react-icons/ti';
 import { NodeState } from '../interface/State';
 import { NodeProps, NodeOptionListProps } from '../interface/Props';
+import ChildNodes from '../ChildNodes';
 
 import NodeOptionButtons from '../NodeOptionButtons';
 
 abstract class Node extends React.Component<NodeProps, NodeState> {
 
-    option!: NodeOptionListProps;
+    protected option!: NodeOptionListProps;
+    private childRef: React.RefObject<ChildNodes>;
 
     abstract OptionModal(): JSX.Element;
 
     constructor(props: NodeProps) {
         super(props);
 
+        this.childRef = React.createRef<ChildNodes>();
+
         this.state = {
+            // default value
             showOptionModal: false,
             showDescriptionModal: false,
             isDeleteAble: true,
             isOptionExist: true,
+            hasChild: false,
+
+            // set arguments
             ...props,
-            // isOptionExist: props.isOptionExist === undefined ? true : props.isOptionExist
         }
     }
 
@@ -37,6 +44,11 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
         this.setState({
             showDescriptionModal: isShow
         });
+    }
+
+    add(): void {
+
+        this.childRef.current!.addChild();
     }
 
     render(): JSX.Element {
@@ -64,7 +76,7 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
                             <InputGroup>
                                 <FormControl type="text" id="Description" placeholder="Description" />
                                 <OverlayTrigger
-                                    trigger="hover"
+                                    trigger={["hover", "focus"]}
                                     overlay={<Tooltip id="add-tooltip"> Edit </Tooltip>}
                                 >
                                     <InputGroup.Append onClick={this.setShowDescriptionEditorModal.bind(this, true)} style={{ cursor: "pointer" }}>
@@ -85,7 +97,7 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
                                 <Modal.Header closeButton>
                                     <Modal.Title id="description-modal">
                                         Description
-                                </Modal.Title>
+                                    </Modal.Title>
                                 </Modal.Header>
                                 <Modal.Body>
                                     <Form.Group>
@@ -101,6 +113,7 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
                             <NodeOptionButtons
                                 isDeleteAble={this.state.isDeleteAble}
                                 isOptionExist={this.state.isOptionExist}
+                                clickAdd={this.add.bind(this)}
                                 clickOption={this.setShowOptionModal.bind(this, true)}
                             />
 
@@ -126,6 +139,7 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
                         </Col>
                     </Form.Row>
                 </Form>
+                { this.state.hasChild && <ChildNodes ref={this.childRef} />}
             </div>
         );
     }

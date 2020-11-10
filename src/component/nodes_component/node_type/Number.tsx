@@ -84,8 +84,6 @@ class Number extends Node {
             </Form>
         );
     }
-
-
 }
 
 export default Number;

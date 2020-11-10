@@ -9,6 +9,7 @@ class RootNode extends Node {
             isDeleteAble: false,
             isOptionExist: false,
             fieldName: "root",
+            hasChild: true,
         });
     }
 

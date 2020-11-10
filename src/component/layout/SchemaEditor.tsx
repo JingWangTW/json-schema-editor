@@ -6,7 +6,7 @@ import {
     IntegerNode,
     NumberNode,
     ObjectNode
-} from '../nodes_component/TypedNode';
+} from '../nodes_component/NodeType';
 
 import RootNode from '../nodes_component/RootNode';
 

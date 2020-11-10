@@ -12,11 +12,7 @@ class Object extends Node {
         });
     }
 
-    OptionModal(): JSX.Element {
-        return (
-            <div></div>
-        );
-    }
+    OptionModal(): JSX.Element { return <></> }
 }
 
 export default Object;

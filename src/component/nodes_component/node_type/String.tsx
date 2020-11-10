@@ -20,6 +20,8 @@ class String extends Node {
         ]
     }
 
+    RenderChildren(): JSX.Element { return <></> }
+
     OptionModal(): JSX.Element {
         return (
             <Form>
@@ -93,8 +95,6 @@ class String extends Node {
             </Form>
         );
     }
-
-
 }
 
 export default String;
