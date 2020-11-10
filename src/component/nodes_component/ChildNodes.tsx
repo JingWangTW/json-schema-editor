@@ -1,11 +1,12 @@
 import React from 'react';
 
-import * as NodeType from './NodeType';
+import * as DataType from './data_type/DataType';
 import { ChildNodesProps } from './interface/Props';
 import { ChildNodesState } from './interface/State';
+import Factory from './data_type/Factory';
 
 interface NodeProperty {
-    type: NodeType.Type
+    type: DataType.Type
 }
 
 class ChildNodes extends React.Component<ChildNodesProps, ChildNodesState>{
@@ -21,7 +22,7 @@ class ChildNodes extends React.Component<ChildNodesProps, ChildNodesState>{
     addChild(): void {
         this.setState(state => ({
             children: [...state.children, {
-                type: NodeType.Type.Object
+                type: DataType.Type.Object
             }]
         }))
     }
@@ -33,7 +34,7 @@ class ChildNodes extends React.Component<ChildNodesProps, ChildNodesState>{
     render() {
         return (
             <>
-                {this.state.children.map((child, index) => React.createElement(NodeType.Factory(child.type)))}
+                {this.state.children.map((child, index) => <Factory type={child.type} />)}
             </>
         );
     }

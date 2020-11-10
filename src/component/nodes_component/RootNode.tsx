@@ -1,7 +1,10 @@
 import React from 'react';
-import Node from './node_type/Node';
+import { Node, Type } from './data_type/DataType';
+import Factory from './data_type/Factory';
 
 class RootNode extends Node {
+
+    private selfType: keyof typeof Type;
 
     constructor(props: any) {
         super({
@@ -11,12 +14,28 @@ class RootNode extends Node {
             fieldName: "root",
             hasChild: true,
         });
+
+        this.selfType = Type.Object;
     }
 
     OptionModal(): JSX.Element {
         return (
             <div></div>
         );
+    }
+
+    changeType(): void {
+
+    }
+    // overriding
+    render(): JSX.Element {
+        return (
+            <Factory
+                type={this.selfType}
+                isDeleteAble={false}
+                fieldName={"root"}
+            />
+        )
     }
 }
 

@@ -6,7 +6,7 @@ import {
     IntegerNode,
     NumberNode,
     ObjectNode
-} from '../nodes_component/NodeType';
+} from '../nodes_component/data_type/DataType';
 
 import RootNode from '../nodes_component/RootNode';
 
@@ -17,7 +17,6 @@ class SchemaEditor extends React.Component {
             <div>
                 Root <RootNode></RootNode>
 
-
                 Array <ArrayNode />
                 Boolean<BooleanNode />
                 String<StringNode />
@@ -25,9 +24,6 @@ class SchemaEditor extends React.Component {
                 Intefer<IntegerNode />
                 Number<NumberNode />
                 Object<ObjectNode />
-
-
-
             </div>
         );
     }
