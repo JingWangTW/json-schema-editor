@@ -130,6 +130,7 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
                         </Col>
                         <Col lg={2}>
                             <NodeOptionButtons
+                                hasChild={this.state.hasChild}
                                 isDeleteAble={this.state.isDeleteAble}
                                 isOptionExist={this.state.isOptionExist}
                                 clickAdd={this.add.bind(this)}

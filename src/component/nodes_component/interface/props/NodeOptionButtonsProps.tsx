@@ -1,5 +1,5 @@
 export default interface NodeOptionButtonsProps {
-    hasChild?: boolean;
+    hasChild: boolean;
     isOptionExist: boolean;
     isDeleteAble: boolean;
 
