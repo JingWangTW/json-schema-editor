@@ -74,7 +74,7 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
                                 <Col lg="auto" className="px-0 mx-0" style={{ width: (this.props.depth * 15).toString() + "px" }}>
                                 </Col>
                                 <Col>
-                                    <Form.Control placeholder="items" readOnly={this.state.isDeleteAble ? false : true} />
+                                    <Form.Control placeholder="items" readOnly={this.state.isDeleteAble ? false : true} value={this.props.fieldName ? this.props.fieldName : ""} />
                                 </Col>
                             </Row>
                         </Col>
