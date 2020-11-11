@@ -22,6 +22,7 @@ class RootNode extends React.Component {
         return (
             <Factory
                 key={this.selfType}
+                depth={0}
                 type={this.selfType}
                 isDeleteAble={false}
                 fieldName={"root"}

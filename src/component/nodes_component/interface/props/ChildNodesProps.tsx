@@ -1,3 +1,5 @@
 export default interface ChildNodesProps {
-    children?: Array<any>
+    depth: number;
+
+    children?: Array<any>;
 }

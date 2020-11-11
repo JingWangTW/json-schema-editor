@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Col, InputGroup, Button, Modal, OverlayTrigger, Tooltip, FormControl } from 'react-bootstrap';
+import { Form, Col, InputGroup, Button, Modal, OverlayTrigger, Tooltip, FormControl, Row } from 'react-bootstrap';
 import { TiPencil } from 'react-icons/ti';
 import { NodeState } from '../interface/State';
 import { NodeProps, NodeOptionListProps } from '../interface/Props';
@@ -36,14 +36,14 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
         }
     }
 
-    setShowOptionModal(isShow: Boolean): void {
+    setShowOptionModal(isShow: boolean): void {
 
         this.setState({
             showOptionModal: isShow,
         });
     }
 
-    setShowDescriptionEditorModal(isShow: Boolean): void {
+    setShowDescriptionEditorModal(isShow: boolean): void {
 
         this.setState({
             showDescriptionModal: isShow
@@ -70,7 +70,13 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
                 <Form>
                     <Form.Row>
                         <Col lg={3}>
-                            <Form.Control placeholder="items" readOnly={this.state.isDeleteAble ? false : true} />
+                            <Row>
+                                <Col lg="auto" className="px-0 mx-0" style={{ width: (this.props.depth * 15).toString() + "px" }}>
+                                </Col>
+                                <Col>
+                                    <Form.Control placeholder="items" readOnly={this.state.isDeleteAble ? false : true} />
+                                </Col>
+                            </Row>
                         </Col>
                         <Col lg={1}>
                             <Form.Control as="select" custom placeholder="DataType" ref={this.dataTypeSelectRef} onChange={this.changeType.bind(this)} value={this.selfType}>
@@ -152,7 +158,7 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
                         </Col>
                     </Form.Row>
                 </Form>
-                { this.state.hasChild && <ChildNodes ref={this.childRef} />}
+                {this.state.hasChild && <ChildNodes ref={this.childRef} depth={this.props.depth + 1} />}
             </div>
         );
     }

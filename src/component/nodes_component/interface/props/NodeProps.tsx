@@ -1,10 +1,12 @@
 import { Type } from '../../data_type/DataType';
 
 export default interface NodeProps {
-    hasChild?: Boolean;
-    isDeleteAble?: Boolean;
-    isOptionExist?: Boolean;
-    fieldName?: String;
+    depth: number;
+
+    hasChild?: boolean;
+    isDeleteAble?: boolean;
+    isOptionExist?: boolean;
+    fieldName?: string;
 
     changeType(type: keyof typeof Type): void;
 }

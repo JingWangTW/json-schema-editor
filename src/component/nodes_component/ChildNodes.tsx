@@ -34,7 +34,7 @@ class ChildNodes extends React.Component<ChildNodesProps, ChildNodesState>{
     render() {
         return (
             <>
-                {this.state.children.map((child, index) => <Factory type={child.type} changeType={this.changeType.bind(this)} />)}
+                {this.state.children.map((child, index) => <Factory type={child.type} changeType={this.changeType.bind(this)} depth={this.props.depth} />)}
             </>
         );
     }

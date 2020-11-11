@@ -1,7 +1,7 @@
 export default interface NodeState {
-    showOptionModal: Boolean,
-    showDescriptionModal: Boolean,
-    isOptionExist: Boolean,
-    isDeleteAble: Boolean,
-    hasChild: Boolean,
+    showOptionModal: boolean;
+    showDescriptionModal: boolean;
+    isOptionExist: boolean;
+    isDeleteAble: boolean;
+    hasChild: boolean;
 };
