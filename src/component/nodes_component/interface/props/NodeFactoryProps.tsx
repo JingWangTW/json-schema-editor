@@ -7,4 +7,6 @@ export default interface NodeFactoryProps {
     isDeleteAble?: Boolean;
     isOptionExist?: Boolean;
     fieldName?: String;
+
+    changeType(type: keyof typeof Type): void;
 }

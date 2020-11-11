@@ -2,9 +2,12 @@ import React from 'react';
 import { Form, Col, Row, InputGroup, FormControl } from 'react-bootstrap';
 import { FaPlus } from 'react-icons/fa';
 
+import { Type } from './DataType';
 import Node from './Node'
 
 class String extends Node {
+
+    protected readonly selfType = Type.String;
 
     constructor(props: any) {
         super(props)

@@ -17,8 +17,6 @@ enum Type {
     String = "String"
 };
 
-
-
 export { Array as ArrayNode };
 export { Boolean as BooleanNode };
 export { Integer as IntegerNode };

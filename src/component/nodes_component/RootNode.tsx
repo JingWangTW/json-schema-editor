@@ -1,10 +1,9 @@
 import React from 'react';
 import { Type } from './data_type/DataType';
 import Factory from './data_type/Factory';
-
 class RootNode extends React.Component {
 
-    private selfType: keyof typeof Type;
+    selfType: keyof typeof Type;
 
     constructor(props: any) {
         super(props);
@@ -12,16 +11,21 @@ class RootNode extends React.Component {
         this.selfType = Type.Object;
     }
 
-    changeType(): void {
+    changeType(type: keyof typeof Type): void {
+
+        this.selfType = type;
+        this.forceUpdate()
 
     }
     // overriding
     render(): JSX.Element {
         return (
             <Factory
+                key={this.selfType}
                 type={this.selfType}
                 isDeleteAble={false}
                 fieldName={"root"}
+                changeType={this.changeType.bind(this)}
             />
         )
     }

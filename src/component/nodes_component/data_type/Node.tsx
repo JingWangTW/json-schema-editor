@@ -4,20 +4,24 @@ import { TiPencil } from 'react-icons/ti';
 import { NodeState } from '../interface/State';
 import { NodeProps, NodeOptionListProps } from '../interface/Props';
 import ChildNodes from '../ChildNodes';
+import { Type } from './DataType';
 
 import NodeOptionButtons from '../NodeOptionButtons';
 
 abstract class Node extends React.Component<NodeProps, NodeState> {
 
+    abstract OptionModal(): JSX.Element;
+    protected abstract readonly selfType: keyof typeof Type;
+
     protected option!: NodeOptionListProps;
     private childRef: React.RefObject<ChildNodes>;
-
-    abstract OptionModal(): JSX.Element;
+    private dataTypeSelectRef: React.RefObject<HTMLSelectElement>;
 
     constructor(props: NodeProps) {
         super(props);
 
         this.childRef = React.createRef<ChildNodes>();
+        this.dataTypeSelectRef = React.createRef<HTMLSelectElement>();
 
         this.state = {
             // default value
@@ -51,6 +55,15 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
         this.childRef.current!.addChild();
     }
 
+    changeType(event: React.ChangeEvent<HTMLSelectElement>): void {
+
+        if (event.target.value in Type) {
+            this.props.changeType((Type as any)[event.target.value])
+        }
+
+        event.preventDefault();
+    }
+
     render(): JSX.Element {
         return (
             <div className="my-1">
@@ -60,7 +73,7 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
                             <Form.Control placeholder="items" readOnly={this.state.isDeleteAble ? false : true} />
                         </Col>
                         <Col lg={1}>
-                            <Form.Control as="select" custom placeholder="DataType">
+                            <Form.Control as="select" custom placeholder="DataType" ref={this.dataTypeSelectRef} onChange={this.changeType.bind(this)} value={this.selfType}>
                                 <option>Object</option>
                                 <option>Array</option>
                                 <option>String</option>

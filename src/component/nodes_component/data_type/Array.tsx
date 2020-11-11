@@ -1,9 +1,12 @@
 import React from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
 
+import { Type } from './DataType';
 import Node from './Node'
 
 class Array extends Node {
+
+    protected readonly selfType = Type.Array;
 
     constructor(props: any) {
         super({
