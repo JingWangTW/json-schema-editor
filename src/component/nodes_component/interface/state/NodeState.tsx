@@ -4,4 +4,5 @@ export default interface NodeState {
     isOptionExist: boolean;
     isDeleteAble: boolean;
     hasChild: boolean;
+    hasSibling: boolean;
 };

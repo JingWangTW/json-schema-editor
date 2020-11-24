@@ -30,6 +30,7 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
             isDeleteAble: true,
             isOptionExist: true,
             hasChild: false,
+            hasSibling: true,
 
             // set arguments
             ...props,
@@ -50,9 +51,19 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
         });
     }
 
-    add(): void {
+    add(addNode: "sibling" | "child"): void {
 
-        this.childRef.current!.addChild();
+        console.log(addNode)
+
+        switch (addNode) {
+            case 'sibling':
+                if (this.props.addSibling)
+                    this.props.addSibling();
+                break;
+            case 'child':
+                this.childRef.current!.addChild();
+                break;
+        }
     }
 
     changeType(event: React.ChangeEvent<HTMLSelectElement>): void {
@@ -74,7 +85,7 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
                                 <Col lg="auto" className="px-0 mx-0" style={{ width: (this.props.depth * 15).toString() + "px" }}>
                                 </Col>
                                 <Col>
-                                    <Form.Control placeholder="items" readOnly={this.state.isDeleteAble ? false : true} value={this.props.fieldName ? this.props.fieldName : ""} />
+                                    <Form.Control placeholder="items" readOnly={this.state.isDeleteAble ? false : true} defaultValue={this.props.fieldName ? this.props.fieldName : ""} />
                                 </Col>
                             </Row>
                         </Col>
@@ -131,6 +142,7 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
                         <Col lg={2}>
                             <NodeOptionButtons
                                 hasChild={this.state.hasChild}
+                                hasSibling={this.state.hasSibling}
                                 isDeleteAble={this.state.isDeleteAble}
                                 isOptionExist={this.state.isOptionExist}
                                 clickAdd={this.add.bind(this)}

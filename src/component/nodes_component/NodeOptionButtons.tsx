@@ -23,46 +23,57 @@ const ToggleAddButton = React.forwardRef<HTMLSpanElement, ToggleAddButtonProps>(
 
 class NodeOptionButtons extends React.Component<NodeOptionButtonsProps, {}> {
 
-    private readonly addHtmlId = nextId("Add-Button");
+    private readonly addHtmlDropId = nextId("Add-Dropdown");
+    private readonly addToolTipId = nextId("Add-Tooltip")
+
+    clickAdd(addNode: "sibling" | "child"): void {
+        this.props.clickAdd(addNode);
+    }
 
     clickDelete() {
     }
 
-    clickOption() {
-        this.props.clickOption();
+    dropDownOnToggle(isOpen: boolean,
+        event: React.SyntheticEvent<Dropdown>,
+        metadata: {
+            source: 'select' | 'click' | 'rootClose' | 'keydown'
+        }): void {
+
+        if (event)
+            event.stopPropagation();
     }
 
     render() {
         return (
             <div className="node-option-block">
                 {
-                    this.props.hasChild
-                        ?
-                        (
-                            <div className="node-option-btn-block">
-                                <Dropdown>
-                                    <Dropdown.Toggle as={ToggleAddButton} id={this.addHtmlId} />
+                    this.props.hasChild && this.props.hasSibling &&
+                    (
+                        <div className="node-option-btn-block">
+                            <Dropdown onToggle={this.dropDownOnToggle.bind(this)}>
+                                <Dropdown.Toggle as={ToggleAddButton} id={this.addHtmlDropId} />
 
-                                    <Dropdown.Menu id={this.addHtmlId}>
-                                        <Dropdown.Item eventKey="1">Add Sibling</Dropdown.Item>
-                                        <Dropdown.Item eventKey="2">Add Child</Dropdown.Item>
-                                    </Dropdown.Menu>
-                                </Dropdown>
-                            </div>
-                        )
-                        :
-                        (
+                                <Dropdown.Menu>
+                                    <Dropdown.Item href="#" eventKey="1" onClick={this.clickAdd.bind(this, "sibling")}>Add Sibling</Dropdown.Item>
+                                    <Dropdown.Item href="#" eventKey="2" onClick={this.clickAdd.bind(this, "child")}>Add Child</Dropdown.Item>
+                                </Dropdown.Menu>
+                            </Dropdown>
+                        </div>
+                    )
 
-                            <div className="node-option-btn-block" onClick={this.props.clickAdd.bind(this)}>
-                                <OverlayTrigger
-                                    trigger={["hover", "focus"]}
-                                    overlay={<Tooltip id="add-tooltip"> Add </Tooltip>}
-                                >
-                                    <span><FaPlus color="green" /></span>
-                                </OverlayTrigger>
-                            </div>
-                        )
-
+                }
+                {
+                    (this.props.hasChild !== this.props.hasSibling) &&
+                    (
+                        <div className="node-option-btn-block" onClick={this.clickAdd.bind(this, this.props.hasChild ? "child" : "sibling")}>
+                            <OverlayTrigger
+                                trigger={["hover", "focus"]}
+                                overlay={<Tooltip id={this.addToolTipId}> Add </Tooltip>}
+                            >
+                                <span><FaPlus color="green" /></span>
+                            </OverlayTrigger>
+                        </div>
+                    )
                 }
 
                 {
@@ -80,7 +91,7 @@ class NodeOptionButtons extends React.Component<NodeOptionButtonsProps, {}> {
 
                 {
                     this.props.isOptionExist && (
-                        <div className="node-option-btn-block" onClick={this.clickOption.bind(this)}>
+                        <div className="node-option-btn-block" onClick={this.props.clickOption}>
                             <OverlayTrigger
                                 trigger={["hover", "focus"]}
                                 overlay={<Tooltip id="option-tooltip"> Option </Tooltip>}

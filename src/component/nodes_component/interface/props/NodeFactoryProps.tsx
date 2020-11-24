@@ -5,9 +5,12 @@ export default interface NodeFactoryProps {
     type: keyof typeof Type;
 
     hasChild?: boolean;
+    hasSibling?: boolean;
+
     isDeleteAble?: boolean;
     isOptionExist?: boolean;
     fieldName?: string;
 
     changeType(type: keyof typeof Type): void;
+    addSibling?(): void;
 }

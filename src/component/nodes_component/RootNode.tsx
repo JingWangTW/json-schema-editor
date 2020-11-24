@@ -17,7 +17,7 @@ class RootNode extends React.Component {
         this.forceUpdate()
 
     }
-    // overriding
+
     render(): JSX.Element {
         return (
             <Factory
@@ -27,6 +27,7 @@ class RootNode extends React.Component {
                 isDeleteAble={false}
                 fieldName={"root"}
                 changeType={this.changeType.bind(this)}
+                hasSibling={false}
             />
         )
     }
