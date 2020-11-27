@@ -9,20 +9,6 @@ class Number extends Node {
 
     protected readonly selfType = Type.Number;
 
-    constructor(props: any) {
-        super(props)
-
-        this.option = [
-            { field: "Default", type: "number" },
-            { field: "Minimum", type: "number" },
-            { field: "Exclusive Minimum", type: "number" },
-            { field: "Maximum", type: "number" },
-            { field: "Exclusive Maximum", type: "number" },
-            { field: "Enum", type: "list" },
-            { field: "Constant", type: "number" }
-        ]
-    }
-
     OptionModal(): JSX.Element {
         return (
             <Form>

@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Col, InputGroup, Button, Modal, OverlayTrigger, Tooltip, FormControl, Row } from 'react-bootstrap';
 import { TiPencil } from 'react-icons/ti';
 import { NodeState } from '../interface/State';
-import { NodeProps, NodeOptionListProps } from '../interface/Props';
+import { NodeProps } from '../interface/Props';
 import ChildNodes from '../ChildNodes';
 import { Type } from './DataType';
 
@@ -13,7 +13,6 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
     abstract OptionModal(): JSX.Element;
     protected abstract readonly selfType: keyof typeof Type;
 
-    protected option!: NodeOptionListProps;
     private childRef: React.RefObject<ChildNodes>;
     private dataTypeSelectRef: React.RefObject<HTMLSelectElement>;
 
@@ -32,6 +31,9 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
             isOptionExist: true,
             hasChild: false,
             hasSibling: true,
+            field: {
+                name: "",
+            },
 
             // set arguments
             ...props,
@@ -70,7 +72,6 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
             this.props.delete(this.props.keyId)
     }
 
-
     changeType(event: React.ChangeEvent<HTMLSelectElement>): void {
 
         event.preventDefault();
@@ -91,7 +92,7 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
                                 <Col lg="auto" className="px-0 mx-0" style={{ width: (this.props.depth * 15).toString() + "px" }}>
                                 </Col>
                                 <Col>
-                                    <Form.Control placeholder="items" readOnly={this.state.isDeleteAble ? false : true} defaultValue={this.props.fieldName ? this.props.fieldName : ""} />
+                                    <Form.Control placeholder="items" readOnly={this.state.isDeleteAble ? false : true} defaultValue={this.state.field!.name} />
                                 </Col>
                             </Row>
                         </Col>
@@ -100,6 +101,7 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
                                 <option>Object</option>
                                 <option>Array</option>
                                 <option>String</option>
+                                <option>Integer</option>
                                 <option>Number</option>
                                 <option>Boolean</option>
                             </Form.Control>

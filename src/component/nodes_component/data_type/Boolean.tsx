@@ -8,15 +8,6 @@ class Boolean extends Node {
 
     protected readonly selfType = Type.Boolean;
 
-    constructor(props: any) {
-
-        super(props);
-
-        this.option = [
-            { field: "Default", type: "select", option: ["True", "False"] },
-        ]
-    }
-
     OptionModal(): JSX.Element {
         return (
             <Form>

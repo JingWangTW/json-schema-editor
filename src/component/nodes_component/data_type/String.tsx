@@ -9,20 +9,6 @@ class String extends Node {
 
     protected readonly selfType = Type.String;
 
-    constructor(props: any) {
-        super(props)
-
-        this.option = [
-            { field: "Max Length", type: "number", minValue: 0 },
-            { field: "Min Length", type: "number", minValue: 0 },
-            { field: "Format", type: "select", option: ["date-time", "time", "date", "email", "idn-email", "hostname", "idn-hostname", "ipv4", "ipv6", "uri", "uri-reference", "iri", "iri-reference", "uri-template", "json-pointer", "relative-json-pointer", "regex"] },
-            { field: "Pattern", type: "number", placeholder: "Regular Expression" },
-            { field: "Default", type: "text" },
-            { field: "Enum", type: "list" },
-            { field: "Constant", type: "string" },
-        ]
-    }
-
     RenderChildren(): JSX.Element { return <></> }
 
     OptionModal(): JSX.Element {

@@ -1,4 +1,5 @@
 import { Type } from '../../data_type/DataType';
+import NodeField from '../NodeField';
 
 export default interface NodeFactoryProps {
 
@@ -10,9 +11,9 @@ export default interface NodeFactoryProps {
     hasChild?: boolean;
     hasSibling?: boolean;
 
+    field?: NodeField;
     isDeleteAble?: boolean;
     isOptionExist?: boolean;
-    fieldName?: string;
 
     changeType(keyId: string, type: keyof typeof Type): void;
     addSibling?(keyId: string): void;
