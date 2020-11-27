@@ -1,7 +1,6 @@
 interface NodeField {
 
     name: string;
-    type?: string;
     title?: string;
     description?: string;
 
