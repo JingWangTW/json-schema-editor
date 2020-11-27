@@ -1,6 +1,7 @@
 import React from 'react';
 import { Form, Col, InputGroup, Button, Modal, OverlayTrigger, Tooltip, FormControl, Row } from 'react-bootstrap';
 import { TiPencil } from 'react-icons/ti';
+import NodeField from '../interface/NodeField';
 import { NodeState } from '../interface/State';
 import { NodeProps } from '../interface/Props';
 import ChildNodes from '../ChildNodes';
@@ -13,6 +14,7 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
     abstract OptionModal(): JSX.Element;
     protected abstract readonly selfType: keyof typeof Type;
 
+    protected field: NodeField;
     private childRef: React.RefObject<ChildNodes>;
     private dataTypeSelectRef: React.RefObject<HTMLSelectElement>;
 
@@ -31,13 +33,17 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
             isOptionExist: true,
             hasChild: false,
             hasSibling: true,
-            field: {
-                name: "",
-            },
 
             // set arguments
             ...props,
         }
+
+        if (this.props.field)
+            this.field = this.props.field;
+        else
+            this.field = {
+                name: "",
+            }
     }
 
     setShowOptionModal(isShow: boolean): void {
@@ -92,7 +98,7 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
                                 <Col lg="auto" className="px-0 mx-0" style={{ width: (this.props.depth * 15).toString() + "px" }}>
                                 </Col>
                                 <Col>
-                                    <Form.Control placeholder="items" readOnly={this.state.isDeleteAble ? false : true} defaultValue={this.state.field!.name} />
+                                    <Form.Control placeholder="items" readOnly={this.state.isDeleteAble ? false : true} defaultValue={this.field.name} />
                                 </Col>
                             </Row>
                         </Col>
