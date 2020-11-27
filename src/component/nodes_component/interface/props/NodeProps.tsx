@@ -12,5 +12,5 @@ export default interface NodeProps {
     fieldName?: string;
 
     changeType(keyId: string, type: keyof typeof Type): void;
-    addSibling?(): void;
+    addSibling?(keyId: string): void;
 }

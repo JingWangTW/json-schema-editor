@@ -5,6 +5,8 @@ interface NodeProperty {
     isDeleteAble: boolean;
     hasSibling: boolean;
     keyId: string;
+
+    addSibling(keyId: string): void;
 }
 export default interface ChildNodesState {
     children: Array<NodeProperty>

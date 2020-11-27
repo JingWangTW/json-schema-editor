@@ -55,12 +55,12 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
     addSibling(): void {
 
         if (this.props.addSibling)
-            this.props.addSibling();
+            this.props.addSibling(this.props.keyId);
     }
 
     addChild(isDeleteAble: boolean = true, hasSibling: boolean = true): void {
 
-        this.childRef.current!.addChild(isDeleteAble, hasSibling);
+        this.childRef.current!.add("", isDeleteAble, hasSibling);
 
     }
 

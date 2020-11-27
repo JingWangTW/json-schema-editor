@@ -20,15 +20,26 @@ class ChildNodes extends React.Component<ChildNodesProps, ChildNodesState>{
         };
     }
 
-    addChild(isDeleteAble: boolean = true, hasSibling: boolean = true): void {
-        this.setState(state => ({
-            children: [...state.children, {
-                type: DataType.Type.Object,
-                isDeleteAble,
-                hasSibling,
-                keyId: nextId("childId"),
-            }]
-        }))
+    add(keyId: string, isDeleteAble: boolean = true, hasSibling: boolean = true): void {
+
+        const originChildren = this.state.children;
+        let currentIndex;
+
+        // push to the last one
+        if (keyId === "")
+            currentIndex = originChildren.length - 1;
+        else
+            currentIndex = originChildren.findIndex(child => child.keyId === keyId);;
+
+        originChildren.splice(currentIndex + 1, 0, {
+            addSibling: this.add.bind(this),
+            type: DataType.Type.Object,
+            isDeleteAble,
+            hasSibling,
+            keyId: nextId("childId"),
+        })
+
+        this.setState({ children: originChildren })
     }
 
     changeType(keyId: string, type: keyof typeof Type): void {
@@ -60,11 +71,9 @@ class ChildNodes extends React.Component<ChildNodesProps, ChildNodesState>{
                 {
                     this.state.children.map((child, index) =>
                         <Factory key={child.keyId}
-                            keyId={child.keyId}
-                            type={child.type}
-                            isDeleteAble={child.isDeleteAble}
-                            hasSibling={child.hasSibling}
-                            changeType={this.changeType.bind(this)} depth={this.props.depth} />
+                            {...child}
+                            changeType={this.changeType.bind(this)}
+                            depth={this.props.depth} />
                     )
                 }
             </>
