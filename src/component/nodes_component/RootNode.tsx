@@ -29,9 +29,9 @@ class RootNode extends React.Component {
                 depth={0}
                 type={this.selfType}
                 isDeleteAble={false}
+                hasSibling={false}
                 fieldName={"root"}
                 changeType={this.changeType.bind(this)}
-                hasSibling={false}
             />
         )
     }

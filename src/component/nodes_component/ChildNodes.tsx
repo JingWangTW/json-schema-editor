@@ -55,13 +55,16 @@ class ChildNodes extends React.Component<ChildNodesProps, ChildNodesState>{
 
     render() {
 
-        console.log(this.props, this.state)
-
         return (
             <>
                 {
                     this.state.children.map((child, index) =>
-                        <Factory key={child.keyId} keyId={child.keyId} type={child.type} isDeleteAble={child.isDeleteAble} changeType={this.changeType.bind(this)} depth={this.props.depth} />
+                        <Factory key={child.keyId}
+                            keyId={child.keyId}
+                            type={child.type}
+                            isDeleteAble={child.isDeleteAble}
+                            hasSibling={child.hasSibling}
+                            changeType={this.changeType.bind(this)} depth={this.props.depth} />
                     )
                 }
             </>

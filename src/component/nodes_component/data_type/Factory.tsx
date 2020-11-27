@@ -13,8 +13,6 @@ class Factory extends React.Component<NodeFactoryProps, NodeFactoryState> {
         this.state = {
             type: props.type
         }
-
-        console.log(props.type)
     }
 
     render(): JSX.Element {

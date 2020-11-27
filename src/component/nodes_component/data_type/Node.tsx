@@ -21,8 +21,6 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
 
         super(props);
 
-        console.log(props)
-
         this.childRef = React.createRef<ChildNodes>();
         this.dataTypeSelectRef = React.createRef<HTMLSelectElement>();
 
@@ -60,9 +58,9 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
             this.props.addSibling();
     }
 
-    addChild(isDeleteAble: boolean = true): void {
+    addChild(isDeleteAble: boolean = true, hasSibling: boolean = true): void {
 
-        this.childRef.current!.addChild(isDeleteAble);
+        this.childRef.current!.addChild(isDeleteAble, hasSibling);
 
     }
 

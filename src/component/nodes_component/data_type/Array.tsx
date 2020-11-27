@@ -17,7 +17,7 @@ class Array extends Node {
 
     componentDidMount() {
 
-        this.addChild(false);
+        this.addChild(false, false);
 
     }
 
