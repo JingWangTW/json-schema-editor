@@ -19,10 +19,11 @@ class ChildNodes extends React.Component<ChildNodesProps, ChildNodesState>{
         };
     }
 
-    addChild(): void {
+    addChild(isDeleteAble: boolean = true): void {
         this.setState(state => ({
             children: [...state.children, {
-                type: DataType.Type.Object
+                type: DataType.Type.Object,
+                isDeleteAble
             }]
         }))
     }
@@ -32,9 +33,10 @@ class ChildNodes extends React.Component<ChildNodesProps, ChildNodesState>{
     }
 
     render() {
+
         return (
             <>
-                {this.state.children.map((child, index) => <Factory type={child.type} changeType={this.changeType.bind(this)} depth={this.props.depth} />)}
+                {this.state.children.map((child, index) => <Factory type={child.type} isDeleteAble={child.isDeleteAble} changeType={this.changeType.bind(this)} depth={this.props.depth} />)}
             </>
         );
     }

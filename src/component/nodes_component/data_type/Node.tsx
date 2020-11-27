@@ -51,28 +51,25 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
         });
     }
 
-    add(addNode: "sibling" | "child"): void {
+    addSibling(): void {
 
-        console.log(addNode)
+        if (this.props.addSibling)
+            this.props.addSibling();
+    }
 
-        switch (addNode) {
-            case 'sibling':
-                if (this.props.addSibling)
-                    this.props.addSibling();
-                break;
-            case 'child':
-                this.childRef.current!.addChild();
-                break;
-        }
+    addChild(isDeleteAble: boolean = true): void {
+
+        this.childRef.current!.addChild(isDeleteAble);
+
     }
 
     changeType(event: React.ChangeEvent<HTMLSelectElement>): void {
 
+        event.preventDefault();
+
         if (event.target.value in Type) {
             this.props.changeType((Type as any)[event.target.value])
         }
-
-        event.preventDefault();
     }
 
     render(): JSX.Element {
@@ -145,7 +142,8 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
                                 hasSibling={this.state.hasSibling}
                                 isDeleteAble={this.state.isDeleteAble}
                                 isOptionExist={this.state.isOptionExist}
-                                clickAdd={this.add.bind(this)}
+                                clickAddChild={this.addChild.bind(this)}
+                                clickAddSibling={this.addSibling.bind(this)}
                                 clickOption={this.setShowOptionModal.bind(this, true)}
                             />
 

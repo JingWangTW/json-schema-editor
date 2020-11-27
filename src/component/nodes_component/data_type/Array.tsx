@@ -15,6 +15,12 @@ class Array extends Node {
         });
     }
 
+    componentDidMount() {
+
+        this.addChild(false);
+
+    }
+
     OptionModal(): JSX.Element {
         return (
             <Form>

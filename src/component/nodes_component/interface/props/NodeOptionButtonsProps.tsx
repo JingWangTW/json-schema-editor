@@ -6,5 +6,7 @@ export default interface NodeOptionButtonsProps {
     isDeleteAble: boolean;
 
     clickOption(): void;
-    clickAdd(addNode: "sibling" | "child"): void;
+
+    clickAddChild(): void;
+    clickAddSibling(): void;
 }

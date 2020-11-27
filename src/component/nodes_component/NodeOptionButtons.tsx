@@ -26,10 +26,6 @@ class NodeOptionButtons extends React.Component<NodeOptionButtonsProps, {}> {
     private readonly addHtmlDropId = nextId("Add-Dropdown");
     private readonly addToolTipId = nextId("Add-Tooltip")
 
-    clickAdd(addNode: "sibling" | "child"): void {
-        this.props.clickAdd(addNode);
-    }
-
     clickDelete() {
     }
 
@@ -54,8 +50,8 @@ class NodeOptionButtons extends React.Component<NodeOptionButtonsProps, {}> {
                                 <Dropdown.Toggle as={ToggleAddButton} id={this.addHtmlDropId} />
 
                                 <Dropdown.Menu>
-                                    <Dropdown.Item href="#" eventKey="1" onClick={this.clickAdd.bind(this, "sibling")}>Add Sibling</Dropdown.Item>
-                                    <Dropdown.Item href="#" eventKey="2" onClick={this.clickAdd.bind(this, "child")}>Add Child</Dropdown.Item>
+                                    <Dropdown.Item href="#" eventKey="1" onClick={this.props.clickAddSibling}>Add Sibling</Dropdown.Item>
+                                    <Dropdown.Item href="#" eventKey="2" onClick={this.props.clickAddChild}>Add Child</Dropdown.Item>
                                 </Dropdown.Menu>
                             </Dropdown>
                         </div>
@@ -65,7 +61,7 @@ class NodeOptionButtons extends React.Component<NodeOptionButtonsProps, {}> {
                 {
                     (this.props.hasChild !== this.props.hasSibling) &&
                     (
-                        <div className="node-option-btn-block" onClick={this.clickAdd.bind(this, this.props.hasChild ? "child" : "sibling")}>
+                        <div className="node-option-btn-block" onClick={this.props.hasChild ? this.props.clickAddChild : this.props.clickAddSibling}>
                             <OverlayTrigger
                                 trigger={["hover", "focus"]}
                                 overlay={<Tooltip id={this.addToolTipId}> Add </Tooltip>}
