@@ -64,6 +64,13 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
 
     }
 
+    delete(): void {
+
+        if (this.props.delete)
+            this.props.delete(this.props.keyId)
+    }
+
+
     changeType(event: React.ChangeEvent<HTMLSelectElement>): void {
 
         event.preventDefault();
@@ -146,6 +153,7 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
                                 isOptionExist={this.state.isOptionExist}
                                 clickAddChild={this.addChild.bind(this)}
                                 clickAddSibling={this.addSibling.bind(this)}
+                                clickDelete={this.delete.bind(this)}
                                 clickOption={this.setShowOptionModal.bind(this, true)}
                             />
 

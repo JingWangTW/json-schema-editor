@@ -16,4 +16,5 @@ export default interface NodeFactoryProps {
 
     changeType(keyId: string, type: keyof typeof Type): void;
     addSibling?(keyId: string): void;
+    delete?(keyId: string): void;
 }

@@ -26,9 +26,6 @@ class NodeOptionButtons extends React.Component<NodeOptionButtonsProps, {}> {
     private readonly addHtmlDropId = nextId("Add-Dropdown");
     private readonly addToolTipId = nextId("Add-Tooltip")
 
-    clickDelete() {
-    }
-
     dropDownOnToggle(isOpen: boolean,
         event: React.SyntheticEvent<Dropdown>,
         metadata: {
@@ -74,7 +71,7 @@ class NodeOptionButtons extends React.Component<NodeOptionButtonsProps, {}> {
 
                 {
                     this.props.isDeleteAble && (
-                        <div className="node-option-btn-block" onClick={this.clickDelete.bind(this)}>
+                        <div className="node-option-btn-block" onClick={this.props.clickDelete}>
                             <OverlayTrigger
                                 trigger={["hover", "focus"]}
                                 overlay={<Tooltip id="delete-tooltip"> Delete </Tooltip>}

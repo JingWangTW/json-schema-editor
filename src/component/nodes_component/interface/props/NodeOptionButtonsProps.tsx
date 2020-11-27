@@ -9,4 +9,5 @@ export default interface NodeOptionButtonsProps {
 
     clickAddChild(): void;
     clickAddSibling(): void;
+    clickDelete(): void;
 }

@@ -32,12 +32,23 @@ class ChildNodes extends React.Component<ChildNodesProps, ChildNodesState>{
             currentIndex = originChildren.findIndex(child => child.keyId === keyId);;
 
         originChildren.splice(currentIndex + 1, 0, {
+            delete: this.delete.bind(this),
             addSibling: this.add.bind(this),
             type: DataType.Type.Object,
             isDeleteAble,
             hasSibling,
             keyId: nextId("childId"),
         })
+
+        this.setState({ children: originChildren })
+    }
+
+    delete(keyId: string) {
+
+        const originChildren = this.state.children;
+        const currentIndex = originChildren.findIndex(child => child.keyId === keyId);;
+
+        originChildren.splice(currentIndex, 1)
 
         this.setState({ children: originChildren })
     }

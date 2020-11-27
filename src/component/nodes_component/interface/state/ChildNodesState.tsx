@@ -6,6 +6,7 @@ interface NodeProperty {
     hasSibling: boolean;
     keyId: string;
 
+    delete(keyId: string): void;
     addSibling(keyId: string): void;
 }
 export default interface ChildNodesState {
