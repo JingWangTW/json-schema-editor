@@ -2,12 +2,17 @@ import React from 'react';
 import { Form, Row, Col, InputGroup, FormControl } from 'react-bootstrap';
 import { FaPlus } from 'react-icons/fa';
 
+import { NumberField } from '../interface/NodeField';
 import { Type } from './DataType';
 import Node from './Node'
 
 class Number extends Node {
 
     protected readonly selfType = Type.Number;
+
+    recordField(fieldName: keyof NumberField, event: React.ChangeEvent<HTMLInputElement>): void {
+
+    }
 
     OptionModal(): JSX.Element {
         return (

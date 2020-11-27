@@ -1,12 +1,17 @@
 import React from 'react';
 import { Form, Col, Row } from 'react-bootstrap';
 
+import { BooleanField } from '../interface/NodeField';
 import { Type } from './DataType';
 import Node from './Node';
 
 class Boolean extends Node {
 
     protected readonly selfType = Type.Boolean;
+
+    recordField(fieldName: keyof BooleanField, event: React.ChangeEvent<HTMLInputElement>): void {
+
+    }
 
     OptionModal(): JSX.Element {
         return (

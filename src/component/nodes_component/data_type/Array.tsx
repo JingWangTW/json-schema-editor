@@ -1,6 +1,7 @@
 import React from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
 
+import { ArrayField } from '../interface/NodeField';
 import { Type } from './DataType';
 import Node from './Node'
 
@@ -21,21 +22,25 @@ class Array extends Node {
 
     }
 
+    recordField(fieldName: keyof ArrayField, event: React.ChangeEvent<HTMLInputElement>): void {
+
+    }
+
     OptionModal(): JSX.Element {
         return (
             <Form>
                 <Form.Group as={Row}>
-                    <Form.Label column lg="2" htmlFor="MinValue">
+                    <Form.Label column lg="2" htmlFor="MinItems">
                         Min Items
                     </Form.Label>
                     <Col lg="4">
-                        <Form.Control type="number" min="0" id="MinValue" />
+                        <Form.Control type="number" min="0" id="MinItems" onChange={this.recordField.bind(this, "min_items")} />
                     </Col>
-                    <Form.Label column lg="2" htmlFor="MaxValue">
+                    <Form.Label column lg="2" htmlFor="MaxItems">
                         Max Items
                     </Form.Label>
                     <Col lg="4">
-                        <Form.Control type="number" min="0" id="MaxValue" />
+                        <Form.Control type="number" min="0" id="MaxItems" />
                     </Col>
                 </Form.Group>
 

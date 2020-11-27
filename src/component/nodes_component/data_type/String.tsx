@@ -2,12 +2,17 @@ import React from 'react';
 import { Form, Col, Row, InputGroup, FormControl } from 'react-bootstrap';
 import { FaPlus } from 'react-icons/fa';
 
+import { StringField } from '../interface/NodeField';
 import { Type } from './DataType';
 import Node from './Node'
 
 class String extends Node {
 
     protected readonly selfType = Type.String;
+
+    recordField(fieldName: keyof StringField, event: React.ChangeEvent<HTMLInputElement>): void {
+
+    }
 
     RenderChildren(): JSX.Element { return <></> }
 

@@ -12,6 +12,8 @@ import NodeOptionButtons from '../NodeOptionButtons';
 abstract class Node extends React.Component<NodeProps, NodeState> {
 
     abstract OptionModal(): JSX.Element;
+    abstract recordField(fieldName: keyof NodeField, event: React.ChangeEvent<HTMLInputElement>): void
+
     protected abstract readonly selfType: keyof typeof Type;
 
     protected field: NodeField;
@@ -87,6 +89,12 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
         }
     }
 
+    recordGenericField(fieldName: "name" | "title" | "description", event: React.ChangeEvent<HTMLInputElement>): void {
+
+        this.field[fieldName] = event.target.value;
+
+    }
+
     render(): JSX.Element {
 
         return (
@@ -98,7 +106,10 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
                                 <Col lg="auto" className="px-0 mx-0" style={{ width: (this.props.depth * 15).toString() + "px" }}>
                                 </Col>
                                 <Col>
-                                    <Form.Control placeholder="items" readOnly={this.state.isDeleteAble ? false : true} defaultValue={this.field.name} />
+                                    <Form.Control placeholder="items"
+                                        readOnly={this.state.isDeleteAble ? false : true}
+                                        defaultValue={this.field.name}
+                                        onChange={this.recordGenericField.bind(this, "name")} />
                                 </Col>
                             </Row>
                         </Col>
