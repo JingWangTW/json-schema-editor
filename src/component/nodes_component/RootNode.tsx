@@ -1,4 +1,6 @@
 import React from 'react';
+import nextId from "react-id-generator";
+
 import { Type } from './data_type/DataType';
 import Factory from './data_type/Factory';
 class RootNode extends React.Component {
@@ -11,7 +13,7 @@ class RootNode extends React.Component {
         this.selfType = Type.Object;
     }
 
-    changeType(type: keyof typeof Type): void {
+    changeType(keyId: string, type: keyof typeof Type): void {
 
         this.selfType = type;
         this.forceUpdate()
@@ -19,9 +21,11 @@ class RootNode extends React.Component {
     }
 
     render(): JSX.Element {
+
         return (
             <Factory
-                key={this.selfType}
+                key={nextId("childId")}
+                keyId={nextId("childId")}
                 depth={0}
                 type={this.selfType}
                 isDeleteAble={false}

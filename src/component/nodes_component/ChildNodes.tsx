@@ -1,15 +1,16 @@
 import React from 'react';
+import nextId from "react-id-generator";
 
 import * as DataType from './data_type/DataType';
 import { ChildNodesProps } from './interface/Props';
 import { ChildNodesState } from './interface/State';
+import { Type } from './data_type/DataType';
+
 import Factory from './data_type/Factory';
 
-interface NodeProperty {
-    type: DataType.Type
-}
-
 class ChildNodes extends React.Component<ChildNodesProps, ChildNodesState>{
+
+    private readonly childId: any;
 
     constructor(props: ChildNodesProps) {
         super(props);
@@ -19,24 +20,50 @@ class ChildNodes extends React.Component<ChildNodesProps, ChildNodesState>{
         };
     }
 
-    addChild(isDeleteAble: boolean = true): void {
+    addChild(isDeleteAble: boolean = true, hasSibling: boolean = true): void {
         this.setState(state => ({
             children: [...state.children, {
                 type: DataType.Type.Object,
-                isDeleteAble
+                isDeleteAble,
+                hasSibling,
+                keyId: nextId("childId"),
             }]
         }))
     }
 
-    changeType(): void {
+    changeType(keyId: string, type: keyof typeof Type): void {
 
+        this.setState((prevState) => {
+
+            const children = prevState.children.map((child) => {
+
+                if (child.keyId === keyId) {
+                    return {
+                        ...child,
+                        type: type
+                    };
+                } else {
+                    return child;
+                }
+            });
+
+            return {
+                children
+            };
+        });
     }
 
     render() {
 
+        console.log(this.props, this.state)
+
         return (
             <>
-                {this.state.children.map((child, index) => <Factory type={child.type} isDeleteAble={child.isDeleteAble} changeType={this.changeType.bind(this)} depth={this.props.depth} />)}
+                {
+                    this.state.children.map((child, index) =>
+                        <Factory key={child.keyId} keyId={child.keyId} type={child.type} isDeleteAble={child.isDeleteAble} changeType={this.changeType.bind(this)} depth={this.props.depth} />
+                    )
+                }
             </>
         );
     }

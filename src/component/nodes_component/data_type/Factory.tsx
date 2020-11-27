@@ -13,10 +13,12 @@ class Factory extends React.Component<NodeFactoryProps, NodeFactoryState> {
         this.state = {
             type: props.type
         }
+
+        console.log(props.type)
     }
 
     render(): JSX.Element {
-        switch (this.state.type) {
+        switch (this.props.type) {
             case DataType.Type.Array:
                 return <DataType.ArrayNode {...this.props} />
             case DataType.Type.Boolean:

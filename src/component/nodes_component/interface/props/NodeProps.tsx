@@ -1,6 +1,7 @@
 import { Type } from '../../data_type/DataType';
 
 export default interface NodeProps {
+    keyId: string;
     depth: number;
 
     hasChild?: boolean;
@@ -10,6 +11,6 @@ export default interface NodeProps {
     isOptionExist?: boolean;
     fieldName?: string;
 
-    changeType(type: keyof typeof Type): void;
+    changeType(keyId: string, type: keyof typeof Type): void;
     addSibling?(): void;
 }

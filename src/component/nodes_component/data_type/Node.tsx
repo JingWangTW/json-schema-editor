@@ -18,7 +18,10 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
     private dataTypeSelectRef: React.RefObject<HTMLSelectElement>;
 
     constructor(props: NodeProps) {
+
         super(props);
+
+        console.log(props)
 
         this.childRef = React.createRef<ChildNodes>();
         this.dataTypeSelectRef = React.createRef<HTMLSelectElement>();
@@ -68,11 +71,12 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
         event.preventDefault();
 
         if (event.target.value in Type) {
-            this.props.changeType((Type as any)[event.target.value])
+            this.props.changeType(this.props.keyId, (Type as any)[event.target.value])
         }
     }
 
     render(): JSX.Element {
+
         return (
             <div className="my-1">
                 <Form>
