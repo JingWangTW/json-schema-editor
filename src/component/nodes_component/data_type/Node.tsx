@@ -191,9 +191,6 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
                                 <Modal.Body>
                                     {this.OptionModal()}
                                 </Modal.Body>
-                                <Modal.Footer>
-                                    <Button onClick={this.setShowOptionModal.bind(this, false)}>Save</Button>
-                                </Modal.Footer>
                             </Modal>
                         </Col>
                     </Form.Row>
