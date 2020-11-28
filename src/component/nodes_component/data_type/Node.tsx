@@ -93,6 +93,10 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
 
         this.field[fieldName] = event.target.value;
 
+        // need to sync for both input blank
+        if (fieldName === "description")
+            this.forceUpdate()
+
     }
 
     render(): JSX.Element {
@@ -129,15 +133,15 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
                         <Col lg={3}>
 
                             <InputGroup>
-                                <FormControl type="text" id="Description" placeholder="Description" />
+                                <FormControl type="text" id="Description" placeholder="Description" defaultValue={this.field.description} value={this.field.description} onChange={this.recordGenericField.bind(this, "description")} />
                                 <OverlayTrigger
                                     trigger={["hover", "focus"]}
                                     overlay={<Tooltip id="add-tooltip"> Edit </Tooltip>}
                                 >
-                                    <InputGroup.Append onClick={this.setShowDescriptionEditorModal.bind(this, true)} style={{ cursor: "pointer" }}>
-                                        <InputGroup.Text>
+                                    <InputGroup.Append>
+                                        <Button variant="outline-primary" onClick={this.setShowDescriptionEditorModal.bind(this, true)}>
                                             <TiPencil />
-                                        </InputGroup.Text>
+                                        </Button>
                                     </InputGroup.Append>
                                 </OverlayTrigger>
                             </InputGroup>
@@ -156,12 +160,9 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
                                 </Modal.Header>
                                 <Modal.Body>
                                     <Form.Group>
-                                        <Form.Control as="textarea" rows={3} />
+                                        <Form.Control as="textarea" rows={3} defaultValue={this.field.description} onChange={this.recordGenericField.bind(this, "description")} />
                                     </Form.Group>
                                 </Modal.Body>
-                                <Modal.Footer>
-                                    <Button onClick={this.setShowOptionModal.bind(this, false)}>Save</Button>
-                                </Modal.Footer>
                             </Modal>
                         </Col>
                         <Col lg={2}>
