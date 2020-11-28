@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Col, InputGroup, Button, Modal, OverlayTrigger, Tooltip, FormControl, Row } from 'react-bootstrap';
 import { TiPencil } from 'react-icons/ti';
-import NodeField from '../interface/NodeField';
+import NodeField, { GenericField } from '../interface/NodeField';
 import { NodeState } from '../interface/State';
 import { NodeProps } from '../interface/Props';
 import ChildNodes from '../ChildNodes';
@@ -12,7 +12,7 @@ import NodeOptionButtons from '../NodeOptionButtons';
 abstract class Node extends React.Component<NodeProps, NodeState> {
 
     abstract OptionModal(): JSX.Element;
-    abstract recordField(fieldName: keyof NodeField, event: React.ChangeEvent<HTMLInputElement>): void
+    abstract recordField(fieldName: keyof NodeField, event: React.ChangeEvent<HTMLElement>): void
 
     protected abstract readonly selfType: keyof typeof Type;
 
@@ -89,7 +89,7 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
         }
     }
 
-    recordGenericField(fieldName: "name" | "title" | "description", event: React.ChangeEvent<HTMLInputElement>): void {
+    recordGenericField(fieldName: keyof GenericField, event: React.ChangeEvent<HTMLInputElement>): void {
 
         this.field[fieldName] = event.target.value;
 

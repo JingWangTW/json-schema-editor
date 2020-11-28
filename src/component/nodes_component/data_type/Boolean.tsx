@@ -9,7 +9,9 @@ class Boolean extends Node {
 
     protected readonly selfType = Type.Boolean;
 
-    recordField(fieldName: keyof BooleanField, event: React.ChangeEvent<HTMLInputElement>): void {
+    recordField(fieldName: keyof BooleanField, event: React.ChangeEvent<HTMLSelectElement>): void {
+
+        this.field[fieldName] = event.target.value === "True" ? true : false;
 
     }
 
@@ -21,7 +23,8 @@ class Boolean extends Node {
                         Default
                     </Form.Label>
                     <Col lg="4">
-                        <Form.Control as="select">
+                        <Form.Control as="select" onChange={this.recordField.bind(this, "default")}>
+                            <option></option>
                             <option>True</option>
                             <option>False</option>
                         </Form.Control>

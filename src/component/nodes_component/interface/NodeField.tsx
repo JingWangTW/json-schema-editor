@@ -27,6 +27,9 @@ interface NodeField {
     min_exclusive?: boolean;
     max_value?: number;
     max_exclusive?: boolean;
+
+    // integer
+    multiple_of?: number;
 }
 
 interface GenericField {
@@ -42,7 +45,7 @@ interface ArrayField {
 }
 
 interface BooleanField {
-    default?: number;
+    default?: boolean;
 }
 
 interface IntegerField {
@@ -54,6 +57,7 @@ interface IntegerField {
     min_exclusive?: boolean;
     max_value?: number;
     max_exclusive?: boolean;
+    multiple_of?: number;
 }
 
 interface NumberField {
@@ -87,6 +91,7 @@ interface StringField {
 
 export default NodeField;
 
+export type { GenericField };
 export type { ArrayField };
 export type { BooleanField };
 export type { IntegerField };

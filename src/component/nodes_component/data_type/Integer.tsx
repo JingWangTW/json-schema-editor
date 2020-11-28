@@ -12,6 +12,16 @@ class Integer extends Node {
 
     recordField(fieldName: keyof IntegerField, event: React.ChangeEvent<HTMLInputElement>): void {
 
+        if (fieldName === "default" || fieldName === "constant" || fieldName === "min_value" || fieldName === "max_value" || fieldName === "multiple_of") {
+
+            this.field[fieldName] = Number(event.target.value);
+
+        } else if (fieldName === "max_exclusive" || fieldName === "min_exclusive") {
+
+            this.field[fieldName] = event.target.checked;
+
+        }
+
     }
 
     OptionModal(): JSX.Element {
@@ -22,10 +32,11 @@ class Integer extends Node {
                         Min Value
                     </Form.Label>
                     <Col lg="4">
-                        <Form.Control type="number" />
+                        <Form.Control type="number" onChange={this.recordField.bind(this, "min_value")} />
                     </Col>
                     <Col lg="6">
-                        <Form.Check id="ExclusiveMin" inline label="Exclusive" type="checkbox" style={{ height: "100%" }} />
+                        <Form.Check id="ExclusiveMin" inline
+                            label="Exclusive" type="checkbox" style={{ height: "100%" }} onChange={this.recordField.bind(this, "min_exclusive")} />
                     </Col>
                 </Form.Group>
 
@@ -34,10 +45,10 @@ class Integer extends Node {
                         Max Value
                     </Form.Label>
                     <Col lg="4">
-                        <Form.Control type="number" />
+                        <Form.Control type="number" onChange={this.recordField.bind(this, "max_value")} />
                     </Col>
                     <Col lg="6">
-                        <Form.Check id="ExclusiveMax" inline label="Exclusive" type="checkbox" style={{ height: "100%" }} />
+                        <Form.Check id="ExclusiveMax" inline label="Exclusive" type="checkbox" style={{ height: "100%" }} onChange={this.recordField.bind(this, "max_exclusive")} />
                     </Col>
                 </Form.Group>
 
@@ -46,13 +57,13 @@ class Integer extends Node {
                         Default
                     </Form.Label>
                     <Col lg="4">
-                        <Form.Control type="number" id="Default" />
+                        <Form.Control type="number" id="Default" onChange={this.recordField.bind(this, "default")} />
                     </Col>
                     <Form.Label column lg="2" htmlFor="MultipleOf">
                         Multiple Of
                     </Form.Label>
                     <Col lg="4">
-                        <Form.Control type="number" id="MultipleOf" />
+                        <Form.Control type="number" id="MultipleOf" onChange={this.recordField.bind(this, "multiple_of")} />
                     </Col>
                 </Form.Group>
 
@@ -61,7 +72,7 @@ class Integer extends Node {
                         Constant
                     </Form.Label>
                     <Col lg="4">
-                        <Form.Control type="number" id="Constant" placeholder="Restricted Value" />
+                        <Form.Control type="number" id="Constant" placeholder="Restricted Value" onChange={this.recordField.bind(this, "constant")} />
                     </Col>
 
                     <Form.Label column lg="2" htmlFor="Enum">

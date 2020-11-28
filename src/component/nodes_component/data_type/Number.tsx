@@ -12,6 +12,15 @@ class Number extends Node {
 
     recordField(fieldName: keyof NumberField, event: React.ChangeEvent<HTMLInputElement>): void {
 
+        if (fieldName === "default" || fieldName === "constant" || fieldName === "min_value" || fieldName === "max_value") {
+
+            this.field[fieldName] = parseFloat(event.target.value);
+
+        } else if (fieldName === "max_exclusive" || fieldName === "min_exclusive") {
+
+            this.field[fieldName] = event.target.checked;
+
+        }
     }
 
     OptionModal(): JSX.Element {
@@ -22,10 +31,10 @@ class Number extends Node {
                         Min Value
                     </Form.Label>
                     <Col lg="4">
-                        <Form.Control type="number" />
+                        <Form.Control type="number" onChange={this.recordField.bind(this, "min_value")} />
                     </Col>
                     <Col lg="6">
-                        <Form.Check id="ExclusiveMin" inline label="Exclusive" type="checkbox" style={{ height: "100%" }} />
+                        <Form.Check id="ExclusiveMin" inline label="Exclusive" type="checkbox" style={{ height: "100%" }} onChange={this.recordField.bind(this, "min_exclusive")} />
                     </Col>
                 </Form.Group>
 
@@ -34,10 +43,10 @@ class Number extends Node {
                         Max Value
                     </Form.Label>
                     <Col lg="4">
-                        <Form.Control type="number" />
+                        <Form.Control type="number" onChange={this.recordField.bind(this, "max_value")} />
                     </Col>
                     <Col lg="6">
-                        <Form.Check id="ExclusiveMax" inline label="Exclusive" type="checkbox" style={{ height: "100%" }} />
+                        <Form.Check id="ExclusiveMax" inline label="Exclusive" type="checkbox" style={{ height: "100%" }} onChange={this.recordField.bind(this, "max_exclusive")} />
                     </Col>
                 </Form.Group>
 
@@ -46,13 +55,13 @@ class Number extends Node {
                         Default
                     </Form.Label>
                     <Col lg="4" id="Default">
-                        <Form.Control type="number" />
+                        <Form.Control type="number" onChange={this.recordField.bind(this, "default")} />
                     </Col>
                     <Form.Label column lg="2" htmlFor="Constant">
                         Constant
                     </Form.Label>
                     <Col lg="4">
-                        <Form.Control type="number" id="Constant" placeholder="Restricted Value" />
+                        <Form.Control type="number" id="Constant" placeholder="Restricted Value" onChange={this.recordField.bind(this, "constant")} />
                     </Col>
                 </Form.Group>
 

@@ -24,6 +24,15 @@ class Array extends Node {
 
     recordField(fieldName: keyof ArrayField, event: React.ChangeEvent<HTMLInputElement>): void {
 
+        if (fieldName === "min_items" || fieldName === "max_items") {
+
+            this.field[fieldName] = Number(event.target.value);
+
+        } else {
+
+            this.field[fieldName] = event.target.checked;
+
+        }
     }
 
     OptionModal(): JSX.Element {
@@ -40,12 +49,12 @@ class Array extends Node {
                         Max Items
                     </Form.Label>
                     <Col lg="4">
-                        <Form.Control type="number" min="0" id="MaxItems" />
+                        <Form.Control type="number" min="0" id="MaxItems" onChange={this.recordField.bind(this, "max_items")} />
                     </Col>
                 </Form.Group>
 
                 <Form.Group>
-                    <Form.Check id="uniqueCheckbox" type="checkbox" label="Unique" />
+                    <Form.Check id="uniqueCheckbox" type="checkbox" label="Unique" onChange={this.recordField.bind(this, "unique")} />
                 </Form.Group>
 
             </Form>
