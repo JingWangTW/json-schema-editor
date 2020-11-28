@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Row, Col, InputGroup, FormControl } from 'react-bootstrap';
+import { Form, Row, Col, InputGroup, FormControl, Button } from 'react-bootstrap';
 import { FaPlus } from 'react-icons/fa';
 
 import { IntegerField } from '../interface/NodeField';
@@ -21,7 +21,21 @@ class Integer extends Node {
             this.field[fieldName] = event.target.checked;
 
         }
+    }
 
+    recordEnumField(key: number, event: React.ChangeEvent<HTMLInputElement>): void {
+
+        this.field.enum![key] = parseInt(event.target.value);
+    }
+
+    addEnum(): void {
+
+        if (!this.field.enum)
+            this.field.enum = [];
+
+        this.field.enum!.push("");
+
+        this.forceUpdate();
     }
 
     OptionModal(): JSX.Element {
@@ -75,23 +89,60 @@ class Integer extends Node {
                         <Form.Control type="number" id="Constant" placeholder="Restricted Value" onChange={this.recordField.bind(this, "constant")} />
                     </Col>
 
-                    <Form.Label column lg="2" htmlFor="Enum">
-                        Enum
-                    </Form.Label>
-                    <Col lg="4">
-                        <Row>
-                            <Col lg="12">
-                                <InputGroup>
-                                    <FormControl type="number" id="Enum" />
-                                    <InputGroup.Append>
-                                        <InputGroup.Text>
-                                            <FaPlus />
-                                        </InputGroup.Text>
-                                    </InputGroup.Append>
-                                </InputGroup>
-                            </Col>
-                        </Row>
-                    </Col>
+                </Form.Group>
+
+                <Form.Group>
+                    {
+                        this.field.enum
+                            ?
+                            (
+                                (this.field.enum as Array<number | string>).map((enumeration, index: number) => (
+                                    <Form.Group as={Row} key={index}>
+                                        <Form.Label column lg="2">
+                                            {index === 0 ? "Enum" : ""}
+                                        </Form.Label>
+                                        <Col lg="4">
+                                            {
+                                                index === this.field.enum!.length - 1
+                                                    ?
+                                                    (
+                                                        <InputGroup>
+                                                            <FormControl type="number" id={index.toString()} onChange={this.recordEnumField.bind(this, index)} defaultValue={enumeration} />
+                                                            <InputGroup.Append>
+                                                                <Button variant="outline-success" onClick={this.addEnum.bind(this)}>
+                                                                    <FaPlus />
+                                                                </Button>
+                                                            </InputGroup.Append>
+                                                        </InputGroup>
+                                                    )
+                                                    :
+                                                    (
+                                                        <FormControl type="number" id={index.toString()} onChange={this.recordEnumField.bind(this, index)} defaultValue={enumeration} />
+                                                    )
+                                            }
+                                        </Col>
+                                    </Form.Group>
+                                ))
+                            )
+                            :
+                            (
+                                <Form.Group as={Row}>
+                                    <Form.Label column lg="2">
+                                        Enum
+                                </Form.Label>
+                                    <Col lg="10">
+                                        <Row>
+                                            <Col lg="12">
+                                                <Button variant="outline-success" onClick={this.addEnum.bind(this)}>
+                                                    <FaPlus color="green" />
+                                                </Button>
+
+                                            </Col>
+                                        </Row>
+                                    </Col>
+                                </Form.Group>
+                            )
+                    }
                 </Form.Group>
 
             </Form>

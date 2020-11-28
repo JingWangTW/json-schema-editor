@@ -14,7 +14,7 @@ interface NodeField {
 
     // string, integer, number
     constant?: string | number;
-    enum?: Array<string> | Array<number>;
+    enum?: (string | number)[];// | number[];
 
     // string
     min_length?: number;
@@ -64,7 +64,7 @@ interface NumberField {
 
     default?: number;
     constant?: number;
-    enum?: Array<number>;
+    enum?: number[];
     min_value?: number;
     min_exclusive?: boolean;
     max_value?: number;
@@ -80,7 +80,7 @@ interface StringField {
 
     default?: string;
     constant?: string;
-    enum?: Array<string>;
+    enum?: string[];
     min_length?: number;
     max_length?: number;
     format?: "date-time" | "time" | "date" | "email" | "idn-email" | "hostname" | "idn-hostname" | "ipv4" | "ipv6" | "uri" | "uri-reference" | "iri" | "iri-reference" | "uri-template" | "json-pointer" | "relative-json-pointer" | "regex";
