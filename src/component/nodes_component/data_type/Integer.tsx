@@ -40,7 +40,7 @@ class Integer extends Node {
 
     OptionModal(): JSX.Element {
         return (
-            <Form>
+            <>
                 <Form.Group as={Row} controlId="MinValue">
                     <Form.Label column lg="2">
                         Min Value
@@ -145,7 +145,7 @@ class Integer extends Node {
                     }
                 </Form.Group>
 
-            </Form>
+            </>
         );
     }
 }

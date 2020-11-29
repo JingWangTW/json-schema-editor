@@ -18,14 +18,14 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
 
     protected field: NodeField;
     private childRef: React.RefObject<ChildNodes>;
-    private dataTypeSelectRef: React.RefObject<HTMLSelectElement>;
+    private optionFieldFormRef: React.RefObject<HTMLFormElement>;
 
     constructor(props: NodeProps) {
 
         super(props);
 
         this.childRef = React.createRef<ChildNodes>();
-        this.dataTypeSelectRef = React.createRef<HTMLSelectElement>();
+        this.optionFieldFormRef = React.createRef<HTMLFormElement>();
 
         this.state = {
             // default value
@@ -99,6 +99,18 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
 
     }
 
+    resetOptionFiledForm(): void {
+
+        let fieldName: keyof NodeField;
+        for (fieldName in this.field) {
+            if (fieldName !== "name" && fieldName !== "title" && fieldName !== "description")
+                delete this.field[fieldName]
+        }
+
+        if (this.optionFieldFormRef.current)
+            this.optionFieldFormRef.current.reset();
+    }
+
     render(): JSX.Element {
 
         return (
@@ -118,7 +130,7 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
                             </Row>
                         </Col>
                         <Col lg={1}>
-                            <Form.Control as="select" custom placeholder="DataType" ref={this.dataTypeSelectRef} onChange={this.changeType.bind(this)} value={this.selfType}>
+                            <Form.Control as="select" custom placeholder="DataType" onChange={this.changeType.bind(this)} value={this.selfType}>
                                 <option>Object</option>
                                 <option>Array</option>
                                 <option>String</option>
@@ -190,8 +202,13 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
                                 </Modal.Title>
                                 </Modal.Header>
                                 <Modal.Body>
-                                    {this.OptionModal()}
+                                    <Form ref={this.optionFieldFormRef}>
+                                        {this.OptionModal()}
+                                    </Form>
                                 </Modal.Body>
+                                <Modal.Footer>
+                                    <Button variant="outline-secondary" onClick={this.resetOptionFiledForm.bind(this)}>Clear</Button>
+                                </Modal.Footer>
                             </Modal>
                         </Col>
                     </Form.Row>

@@ -44,7 +44,7 @@ class String extends Node {
 
     OptionModal(): JSX.Element {
         return (
-            <Form>
+            <>
                 <Form.Group as={Row}>
                     <Form.Label column lg="2" htmlFor="Default">
                         Default
@@ -144,7 +144,7 @@ class String extends Node {
                         )
                 }
 
-            </Form >
+            </ >
         );
     }
 }

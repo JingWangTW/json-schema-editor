@@ -37,7 +37,7 @@ class Array extends Node {
 
     OptionModal(): JSX.Element {
         return (
-            <Form>
+            <>
                 <Form.Group as={Row}>
                     <Form.Label column lg="2" htmlFor="MinItems">
                         Min Items
@@ -57,7 +57,7 @@ class Array extends Node {
                     <Form.Check id="uniqueCheckbox" type="checkbox" label="Unique" onChange={this.recordField.bind(this, "unique")} />
                 </Form.Group>
 
-            </Form>
+            </>
         );
     }
 }

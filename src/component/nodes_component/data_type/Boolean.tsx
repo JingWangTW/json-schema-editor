@@ -17,7 +17,7 @@ class Boolean extends Node {
 
     OptionModal(): JSX.Element {
         return (
-            <Form>
+            <>
                 <Form.Group as={Row}>
                     <Form.Label column lg="2" htmlFor="MinLength">
                         Default
@@ -30,7 +30,7 @@ class Boolean extends Node {
                         </Form.Control>
                     </Col>
                 </Form.Group>
-            </Form>
+            </>
         );
     }
 }
