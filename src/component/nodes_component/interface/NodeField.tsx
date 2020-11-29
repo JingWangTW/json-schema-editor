@@ -3,6 +3,7 @@ interface NodeField {
     name: string;
     title?: string;
     description?: string;
+    required?: boolean;
 
     // array 
     min_items?: number;
@@ -36,6 +37,7 @@ interface GenericField {
     name: string;
     title?: string;
     description?: string;
+    required?: boolean;
 }
 
 interface ArrayField {

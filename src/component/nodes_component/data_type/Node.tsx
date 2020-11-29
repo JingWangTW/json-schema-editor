@@ -91,7 +91,10 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
 
     recordGenericField(fieldName: keyof GenericField, event: React.ChangeEvent<HTMLInputElement>): void {
 
-        this.field[fieldName] = event.target.value;
+        if (fieldName === "required")
+            this.field[fieldName] = event.target.checked;
+        else
+            this.field[fieldName] = event.target.value;
 
         // need to sync for both input blank
         if (fieldName === "description")
@@ -103,7 +106,7 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
 
         let fieldName: keyof NodeField;
         for (fieldName in this.field) {
-            if (fieldName !== "name" && fieldName !== "title" && fieldName !== "description")
+            if (fieldName !== "name" && fieldName !== "title" && fieldName !== "description" && fieldName !== "required")
                 delete this.field[fieldName]
         }
 
@@ -122,10 +125,23 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
                                 <Col lg="auto" className="px-0 mx-0" style={{ width: (this.props.depth * 15).toString() + "px" }}>
                                 </Col>
                                 <Col>
-                                    <Form.Control placeholder="items"
-                                        readOnly={this.state.isDeleteAble ? false : true}
-                                        defaultValue={this.field.name}
-                                        onChange={this.recordGenericField.bind(this, "name")} />
+                                    <InputGroup>
+
+                                        <OverlayTrigger
+                                            trigger={["hover", "focus"]}
+                                            overlay={<Tooltip id="add-tooltip"> Required </Tooltip>}
+                                        >
+                                            <InputGroup.Prepend>
+                                                <InputGroup.Checkbox defaultChecked={true} disabled={this.state.isDeleteAble ? false : true} onChange={this.recordGenericField.bind(this, "required")} />
+                                            </InputGroup.Prepend>
+                                        </OverlayTrigger>
+
+                                        <Form.Control placeholder="items"
+                                            readOnly={this.state.isDeleteAble ? false : true}
+                                            defaultValue={this.field.name}
+                                            onChange={this.recordGenericField.bind(this, "name")} />
+
+                                    </InputGroup>
                                 </Col>
                             </Row>
                         </Col>
