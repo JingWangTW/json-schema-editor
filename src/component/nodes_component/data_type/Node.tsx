@@ -122,7 +122,7 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
                     <Form.Row>
                         <Col lg={3}>
                             <Row>
-                                <Col lg="auto" className="px-0 mx-0" style={{ width: (this.props.depth * 15).toString() + "px" }}>
+                                <Col lg="auto" className="px-0 mx-0" style={{ width: (this.props.depth * 20).toString() + "px" }}>
                                 </Col>
                                 <Col>
                                     <InputGroup>
@@ -158,7 +158,7 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
                         <Col lg={3}>
                             <Form.Control placeholder="Titile" />
                         </Col>
-                        <Col lg={3}>
+                        <Col lg={4}>
 
                             <InputGroup>
                                 <FormControl type="text" id="Description" placeholder="Description" defaultValue={this.field.description} value={this.field.description} onChange={this.recordGenericField.bind(this, "description")} />
@@ -193,7 +193,7 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
                                 </Modal.Body>
                             </Modal>
                         </Col>
-                        <Col lg={2}>
+                        <Col lg={1}>
                             <NodeOptionButtons
                                 hasChild={this.state.hasChild}
                                 hasSibling={this.state.hasSibling}
