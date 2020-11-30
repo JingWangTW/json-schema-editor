@@ -1,18 +1,18 @@
 import React from 'react';
 import nextId from "react-id-generator";
 
-import { Type } from './data_type/DataType';
+import { Type, Node } from './data_type/DataType';
 import Factory from './data_type/Factory';
 class RootNode extends React.Component {
 
     private selfType: keyof typeof Type;
-    private nodeRef: React.RefObject<Factory>;
+    private nodeRef: React.RefObject<Node>;
 
     constructor(props: any) {
         super(props);
 
         this.selfType = Type.Object;
-        this.nodeRef = React.createRef<Factory>();
+        this.nodeRef = React.createRef<Node>();
     }
 
     changeType(keyId: string, type: keyof typeof Type): void {

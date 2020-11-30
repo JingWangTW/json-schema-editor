@@ -1,46 +1,26 @@
 import React from 'react';
 
 import { NodeFactoryProps } from '../interface/Props';
-import { NodeFactoryState } from '../interface/State';
 import * as DataType from './DataType';
 
-class Factory extends React.Component<NodeFactoryProps, NodeFactoryState> {
+const Factory = React.forwardRef<DataType.Node, NodeFactoryProps>((props, ref) => {
 
-    private nodeRef: any
-
-    constructor(props: NodeFactoryProps) {
-
-        super(props);
-
-        this.state = {
-            type: props.type
-        }
-
-        this.nodeRef = React.createRef<DataType.Node>();
+    switch (props.type) {
+        case DataType.Type.Array:
+            return <DataType.ArrayNode {...props} ref={ref as React.RefObject<DataType.ArrayNode>} />
+        case DataType.Type.Boolean:
+            return <DataType.BooleanNode {...props} ref={ref as React.RefObject<DataType.BooleanNode>} />
+        case DataType.Type.Integer:
+            return <DataType.IntegerNode {...props} ref={ref as React.RefObject<DataType.IntegerNode>} />
+        case DataType.Type.Number:
+            return <DataType.NumberNode {...props} ref={ref as React.RefObject<DataType.NumberNode>} />
+        case DataType.Type.Object:
+            return <DataType.ObjectNode {...props} ref={ref as React.RefObject<DataType.ObjectNode>} />
+        case DataType.Type.String:
+            return <DataType.StringNode {...props} ref={ref as React.RefObject<DataType.StringNode>} />
+        default:
+            return <DataType.ObjectNode {...props} ref={ref as React.RefObject<DataType.ObjectNode>} />
     }
-
-    exportSchemaObj(): any {
-        return this.nodeRef.current!.exportSchemaObj();
-    }
-
-    render(): JSX.Element {
-        switch (this.props.type) {
-            case DataType.Type.Array:
-                return <DataType.ArrayNode {...this.props} ref={this.nodeRef} />
-            case DataType.Type.Boolean:
-                return <DataType.BooleanNode {...this.props} ref={this.nodeRef} />
-            case DataType.Type.Integer:
-                return <DataType.IntegerNode {...this.props} ref={this.nodeRef} />
-            case DataType.Type.Number:
-                return <DataType.NumberNode {...this.props} ref={this.nodeRef} />
-            case DataType.Type.Object:
-                return <DataType.ObjectNode {...this.props} ref={this.nodeRef} />
-            case DataType.Type.String:
-                return <DataType.StringNode {...this.props} ref={this.nodeRef} />
-            default:
-                return <DataType.ObjectNode {...this.props} ref={this.nodeRef} />
-        }
-    }
-}
+});
 
 export default Factory;
