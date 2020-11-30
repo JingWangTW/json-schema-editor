@@ -20,6 +20,10 @@ class RootNode extends React.Component {
 
     }
 
+    exportSchemaObj(): any {
+        return {};
+    }
+
     render(): JSX.Element {
 
         return (

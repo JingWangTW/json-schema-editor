@@ -1,17 +1,8 @@
 import React from 'react';
-import { Navbar, Button } from 'react-bootstrap';
+import { Navbar } from 'react-bootstrap';
 import SchemaEditor from './layout/SchemaEditor';
 
 class App extends React.Component {
-
-    private schemaEditorRef: React.RefObject<SchemaEditor>;
-
-    constructor(props: any) {
-
-        super(props);
-
-        this.schemaEditorRef = React.createRef<SchemaEditor>();
-    }
 
     render() {
         return (
@@ -26,11 +17,8 @@ class App extends React.Component {
                         </Navbar.Text>
                     </Navbar.Collapse>
                 </Navbar>
-                <div className="my-3 mx-4">
-                    <Button variant="outline-primary">Import from file</Button> {' '}
-                    <Button variant="outline-success">View schema in source</Button>
-                    <SchemaEditor />
-                </div>
+
+                <SchemaEditor />
             </>
         )
     }
