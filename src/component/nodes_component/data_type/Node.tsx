@@ -49,6 +49,10 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
             }
     }
 
+    get form() {
+        return this.field;
+    }
+
     setShowOptionModal(isShow: boolean): void {
 
         this.setState({

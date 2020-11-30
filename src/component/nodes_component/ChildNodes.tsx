@@ -5,7 +5,7 @@ import nextId from "react-id-generator";
 import * as DataType from './data_type/DataType';
 import { ChildNodesProps } from './interface/Props';
 import { ChildNodesState } from './interface/State';
-import { Type } from './data_type/DataType';
+import { Type, Node } from './data_type/DataType';
 
 import Factory from './data_type/Factory';
 
@@ -22,7 +22,6 @@ class ChildNodes extends React.Component<ChildNodesProps, ChildNodesState>{
 
     add(keyId: string, isDeleteAble: boolean = true, hasSibling: boolean = true): void {
 
-        const id = nextId('field_');
         const originChildren = this.state.children;
         let currentIndex;
 
@@ -38,8 +37,8 @@ class ChildNodes extends React.Component<ChildNodesProps, ChildNodesState>{
             type: DataType.Type.Object,
             isDeleteAble,
             hasSibling,
-            keyId: id,
-            name: id
+            keyId: nextId('child_node-'),
+            ref: React.createRef<Node>()
         })
 
         this.setState({ children: originChildren })
@@ -81,37 +80,19 @@ class ChildNodes extends React.Component<ChildNodesProps, ChildNodesState>{
         return {};
     }
 
-    checkAndChangeChildName(keyId: string, name: string): void {
+    checkChildName(keyId: string, name: string): void {
 
         let checkNameDuplicate: boolean = false;
 
         for (const child of this.state.children) {
 
-            if (child.keyId !== keyId && child.name === name) {
+            if (child.keyId !== keyId && child.ref.current!.form.name === name) {
                 checkNameDuplicate = true;
                 break;
             }
         }
 
-        this.setState((prevState) => {
-
-            const children = prevState.children.map((child) => {
-
-                if (child.keyId === keyId) {
-                    return {
-                        ...child,
-                        name: name
-                    };
-                } else {
-                    return child;
-                }
-            });
-
-            return {
-                children,
-                checkNameDuplicate,
-            };
-        });
+        this.setState({ checkNameDuplicate })
     }
 
     render() {
@@ -131,9 +112,10 @@ class ChildNodes extends React.Component<ChildNodesProps, ChildNodesState>{
                     this.state.children.map((child, index) =>
                         <Factory key={child.keyId}
                             {...child}
-                            field={{ name: child.name }}
+                            ref={child.ref}
+                            field={{ name: nextId('field_') }}
                             changeType={this.changeType.bind(this)}
-                            changeName={this.checkAndChangeChildName.bind(this)}
+                            changeName={this.checkChildName.bind(this)}
                             depth={this.props.depth} />
                     )
                 }
