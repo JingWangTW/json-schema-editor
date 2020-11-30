@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button, Toast } from 'react-bootstrap';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 
 import * as hljs from 'react-syntax-highlighter/dist/esm/styles/hljs';
@@ -9,21 +9,25 @@ import RootNode from '../nodes_component/RootNode';
 interface SchemaEditorState {
     showExport: boolean;
     showImport: boolean;
+    showErrorToast: boolean;
     exportString: string;
 }
 
 class SchemaEditor extends React.Component<{}, SchemaEditorState> {
 
+    private rootNode: any;
     private rootNodeRef: React.RefObject<RootNode>;
 
     constructor(props: any) {
         super(props);
 
         this.rootNodeRef = React.createRef<RootNode>();
+        this.rootNode = <RootNode ref={this.rootNodeRef} />
 
         this.state = {
             showExport: false,
             showImport: false,
+            showErrorToast: false,
             exportString: ""
         }
     }
@@ -37,11 +41,22 @@ class SchemaEditor extends React.Component<{}, SchemaEditorState> {
     toggleExport(show: boolean): void {
 
         if (show) {
-            const schema = this.rootNodeRef!.current!.exportSchemaObj();
-            this.setState({
-                exportString: JSON.stringify(schema, null, 4),
-                showExport: show
-            })
+            const schema = this.rootNodeRef.current!.exportSchemaObj();
+
+            if (schema) {
+
+                this.setState({
+                    exportString: JSON.stringify(schema, null, 4),
+                    showExport: true
+                })
+
+            } else {
+
+                this.setState({
+                    showErrorToast: true
+                })
+
+            }
 
         } else {
 
@@ -71,7 +86,8 @@ class SchemaEditor extends React.Component<{}, SchemaEditorState> {
                 <Button variant="outline-primary" onClick={this.toggleImport.bind(this, true)}>Import from file</Button> {' '}
                 <Button variant="outline-success" onClick={this.toggleExport.bind(this, true)}>Export Schema</Button>
                 <div>
-                    <RootNode ref={this.rootNodeRef} />
+                    {this.rootNode}
+                    {/* <RootNode ref={this.rootNodeRef} /> */}
                 </div>
 
                 <Modal size="xl" scrollable show={this.state.showExport} onHide={this.toggleExport.bind(this, false)}>
@@ -90,6 +106,19 @@ class SchemaEditor extends React.Component<{}, SchemaEditorState> {
                     </Modal.Footer>
                 </Modal>
 
+                <Toast
+                    show={this.state.showErrorToast}
+                    delay={3000}
+                    autohide style={{
+                        position: 'absolute',
+                        bottom: "20px",
+                        right: "20px",
+                    }}>
+                    <Toast.Header>
+                        <strong className="mr-auto">Error</strong>
+                    </Toast.Header>
+                    <Toast.Body>There's still some errors in your schema!<br /> Please check and try again!</Toast.Body>
+                </Toast>
 
             </div>
 

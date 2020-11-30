@@ -77,7 +77,16 @@ class ChildNodes extends React.Component<ChildNodesProps, ChildNodesState>{
     }
 
     exportSchemaObj(): any {
-        return {};
+
+        if (!this.state.checkNameDuplicate) {
+
+            return false;
+
+        } else {
+
+            return {};
+
+        }
     }
 
     checkChildName(keyId: string, name: string): void {

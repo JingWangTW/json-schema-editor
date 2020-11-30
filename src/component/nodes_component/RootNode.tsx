@@ -23,6 +23,7 @@ class RootNode extends React.Component {
     }
 
     exportSchemaObj(): any {
+
         return this.nodeRef.current!.exportSchemaObj();
     }
 
