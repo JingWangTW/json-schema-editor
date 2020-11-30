@@ -11,11 +11,12 @@ export default interface NodeFactoryProps {
     hasChild?: boolean;
     hasSibling?: boolean;
 
-    field?: NodeField;
+    field: NodeField;
     isDeleteAble?: boolean;
     isOptionExist?: boolean;
 
     changeType(keyId: string, type: keyof typeof Type): void;
+    changeName(keyId: string, name: string): void;
     addSibling?(keyId: string): void;
     delete?(keyId: string): void;
 }

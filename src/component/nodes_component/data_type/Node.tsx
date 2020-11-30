@@ -92,10 +92,17 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
 
     recordGenericField(fieldName: keyof GenericField, event: React.ChangeEvent<HTMLInputElement>): void {
 
-        if (fieldName === "required")
-            this.field[fieldName] = event.target.checked;
-        else
+        if (fieldName === "name") {
+
+            this.props.changeName(this.props.keyId, event.target.value)
             this.field[fieldName] = event.target.value;
+        }
+        else if (fieldName === "required") {
+            this.field[fieldName] = event.target.checked;
+        }
+        else {
+            this.field[fieldName] = event.target.value;
+        }
 
         // need to sync for both input blank
         if (fieldName === "description")
@@ -138,10 +145,10 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
                                         </OverlayTrigger>
 
                                         <Form.Control placeholder="items"
+                                            required
                                             readOnly={this.state.isDeleteAble ? false : true}
                                             defaultValue={this.field.name}
                                             onChange={this.recordGenericField.bind(this, "name")} />
-
                                     </InputGroup>
                                 </Col>
                             </Row>

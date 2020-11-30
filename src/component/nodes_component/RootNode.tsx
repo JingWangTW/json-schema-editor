@@ -39,6 +39,7 @@ class RootNode extends React.Component {
                 hasSibling={false}
                 field={{ name: "root" }}
                 changeType={this.changeType.bind(this)}
+                changeName={() => true}
             />
         )
     }
