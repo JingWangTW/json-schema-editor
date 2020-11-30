@@ -75,6 +75,10 @@ class ChildNodes extends React.Component<ChildNodesProps, ChildNodesState>{
         });
     }
 
+    exportSchemaObj(): any {
+        return {};
+    }
+
     render() {
 
         return (

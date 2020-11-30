@@ -15,6 +15,10 @@ class Boolean extends Node {
 
     }
 
+    exportSchemaObj(): any {
+        return {};
+    }
+
     OptionModal(): JSX.Element {
         return (
             <>

@@ -18,6 +18,11 @@ class Object extends Node {
         });
     }
 
+    exportSchemaObj(): any {
+
+        return {}
+    }
+
     OptionModal(): JSX.Element { return <></> }
 }
 

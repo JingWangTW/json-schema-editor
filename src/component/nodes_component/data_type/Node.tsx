@@ -12,12 +12,13 @@ import NodeOptionButtons from '../NodeOptionButtons';
 abstract class Node extends React.Component<NodeProps, NodeState> {
 
     abstract OptionModal(): JSX.Element;
-    abstract recordField(fieldName: keyof NodeField, event: React.ChangeEvent<HTMLElement>): void
+    abstract recordField(fieldName: keyof NodeField, event: React.ChangeEvent<HTMLElement>): void;
+    abstract exportSchemaObj(): any;
 
     protected abstract readonly selfType: keyof typeof Type;
 
     protected field: NodeField;
-    private childRef: React.RefObject<ChildNodes>;
+    protected childRef: React.RefObject<ChildNodes>;
     private optionFieldFormRef: React.RefObject<HTMLFormElement>;
 
     constructor(props: NodeProps) {

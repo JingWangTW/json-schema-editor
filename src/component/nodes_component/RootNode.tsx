@@ -5,12 +5,14 @@ import { Type } from './data_type/DataType';
 import Factory from './data_type/Factory';
 class RootNode extends React.Component {
 
-    selfType: keyof typeof Type;
+    private selfType: keyof typeof Type;
+    private nodeRef: React.RefObject<Factory>;
 
     constructor(props: any) {
         super(props);
 
         this.selfType = Type.Object;
+        this.nodeRef = React.createRef<Factory>();
     }
 
     changeType(keyId: string, type: keyof typeof Type): void {
@@ -21,13 +23,14 @@ class RootNode extends React.Component {
     }
 
     exportSchemaObj(): any {
-        return {};
+        return this.nodeRef.current!.exportSchemaObj();
     }
 
     render(): JSX.Element {
 
         return (
             <Factory
+                ref={this.nodeRef}
                 key={nextId("childId")}
                 keyId={nextId("childId")}
                 depth={0}

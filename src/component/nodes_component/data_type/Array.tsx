@@ -22,6 +22,10 @@ class Array extends Node {
 
     }
 
+    exportSchemaObj(): any {
+        return {}
+    }
+
     recordField(fieldName: keyof ArrayField, event: React.ChangeEvent<HTMLInputElement>): void {
 
         if (fieldName === "min_items" || fieldName === "max_items") {

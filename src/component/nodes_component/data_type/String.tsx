@@ -42,6 +42,10 @@ class String extends Node {
         this.forceUpdate();
     }
 
+    exportSchemaObj(): any {
+        return {};
+    }
+
     OptionModal(): JSX.Element {
         return (
             <>
