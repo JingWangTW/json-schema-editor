@@ -4,7 +4,9 @@ import { ObjectField } from '../interface/NodeField';
 import { Type } from './DataType';
 import Node from './Node'
 
-class Object extends Node {
+// It will failed if we name a class as "Object"
+class ObjectNode extends Node {
+    //class Object extends Node {
 
     protected readonly selfType = Type.Object;
 
@@ -45,4 +47,4 @@ class Object extends Node {
     OptionModal(): JSX.Element { return <></> }
 }
 
-export default Object;
+export default ObjectNode;
