@@ -1,7 +1,7 @@
 # JSON Schema Editor
 
 ## Demo Pages
-https://github.com/JingWangTW/json-schema-editor
+https://jingwangtw.github.io/json-schema-editor/
 
 ## Features
 * Edit JSON schema with GUI.
