@@ -38,7 +38,7 @@ class RootNode extends React.Component {
                 type={this.selfType}
                 isDeleteAble={false}
                 hasSibling={false}
-                field={{ name: "root" }}
+                field={{ name: "root", required: true }}
                 changeType={this.changeType.bind(this)}
                 changeName={() => true}
             />

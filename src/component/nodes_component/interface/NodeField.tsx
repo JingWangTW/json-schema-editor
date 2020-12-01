@@ -1,9 +1,9 @@
 interface NodeField {
 
     name: string;
+    required: boolean;
     title?: string;
     description?: string;
-    required?: boolean;
 
     // array 
     min_items?: number;
@@ -28,9 +28,8 @@ interface NodeField {
     min_exclusive?: boolean;
     max_value?: number;
     max_exclusive?: boolean;
-
-    // integer
     multiple_of?: number;
+
 }
 
 interface GenericField {
@@ -71,6 +70,7 @@ interface NumberField {
     min_exclusive?: boolean;
     max_value?: number;
     max_exclusive?: boolean;
+    multiple_of?: number;
 
 }
 

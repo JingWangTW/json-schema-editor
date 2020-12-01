@@ -16,7 +16,13 @@ class Boolean extends Node {
     }
 
     exportSchemaObj(): any {
-        return {};
+
+        return {
+            type: "boolean",
+            default: this.field.default,
+            title: this.field.title,
+            description: this.field.description,
+        };
     }
 
     OptionModal(): JSX.Element {

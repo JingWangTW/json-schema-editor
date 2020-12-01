@@ -23,7 +23,24 @@ class Array extends Node {
     }
 
     exportSchemaObj(): any {
-        return {}
+
+        let child = this.childRef.current!.exportSchemaObj();
+
+        if (child) {
+
+            return {
+                type: "array",
+                title: this.field.title,
+                description: this.field.description,
+                uniqueItems: this.field.unique,
+                minItems: this.field.min_items,
+                maxItems: this.field.max_items,
+                items: child[0].value
+            }
+
+        } else {
+            return false;
+        }
     }
 
     recordField(fieldName: keyof ArrayField, event: React.ChangeEvent<HTMLInputElement>): void {

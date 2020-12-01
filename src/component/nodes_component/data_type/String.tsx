@@ -43,7 +43,21 @@ class String extends Node {
     }
 
     exportSchemaObj(): any {
-        return {};
+        return {
+            type: "string",
+            title: this.field.title,
+            description: this.field.description,
+
+            constant: this.field.constant,
+            default: this.field.default,
+
+            minLength: this.field.min_length,
+            maxLength: this.field.max_length,
+            format: this.field.format,
+            pattern: this.field.pattern,
+
+            enum: this.field.enum,
+        };
     }
 
     OptionModal(): JSX.Element {

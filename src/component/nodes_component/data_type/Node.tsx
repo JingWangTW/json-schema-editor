@@ -43,12 +43,19 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
             ...props,
         }
 
-        if (this.props.field)
-            this.field = this.props.field;
-        else
+        this.field = {
+            name: nextId("field_"),
+            required: true,
+        };
+
+        if (this.props.field) {
+
             this.field = {
-                name: nextId("field_"),
-            }
+                ...this.field,
+                ...this.props.field
+            };
+
+        }
     }
 
     get form() {
@@ -146,7 +153,7 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
                                             overlay={<Tooltip id="add-tooltip"> Required </Tooltip>}
                                         >
                                             <InputGroup.Prepend>
-                                                <InputGroup.Checkbox defaultChecked={true} disabled={this.state.isDeleteAble ? false : true} onChange={this.recordGenericField.bind(this, "required")} />
+                                                <InputGroup.Checkbox defaultChecked={this.field.required} disabled={!this.state.isDeleteAble} onChange={this.recordGenericField.bind(this, "required")} />
                                             </InputGroup.Prepend>
                                         </OverlayTrigger>
 
@@ -170,7 +177,7 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
                             </Form.Control>
                         </Col>
                         <Col lg={3}>
-                            <Form.Control placeholder="Titile" />
+                            <Form.Control placeholder="Titile" onChange={this.recordGenericField.bind(this, "title")} />
                         </Col>
                         <Col lg={4}>
 

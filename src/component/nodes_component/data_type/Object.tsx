@@ -20,7 +20,26 @@ class Object extends Node {
 
     exportSchemaObj(): any {
 
-        return {}
+        let children = this.childRef.current?.exportSchemaObj();
+
+        let properties: any = {}
+        let required: string[] = [];
+
+        for (const child of children) {
+            properties[child.name] = {
+                ...child.value
+            }
+            if (child.required)
+                required.push(child.name);
+        }
+
+        return {
+            type: "object",
+            title: this.field.title,
+            description: this.field.description,
+            properties,
+            required
+        }
     }
 
     OptionModal(): JSX.Element { return <></> }

@@ -41,17 +41,14 @@ class SchemaEditor extends React.Component<{}, SchemaEditorState> {
     toggleExport(show: boolean): void {
 
         if (show) {
-            const schema = this.rootNodeRef.current!.exportSchemaObj();
 
-            if (schema) {
-
+            try {
+                const schema = this.rootNodeRef.current!.exportSchemaObj();
                 this.setState({
                     exportString: JSON.stringify(schema, null, 4),
                     showExport: true
                 })
-
-            } else {
-
+            } catch (error) {
                 this.setState({
                     showErrorToast: true
                 })
@@ -60,7 +57,7 @@ class SchemaEditor extends React.Component<{}, SchemaEditorState> {
 
         } else {
 
-            this.setState({ showExport: show });
+            this.setState({ showExport: false });
 
         }
     }

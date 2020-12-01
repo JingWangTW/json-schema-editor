@@ -39,7 +39,22 @@ class Integer extends Node {
     }
 
     exportSchemaObj(): any {
-        return {};
+
+        return {
+            type: "integer",
+            title: this.field.title,
+            description: this.field.description,
+
+            constant: this.field.constant,
+            default: this.field.default,
+            minimum: this.field.min_value,
+            exclusiveMinimum: this.field.min_exclusive,
+            maximum: this.field.max_value,
+            exclusiveMaximum: this.field.max_exclusive,
+            multipleOf: this.field.multiple_of,
+
+            enum: this.field.enum,
+        };
     }
 
     OptionModal(): JSX.Element {

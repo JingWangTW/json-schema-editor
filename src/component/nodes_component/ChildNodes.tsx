@@ -78,14 +78,17 @@ class ChildNodes extends React.Component<ChildNodesProps, ChildNodesState>{
 
     exportSchemaObj(): any {
 
-        if (!this.state.checkNameDuplicate) {
+        if (this.state.checkNameDuplicate) {
 
-            return false;
+            throw new Error("Find Duplicate");
 
         } else {
 
-            return {};
-
+            return this.state.children.map(child => ({
+                name: child.ref.current!.form.name,
+                value: child.ref.current!.exportSchemaObj(),
+                required: child.ref.current!.form.required,
+            }));
         }
     }
 

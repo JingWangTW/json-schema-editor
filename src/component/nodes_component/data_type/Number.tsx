@@ -39,7 +39,21 @@ class Number extends Node {
     }
 
     exportSchemaObj(): any {
-        return {};
+        return {
+            type: "number",
+            title: this.field.title,
+            description: this.field.description,
+
+            constant: this.field.constant,
+            default: this.field.default,
+            minimum: this.field.min_value,
+            exclusiveMinimum: this.field.min_exclusive,
+            maximum: this.field.max_value,
+            exclusiveMaximum: this.field.max_exclusive,
+            multipleOf: this.field.multiple_of,
+
+            enum: this.field.enum,
+        };
     }
 
     OptionModal(): JSX.Element {
@@ -73,15 +87,25 @@ class Number extends Node {
                     <Form.Label column lg="2" htmlFor="Default">
                         Default
                     </Form.Label>
-                    <Col lg="4" id="Default">
-                        <Form.Control type="number" onChange={this.recordField.bind(this, "default")} />
+                    <Col lg="4">
+                        <Form.Control type="number" id="Default" onChange={this.recordField.bind(this, "default")} />
                     </Col>
+                    <Form.Label column lg="2" htmlFor="MultipleOf">
+                        Multiple Of
+                    </Form.Label>
+                    <Col lg="4">
+                        <Form.Control type="number" id="MultipleOf" onChange={this.recordField.bind(this, "multiple_of")} />
+                    </Col>
+                </Form.Group>
+
+                <Form.Group as={Row}>
                     <Form.Label column lg="2" htmlFor="Constant">
                         Constant
                     </Form.Label>
                     <Col lg="4">
                         <Form.Control type="number" id="Constant" placeholder="Restricted Value" onChange={this.recordField.bind(this, "constant")} />
                     </Col>
+
                 </Form.Group>
 
                 {
