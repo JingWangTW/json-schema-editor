@@ -40,6 +40,22 @@ class Integer extends Node {
 
     exportSchemaObj(): any {
 
+        let range: any = {};
+        if (this.field.min_value) {
+            if (this.field.min_exclusive)
+                range['exclusiveMinimum'] = this.field.min_value;
+            else
+                range['minimum'] = this.field.min_value;
+        }
+
+        if (this.field.max_value) {
+            if (this.field.max_exclusive)
+                range['exclusiveMaximum'] = this.field.max_value;
+            else
+                range['maximum'] = this.field.max_value;
+        }
+
+
         return {
             type: "integer",
             title: this.field.title,
@@ -47,10 +63,7 @@ class Integer extends Node {
 
             constant: this.field.constant,
             default: this.field.default,
-            minimum: this.field.min_value,
-            exclusiveMinimum: this.field.min_exclusive,
-            maximum: this.field.max_value,
-            exclusiveMaximum: this.field.max_exclusive,
+            ...range,
             multipleOf: this.field.multiple_of,
 
             enum: this.field.enum,
