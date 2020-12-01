@@ -1,13 +1,15 @@
 import React from 'react';
 import { Form, Col, InputGroup, Button, Modal, OverlayTrigger, Tooltip, FormControl, Row } from 'react-bootstrap';
+import nextId from 'react-id-generator';
 import { TiPencil } from 'react-icons/ti';
+
 import NodeField, { GenericField } from '../interface/NodeField';
 import { NodeState } from '../interface/State';
 import { NodeProps } from '../interface/Props';
 import ChildNodes from '../ChildNodes';
 import { Type } from './DataType';
-
 import NodeOptionButtons from '../NodeOptionButtons';
+
 
 abstract class Node extends React.Component<NodeProps, NodeState> {
 
@@ -45,7 +47,7 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
             this.field = this.props.field;
         else
             this.field = {
-                name: "",
+                name: nextId("field_"),
             }
     }
 

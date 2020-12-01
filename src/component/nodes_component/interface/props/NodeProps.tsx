@@ -9,7 +9,7 @@ export default interface NodeProps {
     hasChild?: boolean;
     hasSibling?: boolean;
 
-    field: NodeField;
+    field?: NodeField;
     isDeleteAble?: boolean;
     isOptionExist?: boolean;
 

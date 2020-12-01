@@ -122,7 +122,6 @@ class ChildNodes extends React.Component<ChildNodesProps, ChildNodesState>{
                         <Factory key={child.keyId}
                             {...child}
                             ref={child.ref}
-                            field={{ name: nextId('field_') }}
                             changeType={this.changeType.bind(this)}
                             changeName={this.checkChildName.bind(this)}
                             depth={this.props.depth} />
