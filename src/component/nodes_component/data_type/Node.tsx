@@ -216,7 +216,7 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
                         </Col>
                         <Col lg={1}>
                             <NodeOptionButtons
-                                hasChild={this.state.hasChild}
+                                hasChild={this.selfType === Type.Array ? false : this.state.hasChild}
                                 hasSibling={this.state.hasSibling}
                                 isDeleteAble={this.state.isDeleteAble}
                                 isOptionExist={this.state.isOptionExist}
