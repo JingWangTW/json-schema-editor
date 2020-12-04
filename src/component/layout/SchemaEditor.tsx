@@ -1,6 +1,9 @@
 import React from 'react';
 import { Modal, Button, Toast } from 'react-bootstrap';
 import SyntaxHighlighter from 'react-syntax-highlighter';
+import Ajv from "ajv"
+import draft_04_meta from 'ajv/lib/refs/json-schema-draft-04.json';
+import draft_06_meta from 'ajv/lib/refs/json-schema-draft-06.json';
 
 import * as hljs from 'react-syntax-highlighter/dist/esm/styles/hljs';
 
@@ -8,8 +11,7 @@ import RootNode from '../nodes_component/RootNode';
 
 interface SchemaEditorState {
     showExport: boolean;
-    showImport: boolean;
-    showErrorToast: boolean;
+    errorMessage?: string;
     exportString: string;
 }
 
@@ -17,25 +19,60 @@ class SchemaEditor extends React.Component<{}, SchemaEditorState> {
 
     private rootNode: any;
     private rootNodeRef: React.RefObject<RootNode>;
+    private fileUploadRef: React.RefObject<HTMLInputElement>;
 
     constructor(props: any) {
+
         super(props);
+
+        this.fileUploadRef = React.createRef<HTMLInputElement>();
 
         this.rootNodeRef = React.createRef<RootNode>();
         this.rootNode = <RootNode ref={this.rootNodeRef} />
 
         this.state = {
             showExport: false,
-            showImport: false,
-            showErrorToast: false,
             exportString: ""
         }
     }
 
     toggleImport(show: boolean): void {
 
-        this.setState({ showImport: show });
+        this.fileUploadRef.current!.click();
+    }
 
+    async importSchema(event: React.ChangeEvent<HTMLInputElement>) {
+
+        if (event.target.files) {
+
+            try {
+
+                const text = await event.target.files[0].text();
+                const schema = JSON.parse(text);
+
+                const validator = new Ajv({ schemaId: 'auto' });;
+                validator.addMetaSchema(draft_06_meta)
+                validator.addMetaSchema(draft_04_meta)
+
+                const result = validator.validateSchema(schema);
+
+                if (!result) {
+
+                    this.setState({
+                        errorMessage: "Parsing Schema Error! Please check your schema."
+                    })
+
+                } else {
+
+                }
+
+            } catch (error) {
+
+                this.setState({
+                    errorMessage: "Parsing Schema Error! We only support draft-04/06/07 "
+                })
+            }
+        }
     }
 
     toggleExport(show: boolean): void {
@@ -46,18 +83,19 @@ class SchemaEditor extends React.Component<{}, SchemaEditorState> {
                 const schema = this.rootNodeRef.current!.exportSchemaObj();
                 this.setState({
                     exportString: JSON.stringify(schema, null, 4),
-                    showExport: true
+                    showExport: true,
+                    errorMessage: undefined
                 })
             } catch (error) {
                 this.setState({
-                    showErrorToast: true
+                    errorMessage: "There's still some errors in your schema! Please check and try again!"
                 })
 
             }
 
         } else {
 
-            this.setState({ showExport: false });
+            this.setState({ showExport: false, errorMessage: undefined });
 
         }
     }
@@ -80,6 +118,8 @@ class SchemaEditor extends React.Component<{}, SchemaEditorState> {
 
         return (
             <div className="my-3 mx-4 ">
+                <input type="file" id="file-uploader" data-target="file-uploader" hidden ref={this.fileUploadRef} onChange={this.importSchema.bind(this)} />
+
                 <Button variant="outline-primary" onClick={this.toggleImport.bind(this, true)}>Import from file</Button> {' '}
                 <Button variant="outline-success" onClick={this.toggleExport.bind(this, true)}>Export Schema</Button>
                 <div>
@@ -103,19 +143,29 @@ class SchemaEditor extends React.Component<{}, SchemaEditorState> {
                     </Modal.Footer>
                 </Modal>
 
-                <Toast
-                    show={this.state.showErrorToast}
-                    delay={3000}
-                    autohide style={{
-                        position: 'absolute',
-                        bottom: "20px",
-                        right: "20px",
-                    }}>
-                    <Toast.Header>
-                        <strong className="mr-auto">Error</strong>
-                    </Toast.Header>
-                    <Toast.Body>There's still some errors in your schema!<br /> Please check and try again!</Toast.Body>
-                </Toast>
+                {
+                    this.state.errorMessage && (
+                        <Toast
+                            show={this.state.errorMessage ? true : false}
+                            onClose={() => { this.setState({ errorMessage: undefined }) }}
+                            delay={3000}
+                            autohide
+                            style={{
+                                position: 'absolute',
+                                bottom: "20px",
+                                right: "20px",
+                                borderColor: "red",
+                                color: "red"
+                            }}>
+                            <Toast.Header style={{ borderColor: "red", color: "red" }}>
+                                <strong className="mr-auto">Error</strong>
+                            </Toast.Header>
+                            <Toast.Body>{this.state.errorMessage}</Toast.Body>
+                        </Toast>
+                    )
+                }
+
+
 
             </div>
 
