@@ -12,7 +12,7 @@ class String extends Node {
 
     recordField(fieldName: keyof StringField, event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>): void {
 
-        if (fieldName === "min_length" || fieldName === "max_length") {
+        if (fieldName === "minLength" || fieldName === "maxLength") {
 
             this.field[fieldName] = Number(event.target.value);
 
@@ -51,8 +51,8 @@ class String extends Node {
             constant: this.field.constant,
             default: this.field.default,
 
-            minLength: this.field.min_length,
-            maxLength: this.field.max_length,
+            minLength: this.field.minLength,
+            maxLength: this.field.maxLength,
             format: this.field.format,
             pattern: this.field.pattern,
 
@@ -77,13 +77,13 @@ class String extends Node {
                         Min Length
                     </Form.Label>
                     <Col lg="4">
-                        <Form.Control type="number" min="0" id="MinLength" onChange={this.recordField.bind(this, "min_length")} />
+                        <Form.Control type="number" min="0" id="MinLength" onChange={this.recordField.bind(this, "minLength")} />
                     </Col>
                     <Form.Label column lg="2" htmlFor="MaxLength">
                         Max Length
                     </Form.Label>
                     <Col lg="4">
-                        <Form.Control type="number" min="0" id="MaxLength" onChange={this.recordField.bind(this, "max_length")} />
+                        <Form.Control type="number" min="0" id="MaxLength" onChange={this.recordField.bind(this, "maxLength")} />
                     </Col>
                 </Form.Group>
 

@@ -30,19 +30,21 @@ class Array extends Node {
             type: "array",
             title: this.field.title,
             description: this.field.description,
-            uniqueItems: this.field.unique,
-            minItems: this.field.min_items,
-            maxItems: this.field.max_items,
+            uniqueItems: this.field.uniqueItems,
+            minItems: this.field.minItems,
+            maxItems: this.field.maxItems,
             items: child[0].value
         }
     }
 
     recordField(fieldName: keyof ArrayField, event: React.ChangeEvent<HTMLInputElement>): void {
 
-        if (fieldName === "min_items" || fieldName === "max_items") {
+        // minItems, max_Items
+        if (fieldName === "minItems" || fieldName === "maxItems") {
 
             this.field[fieldName] = Number(event.target.value);
 
+            // uniqueItems
         } else {
 
             this.field[fieldName] = event.target.checked;
@@ -58,18 +60,18 @@ class Array extends Node {
                         Min Items
                     </Form.Label>
                     <Col lg="4">
-                        <Form.Control type="number" min="0" id="MinItems" onChange={this.recordField.bind(this, "min_items")} />
+                        <Form.Control type="number" min="0" id="MinItems" onChange={this.recordField.bind(this, "minItems")} />
                     </Col>
                     <Form.Label column lg="2" htmlFor="MaxItems">
                         Max Items
                     </Form.Label>
                     <Col lg="4">
-                        <Form.Control type="number" min="0" id="MaxItems" onChange={this.recordField.bind(this, "max_items")} />
+                        <Form.Control type="number" min="0" id="MaxItems" onChange={this.recordField.bind(this, "maxItems")} />
                     </Col>
                 </Form.Group>
 
                 <Form.Group>
-                    <Form.Check id="uniqueCheckbox" type="checkbox" label="Unique" onChange={this.recordField.bind(this, "unique")} />
+                    <Form.Check id="uniqueCheckbox" type="checkbox" label="Unique" onChange={this.recordField.bind(this, "uniqueItems")} />
                 </Form.Group>
 
             </>

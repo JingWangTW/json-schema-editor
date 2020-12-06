@@ -6,9 +6,9 @@ interface NodeField {
     description?: string;
 
     // array 
-    min_items?: number;
-    max_items?: number;
-    unique?: boolean;
+    minItems?: number;
+    maxItems?: number;
+    uniqueItems?: boolean;
 
     // string, integer, number, boolean
     default?: string | number | boolean;
@@ -18,17 +18,17 @@ interface NodeField {
     enum?: (string | number)[];// | number[];
 
     // string
-    min_length?: number;
-    max_length?: number;
+    minLength?: number;
+    maxLength?: number;
     format?: "date-time" | "time" | "date" | "email" | "idn-email" | "hostname" | "idn-hostname" | "ipv4" | "ipv6" | "uri" | "uri-reference" | "iri" | "iri-reference" | "uri-template" | "json-pointer" | "relative-json-pointer" | "regex";
     pattern?: string;
 
     // integer, number
-    min_value?: number;
-    min_exclusive?: boolean;
-    max_value?: number;
-    max_exclusive?: boolean;
-    multiple_of?: number;
+    minValue?: number;
+    minExclusive?: boolean;
+    maxValue?: number;
+    maxExclusive?: boolean;
+    multipleOf?: number;
 
 }
 
@@ -40,9 +40,9 @@ interface GenericField {
 }
 
 interface ArrayField {
-    min_items?: number;
-    max_items?: number;
-    unique?: boolean;
+    minItems?: number;
+    maxItems?: number;
+    uniqueItems?: boolean;
 }
 
 interface BooleanField {
@@ -54,11 +54,11 @@ interface IntegerField {
     default?: number;
     constant?: number;
     enum?: Array<number>;
-    min_value?: number;
-    min_exclusive?: boolean;
-    max_value?: number;
-    max_exclusive?: boolean;
-    multiple_of?: number;
+    minValue?: number;
+    minExclusive?: boolean;
+    maxValue?: number;
+    maxExclusive?: boolean;
+    multipleOf?: number;
 }
 
 interface NumberField {
@@ -66,11 +66,11 @@ interface NumberField {
     default?: number;
     constant?: number;
     enum?: number[];
-    min_value?: number;
-    min_exclusive?: boolean;
-    max_value?: number;
-    max_exclusive?: boolean;
-    multiple_of?: number;
+    minValue?: number;
+    minExclusive?: boolean;
+    maxValue?: number;
+    maxExclusive?: boolean;
+    multipleOf?: number;
 
 }
 
@@ -83,8 +83,8 @@ interface StringField {
     default?: string;
     constant?: string;
     enum?: string[];
-    min_length?: number;
-    max_length?: number;
+    minLength?: number;
+    maxLength?: number;
     format?: "date-time" | "time" | "date" | "email" | "idn-email" | "hostname" | "idn-hostname" | "ipv4" | "ipv6" | "uri" | "uri-reference" | "iri" | "iri-reference" | "uri-template" | "json-pointer" | "relative-json-pointer" | "regex";
     pattern?: string;
 }

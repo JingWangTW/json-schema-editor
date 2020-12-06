@@ -12,11 +12,11 @@ class Number extends Node {
 
     recordField(fieldName: keyof NumberField, event: React.ChangeEvent<HTMLInputElement>): void {
 
-        if (fieldName === "default" || fieldName === "constant" || fieldName === "min_value" || fieldName === "max_value") {
+        if (fieldName === "default" || fieldName === "constant" || fieldName === "minValue" || fieldName === "maxValue" || fieldName === "multipleOf") {
 
             this.field[fieldName] = parseFloat(event.target.value);
 
-        } else if (fieldName === "max_exclusive" || fieldName === "min_exclusive") {
+        } else if (fieldName === "maxExclusive" || fieldName === "minExclusive") {
 
             this.field[fieldName] = event.target.checked;
 
@@ -41,18 +41,18 @@ class Number extends Node {
     exportSchemaObj(): any {
 
         let range: any = {};
-        if (this.field.min_value) {
-            if (this.field.min_exclusive)
-                range['exclusiveMinimum'] = this.field.min_value;
+        if (this.field.minValue) {
+            if (this.field.minExclusive)
+                range['exclusiveMinimum'] = this.field.minValue;
             else
-                range['minimum'] = this.field.min_value;
+                range['minimum'] = this.field.minValue;
         }
 
-        if (this.field.max_value) {
-            if (this.field.max_exclusive)
-                range['exclusiveMaximum'] = this.field.max_value;
+        if (this.field.maxValue) {
+            if (this.field.maxExclusive)
+                range['exclusiveMaximum'] = this.field.maxValue;
             else
-                range['maximum'] = this.field.max_value;
+                range['maximum'] = this.field.maxValue;
         }
 
         return {
@@ -63,7 +63,7 @@ class Number extends Node {
             constant: this.field.constant,
             default: this.field.default,
             ...range,
-            multipleOf: this.field.multiple_of,
+            multipleOf: this.field.multipleOf,
 
             enum: this.field.enum,
         };
@@ -77,10 +77,10 @@ class Number extends Node {
                         Min Value
                     </Form.Label>
                     <Col lg="4">
-                        <Form.Control type="number" onChange={this.recordField.bind(this, "min_value")} />
+                        <Form.Control type="number" onChange={this.recordField.bind(this, "minValue")} />
                     </Col>
                     <Col lg="6">
-                        <Form.Check id="ExclusiveMin" inline label="Exclusive" type="checkbox" style={{ height: "100%" }} onChange={this.recordField.bind(this, "min_exclusive")} />
+                        <Form.Check id="ExclusiveMin" inline label="Exclusive" type="checkbox" style={{ height: "100%" }} onChange={this.recordField.bind(this, "minExclusive")} />
                     </Col>
                 </Form.Group>
 
@@ -89,10 +89,10 @@ class Number extends Node {
                         Max Value
                     </Form.Label>
                     <Col lg="4">
-                        <Form.Control type="number" onChange={this.recordField.bind(this, "max_value")} />
+                        <Form.Control type="number" onChange={this.recordField.bind(this, "maxValue")} />
                     </Col>
                     <Col lg="6">
-                        <Form.Check id="ExclusiveMax" inline label="Exclusive" type="checkbox" style={{ height: "100%" }} onChange={this.recordField.bind(this, "max_exclusive")} />
+                        <Form.Check id="ExclusiveMax" inline label="Exclusive" type="checkbox" style={{ height: "100%" }} onChange={this.recordField.bind(this, "maxExclusive")} />
                     </Col>
                 </Form.Group>
 
@@ -107,7 +107,7 @@ class Number extends Node {
                         Multiple Of
                     </Form.Label>
                     <Col lg="4">
-                        <Form.Control type="number" id="MultipleOf" onChange={this.recordField.bind(this, "multiple_of")} />
+                        <Form.Control type="number" id="MultipleOf" onChange={this.recordField.bind(this, "multipleOf")} />
                     </Col>
                 </Form.Group>
 
