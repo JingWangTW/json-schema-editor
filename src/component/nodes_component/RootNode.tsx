@@ -3,28 +3,35 @@ import nextId from "react-id-generator";
 
 import { Type, Node } from './data_type/DataType';
 import Factory from './data_type/Factory';
-class RootNode extends React.Component {
 
-    private selfType: keyof typeof Type;
+interface RootNodeState {
+    type: keyof typeof Type;
+}
+class RootNode extends React.Component<{}, RootNodeState> {
+
     private nodeRef: React.RefObject<Node>;
 
     constructor(props: any) {
         super(props);
 
-        this.selfType = Type.Object;
         this.nodeRef = React.createRef<Node>();
+
+        this.state = {
+            type: Type.Object,
+        }
     }
 
     changeType(keyId: string, type: keyof typeof Type): void {
 
-        this.selfType = type;
-        this.forceUpdate()
+        this.setState({
+            type
+        })
 
     }
 
     exportSchemaObj(): any {
 
-        return this.nodeRef.current!.exportSchemaObj();
+        this.nodeRef.current!.exportSchemaObj();
     }
 
     render(): JSX.Element {
@@ -35,7 +42,7 @@ class RootNode extends React.Component {
                 key={nextId("childId")}
                 keyId={nextId("childId")}
                 depth={0}
-                type={this.selfType}
+                type={this.state.type}
                 isDeleteAble={false}
                 hasSibling={false}
                 field={{ name: "root", required: true }}
