@@ -31,7 +31,7 @@ class RootNode extends React.Component<{}, RootNodeState> {
 
     exportSchemaObj(): any {
 
-        this.nodeRef.current!.exportSchemaObj();
+        return this.nodeRef.current!.exportSchemaObj();
     }
 
     render(): JSX.Element {

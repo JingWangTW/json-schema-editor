@@ -113,6 +113,7 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
         else if (fieldName === "required") {
             this.field[fieldName] = event.target.checked;
         }
+        // description, title
         else {
             this.field[fieldName] = event.target.value;
         }
@@ -173,6 +174,7 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
                                 <option>String</option>
                                 <option>Integer</option>
                                 <option>Number</option>
+                                <option>Null</option>
                                 <option>Boolean</option>
                             </Form.Control>
                         </Col>
@@ -182,7 +184,7 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
                         <Col lg={4}>
 
                             <InputGroup>
-                                <FormControl type="text" id="Description" placeholder="Description" defaultValue={this.field.description} value={this.field.description} onChange={this.recordGenericField.bind(this, "description")} />
+                                <FormControl type="text" id="Description" placeholder="Description" onChange={this.recordGenericField.bind(this, "description")} />
                                 <OverlayTrigger
                                     trigger={["hover", "focus"]}
                                     overlay={<Tooltip id="add-tooltip"> Edit </Tooltip>}

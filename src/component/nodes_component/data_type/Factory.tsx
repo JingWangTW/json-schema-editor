@@ -14,6 +14,8 @@ const Factory = React.forwardRef<DataType.Node, NodeFactoryProps>((props, ref) =
             return <DataType.IntegerNode {...props} ref={ref as React.RefObject<DataType.IntegerNode>} />
         case DataType.Type.Number:
             return <DataType.NumberNode {...props} ref={ref as React.RefObject<DataType.NumberNode>} />
+        case DataType.Type.Null:
+            return <DataType.NullNode {...props} ref={ref as React.RefObject<DataType.NullNode>} />
         case DataType.Type.Object:
             return <DataType.ObjectNode {...props} ref={ref as React.RefObject<DataType.ObjectNode>} />
         case DataType.Type.String:

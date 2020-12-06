@@ -74,6 +74,10 @@ interface NumberField {
 
 }
 
+interface NullField {
+
+}
+
 interface ObjectField {
 
 }
@@ -98,5 +102,6 @@ export type { ArrayField };
 export type { BooleanField };
 export type { IntegerField };
 export type { NumberField };
+export type { NullField };
 export type { ObjectField };
 export type { StringField };
