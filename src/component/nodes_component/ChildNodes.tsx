@@ -3,11 +3,30 @@ import { Row, Col } from 'react-bootstrap';
 import nextId from "react-id-generator";
 
 import * as DataType from './data_type/DataType';
-import { ChildNodesProps } from './interface/Props';
-import { ChildNodesState } from './interface/State';
 import { Type, Node } from './data_type/DataType';
 
 import Factory from './data_type/Factory';
+
+interface NodeProperty {
+
+    type: keyof typeof DataType.Type;
+    isDeleteAble: boolean;
+    hasSibling: boolean;
+    keyId: string;
+    ref: React.RefObject<DataType.Node>;
+
+    delete(keyId: string): void;
+    addSibling(keyId: string): void;
+}
+
+interface ChildNodesProps {
+    depth: number;
+}
+
+interface ChildNodesState {
+    children: Array<NodeProperty>;
+    checkNameDuplicate: boolean;
+};
 
 class ChildNodes extends React.Component<ChildNodesProps, ChildNodesState>{
 

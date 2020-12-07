@@ -93,8 +93,6 @@ interface StringField {
     pattern?: string;
 }
 
-
-
 export default NodeField;
 
 export type { GenericField };

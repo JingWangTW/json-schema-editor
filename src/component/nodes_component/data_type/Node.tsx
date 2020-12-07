@@ -121,7 +121,6 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
         // need to sync for both input blank
         if (fieldName === "description")
             this.forceUpdate()
-
     }
 
     resetOptionFiledForm(): void {

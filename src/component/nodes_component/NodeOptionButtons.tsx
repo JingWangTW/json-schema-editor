@@ -3,9 +3,22 @@ import { OverlayTrigger, Tooltip, Dropdown } from 'react-bootstrap';
 import nextId from "react-id-generator";
 import { FaRegTrashAlt, FaPlus } from 'react-icons/fa';
 import { AiOutlineSetting } from 'react-icons/ai';
-import { NodeOptionButtonsProps } from './interface/Props';
 
 import '../../index.css';
+
+interface NodeOptionButtonsProps {
+    hasChild: boolean;
+    hasSibling: boolean;
+
+    isOptionExist: boolean;
+    isDeleteAble: boolean;
+
+    clickOption(): void;
+
+    clickAddChild(): void;
+    clickAddSibling(): void;
+    clickDelete(): void;
+}
 
 interface ToggleAddButtonProps {
     id: string;
