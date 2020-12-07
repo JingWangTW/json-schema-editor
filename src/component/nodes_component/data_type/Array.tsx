@@ -28,11 +28,8 @@ class Array extends Node {
 
         return {
             type: "array",
-            title: this.field.title,
-            description: this.field.description,
-            uniqueItems: this.field.uniqueItems,
-            minItems: this.field.minItems,
-            maxItems: this.field.maxItems,
+            ...this.field,
+
             items: child[0].value
         }
     }

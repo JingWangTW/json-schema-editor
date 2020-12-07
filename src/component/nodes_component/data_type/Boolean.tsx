@@ -19,9 +19,7 @@ class Boolean extends Node {
 
         return {
             type: "boolean",
-            default: this.field.default,
-            title: this.field.title,
-            description: this.field.description,
+            ...this.field
         };
     }
 

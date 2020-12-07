@@ -45,18 +45,7 @@ class String extends Node {
     exportSchemaObj(): any {
         return {
             type: "string",
-            title: this.field.title,
-            description: this.field.description,
-
-            constant: this.field.constant,
-            default: this.field.default,
-
-            minLength: this.field.minLength,
-            maxLength: this.field.maxLength,
-            format: this.field.format,
-            pattern: this.field.pattern,
-
-            enum: this.field.enum,
+            ...this.field,
         };
     }
 
