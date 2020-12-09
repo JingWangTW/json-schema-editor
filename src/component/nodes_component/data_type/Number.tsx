@@ -22,7 +22,7 @@ class Number extends Node {
 
     recordField(fieldName: keyof NumberField, event: React.ChangeEvent<HTMLInputElement>): void {
 
-        if (fieldName === "default" || fieldName === "constant" || fieldName === "multipleOf") {
+        if (fieldName === "default" || fieldName === "const" || fieldName === "multipleOf") {
 
             this.setField<number>(fieldName, parseFloat(event.target.value));
 
@@ -162,11 +162,11 @@ class Number extends Node {
                 </Form.Group>
 
                 <Form.Group as={Row}>
-                    <Form.Label column lg="2" htmlFor="Constant">
+                    <Form.Label column lg="2" htmlFor="const">
                         Constant
                     </Form.Label>
                     <Col lg="4">
-                        <Form.Control type="number" id="Constant" placeholder="Restricted Value" onChange={this.recordField.bind(this, "constant")} />
+                        <Form.Control type="number" id="const" placeholder="Restricted Value" onChange={this.recordField.bind(this, "const")} />
                     </Col>
 
                 </Form.Group>

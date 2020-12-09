@@ -16,7 +16,7 @@ class String extends Node {
 
             this.setField<number>(fieldName, parseInt(event.target.value))
 
-        } else if (fieldName === "default" || fieldName === "constant" || fieldName === "pattern") {
+        } else if (fieldName === "default" || fieldName === "const" || fieldName === "pattern") {
 
             this.setField<string>(fieldName, event.target.value)
 
@@ -98,10 +98,10 @@ class String extends Node {
                     </Col>
                 </Form.Group>
 
-                <Form.Group as={Row} controlId="Constant">
+                <Form.Group as={Row} controlId="const">
                     <Form.Label column lg="2">Constant</Form.Label>
                     <Col lg="10">
-                        <Form.Control type="text" placeholder="Restricted Value" onChange={this.recordField.bind(this, "constant")} />
+                        <Form.Control type="text" placeholder="Restricted Value" onChange={this.recordField.bind(this, "const")} />
                     </Col>
                 </Form.Group>
 

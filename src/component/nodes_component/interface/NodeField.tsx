@@ -14,7 +14,7 @@ interface NodeField {
     default?: string | number | boolean;
 
     // string, integer, number
-    constant?: string | number;
+    const?: string | number;
     enum?: (string | number)[];// | number[];
 
     // string
@@ -53,7 +53,7 @@ interface BooleanField {
 interface IntegerField {
 
     default?: number;
-    constant?: number;
+    const?: number;
     enum?: Array<number>;
     minimum?: number;
     maximum?: number;
@@ -65,7 +65,7 @@ interface IntegerField {
 interface NumberField {
 
     default?: number;
-    constant?: number;
+    const?: number;
     enum?: number[];
     minimum?: number;
     maximum?: number;
@@ -86,7 +86,7 @@ interface ObjectField {
 interface StringField {
 
     default?: string;
-    constant?: string;
+    const?: string;
     enum?: string[];
     minLength?: number;
     maxLength?: number;
