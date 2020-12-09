@@ -13,7 +13,6 @@ class Null extends Node {
     constructor(props: any) {
         super({
             ...props,
-            hasChild: false,
             isOptionExist: false,
         });
     }
