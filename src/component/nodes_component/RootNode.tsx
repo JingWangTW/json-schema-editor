@@ -45,6 +45,7 @@ class RootNode extends React.Component<{}, RootNodeState> {
                 type={this.state.type}
                 isDeleteAble={false}
                 hasSibling={false}
+                requiredReadOnly={true}
                 field={{ name: "root", required: true }}
                 changeType={this.changeType.bind(this)}
                 changeName={() => true}

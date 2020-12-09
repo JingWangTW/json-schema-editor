@@ -5,8 +5,10 @@ export default interface NodeState {
     showDescriptionModal: boolean;
     isOptionExist: boolean;
     isDeleteAble: boolean;
+    requiredReadOnly: boolean;
     hasChild: boolean;
     hasSibling: boolean;
 
     field: NodeField;
+    info?: string;
 };

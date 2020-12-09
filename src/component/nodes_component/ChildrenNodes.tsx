@@ -2,16 +2,18 @@ import React from 'react';
 import { Row, Col } from 'react-bootstrap';
 import nextId from "react-id-generator";
 
+import { NewChildNodeProps } from './interface/Props';
 import * as DataType from './data_type/DataType';
 import { Type, Node } from './data_type/DataType';
 
 import Factory from './data_type/Factory';
 
-interface NodeProperty {
+interface ChildNodeProperty {
 
     type: keyof typeof DataType.Type;
     isDeleteAble: boolean;
     hasSibling: boolean;
+    requiredReadOnly: boolean;
     keyId: string;
     ref: React.RefObject<DataType.Node>;
 
@@ -19,30 +21,48 @@ interface NodeProperty {
     addSibling(keyId: string): void;
 }
 
-interface ChildNodesProps {
+interface ChildrenNodesProps {
     depth: number;
 }
 
-interface ChildNodesState {
-    children: Array<NodeProperty>;
-    checkNameDuplicate: boolean;
+interface ChildrenNodesState {
+    children: Array<ChildNodeProperty>;
+
+    error?: string;
 };
 
-class ChildNodes extends React.Component<ChildNodesProps, ChildNodesState>{
+class ChildrenNodes extends React.Component<ChildrenNodesProps, ChildrenNodesState>{
 
-    constructor(props: ChildNodesProps) {
+    constructor(props: ChildrenNodesProps) {
         super(props);
 
         this.state = {
             children: [],
-            checkNameDuplicate: false
         };
     }
 
-    add(keyId: string, isDeleteAble: boolean = true, hasSibling: boolean = true): void {
+    get length() {
+        return this.state.children.length;
+    }
+
+    add(keyId: string, props?: NewChildNodeProps): void {
 
         const originChildren = this.state.children;
         let currentIndex;
+
+        let p: NewChildNodeProps = {
+            isDeleteAble: true,
+            hasSibling: true,
+            requiredReadOnly: false,
+        }
+
+        if (props) {
+
+            p = {
+                ...p,
+                ...props
+            }
+        }
 
         // push to the last one
         if (keyId === "")
@@ -54,8 +74,9 @@ class ChildNodes extends React.Component<ChildNodesProps, ChildNodesState>{
             delete: this.delete.bind(this),
             addSibling: this.add.bind(this),
             type: DataType.Type.Object,
-            isDeleteAble,
-            hasSibling,
+            isDeleteAble: p.isDeleteAble as boolean,
+            hasSibling: p.hasSibling as boolean,
+            requiredReadOnly: p.requiredReadOnly as boolean,
             keyId: nextId('child_node-'),
             ref: React.createRef<Node>()
         })
@@ -97,9 +118,9 @@ class ChildNodes extends React.Component<ChildNodesProps, ChildNodesState>{
 
     exportSchemaObj(): any {
 
-        if (this.state.checkNameDuplicate) {
+        if (this.state.error) {
 
-            throw new Error("Find Duplicate");
+            throw new Error("Find Error");
 
         } else {
 
@@ -123,7 +144,15 @@ class ChildNodes extends React.Component<ChildNodesProps, ChildNodesState>{
             }
         }
 
-        this.setState({ checkNameDuplicate })
+        if (checkNameDuplicate) {
+
+            this.setState({ error: "Find duplicated field name in this layer." })
+
+        } else {
+
+            this.setState({ error: undefined })
+
+        }
     }
 
     render() {
@@ -131,11 +160,11 @@ class ChildNodes extends React.Component<ChildNodesProps, ChildNodesState>{
         return (
             <>
                 {
-                    this.state.checkNameDuplicate &&
+                    this.state.error &&
                     <Row>
                         <Col lg="auto" className="px-0 mx-0" style={{ width: (this.props.depth * 20).toString() + "px" }} />
                         <Col>
-                            <span style={{ color: "red" }}>Find duplicated field name in this layer </span>
+                            <span style={{ color: "red" }}>{this.state.error} </span>
                         </Col>
                     </Row>
                 }
@@ -154,4 +183,4 @@ class ChildNodes extends React.Component<ChildNodesProps, ChildNodesState>{
     }
 }
 
-export default ChildNodes;
+export default ChildrenNodes;

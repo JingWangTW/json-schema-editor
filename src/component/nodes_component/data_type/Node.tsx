@@ -6,7 +6,7 @@ import { TiPencil } from 'react-icons/ti';
 import NodeField, { GenericField } from '../interface/NodeField';
 import { NodeState } from '../interface/State';
 import { NodeProps } from '../interface/Props';
-import ChildNodes from '../ChildNodes';
+import ChildrenNodes from '../ChildrenNodes';
 import { Type } from './DataType';
 import NodeOptionButtons from '../NodeOptionButtons';
 
@@ -19,14 +19,14 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
 
     protected abstract readonly selfType: keyof typeof Type;
 
-    protected childRef: React.RefObject<ChildNodes>;
+    protected childRef: React.RefObject<ChildrenNodes>;
     private optionFieldFormRef: React.RefObject<HTMLFormElement>;
 
     constructor(props: NodeProps) {
 
         super(props);
 
-        this.childRef = React.createRef<ChildNodes>();
+        this.childRef = React.createRef<ChildrenNodes>();
         this.optionFieldFormRef = React.createRef<HTMLFormElement>();
 
         this.state = {
@@ -37,6 +37,7 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
             isOptionExist: true,
             hasChild: false,
             hasSibling: true,
+            requiredReadOnly: false,
 
             field: {
                 name: nextId("field_"),
@@ -83,9 +84,9 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
             this.props.addSibling(this.props.keyId);
     }
 
-    addChild(isDeleteAble: boolean = true, hasSibling: boolean = true): void {
+    addChild(): void {
 
-        this.childRef.current!.add("", isDeleteAble, hasSibling);
+        this.childRef.current!.add("");
 
     }
 
@@ -155,6 +156,15 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
 
         return (
             <div className="my-1">
+                {
+                    this.state.info &&
+                    <Row>
+                        <Col lg="auto" className="px-0 mx-0" style={{ width: (this.props.depth * 20).toString() + "px" }} />
+                        <Col>
+                            <span style={{ color: "green" }}>{this.state.info} </span>
+                        </Col>
+                    </Row>
+                }
                 <Form>
                     <Form.Row>
                         <Col lg={3}>
@@ -169,13 +179,13 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
                                             overlay={<Tooltip id="add-tooltip"> Required </Tooltip>}
                                         >
                                             <InputGroup.Prepend>
-                                                <InputGroup.Checkbox defaultChecked={this.state.field.required} disabled={!this.state.isDeleteAble} onChange={this.recordGenericField.bind(this, "required")} />
+                                                <InputGroup.Checkbox defaultChecked={this.state.field.required} disabled={this.state.requiredReadOnly} onChange={this.recordGenericField.bind(this, "required")} />
                                             </InputGroup.Prepend>
                                         </OverlayTrigger>
 
                                         <Form.Control placeholder="items"
                                             required
-                                            readOnly={this.state.isDeleteAble ? false : true}
+                                            readOnly={this.state.requiredReadOnly}
                                             defaultValue={this.state.field.name}
                                             onChange={this.recordGenericField.bind(this, "name")} />
                                     </InputGroup>
@@ -233,7 +243,7 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
                         </Col>
                         <Col lg={1}>
                             <NodeOptionButtons
-                                hasChild={this.selfType === Type.Array ? false : this.state.hasChild}
+                                hasChild={this.state.hasChild}
                                 hasSibling={this.state.hasSibling}
                                 isDeleteAble={this.state.isDeleteAble}
                                 isOptionExist={this.state.isOptionExist}
@@ -267,7 +277,7 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
                         </Col>
                     </Form.Row>
                 </Form>
-                {this.state.hasChild && <ChildNodes ref={this.childRef} depth={this.props.depth + 1} />}
+                {this.state.hasChild && <ChildrenNodes ref={this.childRef} depth={this.props.depth + 1} />}
             </div>
         );
     }

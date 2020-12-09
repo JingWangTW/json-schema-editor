@@ -18,19 +18,59 @@ class Array extends Node {
 
     componentDidMount() {
 
-        this.addChild(false, false);
+        this.addChild();
     }
 
     exportSchemaObj(): any {
 
         let child = this.childRef.current!.exportSchemaObj();
 
+        if (child.length === 1) {
+
+            child = child[0].value;
+
+        } else {
+
+            child = child.map((c: any) => c.value)
+
+        }
+
         return {
             type: "array",
             ...this.state.field,
 
-            items: child[0].value
+            items: child
         }
+    }
+
+    addChild(): void {
+
+        if (this.childRef.current!.length === 0) {
+
+            this.childRef.current!.add("", {
+                isDeleteAble: false,
+                hasSibling: true,
+                requiredReadOnly: true,
+            });
+
+        } else {
+
+            this.childRef.current!.add("", {
+                isDeleteAble: true,
+                hasSibling: true,
+                requiredReadOnly: true,
+            });
+        }
+
+        if (this.childRef.current!.length >= 2)
+            this.setState({ info: "Ordinal index of each item in Array type is meaningful." })
+
+    }
+
+    delete(): void {
+
+        if (this.props.delete)
+            this.props.delete(this.props.keyId)
     }
 
     recordField(fieldName: keyof ArrayField, event: React.ChangeEvent<HTMLInputElement>): void {
