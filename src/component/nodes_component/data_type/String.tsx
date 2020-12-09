@@ -14,38 +14,44 @@ class String extends Node {
 
         if (fieldName === "minLength" || fieldName === "maxLength") {
 
-            this.field[fieldName] = Number(event.target.value);
+            this.setField<number>(fieldName, parseInt(event.target.value))
 
         } else if (fieldName === "default" || fieldName === "constant" || fieldName === "pattern") {
 
-            this.field[fieldName] = event.target.value;
+            this.setField<string>(fieldName, event.target.value)
 
         } else if (fieldName === "format") {
 
-            this.field[fieldName] = event.target.value as StringField["format"]
-
+            if (event.target.value === "")
+                this.setField<undefined>(fieldName, undefined)
+            else
+                this.setField<StringField["format"]>(fieldName, event.target.value as StringField["format"])
         }
     }
 
     recordEnumField(key: number, event: React.ChangeEvent<HTMLInputElement>): void {
 
-        this.field.enum![key] = event.target.value;
+        this.setField<(string | number)[]>("enum", this.state.field.enum!.map((e, i) => i === key ? event.target.value : e))
     }
 
-    addEnum(): void {
+    addEnum(event: React.MouseEvent<HTMLButtonElement>): void {
 
-        if (!this.field.enum)
-            this.field.enum = [];
+        event.preventDefault();
 
-        this.field.enum!.push("")
+        let e: (number | string)[];
 
-        this.forceUpdate();
+        if (!this.state.field.enum)
+            e = [""]
+        else
+            e = [...this.state.field.enum, ""];
+
+        this.setField<(number | string)[]>("enum", e)
     }
 
     exportSchemaObj(): any {
         return {
             type: "string",
-            ...this.field,
+            ...this.state.field,
         };
     }
 
@@ -80,7 +86,7 @@ class String extends Node {
                     <Form.Label column lg="2">Format</Form.Label>
                     <Col lg="10">
                         <Form.Control as="select" onChange={this.recordField.bind(this, "format")}>
-                            {["date-time", "time", "date", "email", "idn-email", "hostname", "idn-hostname", "ipv4", "ipv6", "uri", "uri-reference", "iri", "iri-reference", "uri-template", "json-pointer", "relative-json-pointer", "regex"].map((v, i) => <option key={i}>{v}</option>)}
+                            {["", "date-time", "time", "date", "email", "idn-email", "hostname", "idn-hostname", "ipv4", "ipv6", "uri", "uri-reference", "iri", "iri-reference", "uri-template", "json-pointer", "relative-json-pointer", "regex"].map((v, i) => <option key={i}>{v}</option>)}
                         </Form.Control>
                     </Col>
                 </Form.Group>
@@ -100,17 +106,17 @@ class String extends Node {
                 </Form.Group>
 
                 {
-                    this.field.enum
+                    this.state.field.enum
                         ?
                         (
-                            (this.field.enum as Array<number | string>).map((enumeration, index: number) => (
+                            (this.state.field.enum as Array<number | string>).map((enumeration, index: number) => (
                                 <Form.Group as={Row} key={index}>
                                     <Form.Label column lg="2">
                                         {index === 0 ? "Enum" : ""}
                                     </Form.Label>
                                     <Col lg="10">
                                         {
-                                            index === this.field.enum!.length - 1
+                                            index === this.state.field.enum!.length - 1
                                                 ?
                                                 (
                                                     <InputGroup>

@@ -19,7 +19,6 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
 
     protected abstract readonly selfType: keyof typeof Type;
 
-    protected field: NodeField;
     protected childRef: React.RefObject<ChildNodes>;
     private optionFieldFormRef: React.RefObject<HTMLFormElement>;
 
@@ -39,28 +38,30 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
             hasChild: false,
             hasSibling: true,
 
+            field: {
+                name: nextId("field_"),
+                required: true,
+            },
+
             // set arguments
             ...props,
         }
 
-        this.field = {
-            name: nextId("field_"),
-            required: true,
-        };
-
         if (this.props.field) {
-
-            this.field = {
-                ...this.field,
-                ...this.props.field
-            };
-
+            this.setState({
+                field: {
+                    ...this.props.field,
+                    ...this.state.field,
+                }
+            })
         }
     }
 
     get form() {
-        return this.field;
+        return this.state.field;
     }
+
+
 
     setShowOptionModal(isShow: boolean): void {
 
@@ -103,36 +104,51 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
         }
     }
 
+    setField<T>(fieldName: keyof NodeField, value: T): void {
+
+        this.setState(prevState => ({
+            field: {
+                ...prevState.field,
+                [fieldName]: value
+            }
+        }))
+    }
+
     recordGenericField(fieldName: keyof GenericField, event: React.ChangeEvent<HTMLInputElement>): void {
 
         if (fieldName === "name") {
 
             this.props.changeName(this.props.keyId, event.target.value)
-            this.field[fieldName] = event.target.value;
+
+            this.setField<string>(fieldName, event.target.value)
         }
         else if (fieldName === "required") {
-            this.field[fieldName] = event.target.checked;
+
+            this.setField<boolean>(fieldName, event.target.checked)
         }
         // description, title
         else {
-            this.field[fieldName] = event.target.value;
-        }
 
-        // need to sync for both input blank
-        if (fieldName === "description")
-            this.forceUpdate()
+            this.setField<string>(fieldName, event.target.value)
+        }
     }
 
     resetOptionFiledForm(): void {
 
         let fieldName: keyof NodeField;
-        for (fieldName in this.field) {
+        let ff: NodeField = this.state.field;
+
+        for (fieldName in ff) {
             if (fieldName !== "name" && fieldName !== "title" && fieldName !== "description" && fieldName !== "required")
-                delete this.field[fieldName]
+                delete ff[fieldName]
         }
 
         if (this.optionFieldFormRef.current)
             this.optionFieldFormRef.current.reset();
+
+        this.setState({
+            field: ff
+        });
     }
 
     render(): JSX.Element {
@@ -153,14 +169,14 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
                                             overlay={<Tooltip id="add-tooltip"> Required </Tooltip>}
                                         >
                                             <InputGroup.Prepend>
-                                                <InputGroup.Checkbox defaultChecked={this.field.required} disabled={!this.state.isDeleteAble} onChange={this.recordGenericField.bind(this, "required")} />
+                                                <InputGroup.Checkbox defaultChecked={this.state.field.required} disabled={!this.state.isDeleteAble} onChange={this.recordGenericField.bind(this, "required")} />
                                             </InputGroup.Prepend>
                                         </OverlayTrigger>
 
                                         <Form.Control placeholder="items"
                                             required
                                             readOnly={this.state.isDeleteAble ? false : true}
-                                            defaultValue={this.field.name}
+                                            defaultValue={this.state.field.name}
                                             onChange={this.recordGenericField.bind(this, "name")} />
                                     </InputGroup>
                                 </Col>
@@ -178,12 +194,12 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
                             </Form.Control>
                         </Col>
                         <Col lg={3}>
-                            <Form.Control placeholder="Titile" onChange={this.recordGenericField.bind(this, "title")} />
+                            <Form.Control placeholder="Titile" defaultValue={this.state.field.title} onChange={this.recordGenericField.bind(this, "title")} />
                         </Col>
                         <Col lg={4}>
 
                             <InputGroup>
-                                <FormControl type="text" id="Description" placeholder="Description" onChange={this.recordGenericField.bind(this, "description")} />
+                                <FormControl type="text" id="Description" placeholder="Description" defaultValue={this.state.field.description} onChange={this.recordGenericField.bind(this, "description")} />
                                 <OverlayTrigger
                                     trigger={["hover", "focus"]}
                                     overlay={<Tooltip id="add-tooltip"> Edit </Tooltip>}
@@ -210,7 +226,7 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
                                 </Modal.Header>
                                 <Modal.Body>
                                     <Form.Group>
-                                        <Form.Control as="textarea" rows={3} defaultValue={this.field.description} onChange={this.recordGenericField.bind(this, "description")} />
+                                        <Form.Control as="textarea" rows={3} defaultValue={this.state.field.description} onChange={this.recordGenericField.bind(this, "description")} />
                                     </Form.Group>
                                 </Modal.Body>
                             </Modal>

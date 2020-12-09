@@ -19,7 +19,6 @@ class Array extends Node {
     componentDidMount() {
 
         this.addChild(false, false);
-
     }
 
     exportSchemaObj(): any {
@@ -28,7 +27,7 @@ class Array extends Node {
 
         return {
             type: "array",
-            ...this.field,
+            ...this.state.field,
 
             items: child[0].value
         }
@@ -39,13 +38,12 @@ class Array extends Node {
         // minItems, max_Items
         if (fieldName === "minItems" || fieldName === "maxItems") {
 
-            this.field[fieldName] = Number(event.target.value);
+            this.setField<number>(fieldName, parseInt(event.target.value))
 
             // uniqueItems
         } else {
 
-            this.field[fieldName] = event.target.checked;
-
+            this.setField<boolean>(fieldName, event.target.checked)
         }
     }
 
@@ -57,18 +55,21 @@ class Array extends Node {
                         Min Items
                     </Form.Label>
                     <Col lg="4">
-                        <Form.Control type="number" min="0" id="MinItems" onChange={this.recordField.bind(this, "minItems")} />
+                        <Form.Control type="number" min="0" id="MinItems" defaultValue={this.state.field.minItems} onChange={this.recordField.bind(this, "minItems")} />
                     </Col>
                     <Form.Label column lg="2" htmlFor="MaxItems">
                         Max Items
                     </Form.Label>
                     <Col lg="4">
-                        <Form.Control type="number" min="0" id="MaxItems" onChange={this.recordField.bind(this, "maxItems")} />
+                        <Form.Control type="number" min="0" id="MaxItems" defaultValue={this.state.field.maxItems} onChange={this.recordField.bind(this, "maxItems")} />
                     </Col>
                 </Form.Group>
 
                 <Form.Group>
-                    <Form.Check id="uniqueCheckbox" type="checkbox" label="Unique" onChange={this.recordField.bind(this, "uniqueItems")} />
+                    <Form.Check type="checkbox" id="uniqueCheckbox">
+                        <Form.Check.Input type="checkbox" defaultChecked={this.state.field.uniqueItems} checked={this.state.field.uniqueItems} onChange={this.recordField.bind(this, "uniqueItems")} />
+                        <Form.Check.Label>Unique</Form.Check.Label>
+                    </Form.Check>
                 </Form.Group>
 
             </>

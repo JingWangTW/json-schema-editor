@@ -37,8 +37,8 @@ class ObjectNode extends Node {
 
         return {
             type: "object",
-            title: this.field.title,
-            description: this.field.description,
+            title: this.state.field.title,
+            description: this.state.field.description,
             properties,
             required
         }

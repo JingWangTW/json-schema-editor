@@ -11,15 +11,19 @@ class Boolean extends Node {
 
     recordField(fieldName: keyof BooleanField, event: React.ChangeEvent<HTMLSelectElement>): void {
 
-        this.field[fieldName] = event.target.value === "True" ? true : false;
-
+        if (event.target.value === "")
+            this.setField<undefined>(fieldName, undefined);
+        else if (event.target.value === "True")
+            this.setField<boolean>(fieldName, true);
+        else
+            this.setField<boolean>(fieldName, false);
     }
 
     exportSchemaObj(): any {
 
         return {
             type: "boolean",
-            ...this.field
+            ...this.state.field
         };
     }
 

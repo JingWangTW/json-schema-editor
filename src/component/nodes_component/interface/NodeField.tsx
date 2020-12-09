@@ -24,10 +24,11 @@ interface NodeField {
     pattern?: string;
 
     // integer, number
-    minValue?: number;
-    minExclusive?: boolean;
-    maxValue?: number;
-    maxExclusive?: boolean;
+    minimum?: number;
+    maximum?: number;
+    exclusiveMinimum?: number;
+    exclusiveMaximum?: number;
+
     multipleOf?: number;
 
 }
@@ -54,10 +55,10 @@ interface IntegerField {
     default?: number;
     constant?: number;
     enum?: Array<number>;
-    minValue?: number;
-    minExclusive?: boolean;
-    maxValue?: number;
-    maxExclusive?: boolean;
+    minimum?: number;
+    maximum?: number;
+    exclusiveMinimum?: number;
+    exclusiveMaximum?: number;
     multipleOf?: number;
 }
 
@@ -66,10 +67,10 @@ interface NumberField {
     default?: number;
     constant?: number;
     enum?: number[];
-    minValue?: number;
-    minExclusive?: boolean;
-    maxValue?: number;
-    maxExclusive?: boolean;
+    minimum?: number;
+    maximum?: number;
+    exclusiveMinimum?: number;
+    exclusiveMaximum?: number;
     multipleOf?: number;
 
 }

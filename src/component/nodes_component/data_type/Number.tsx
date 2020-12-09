@@ -2,6 +2,7 @@ import React from 'react';
 import { Form, Row, Col, InputGroup, FormControl, Button } from 'react-bootstrap';
 import { FaPlus } from 'react-icons/fa';
 
+import { NodeProps } from '../interface/Props'
 import { NumberField } from '../interface/NodeField';
 import { Type } from './DataType';
 import Node from './Node'
@@ -9,63 +10,104 @@ import Node from './Node'
 class Number extends Node {
 
     protected readonly selfType = Type.Number;
+    private readonly minExclusiveCheckedRef: React.RefObject<HTMLInputElement>;
+    private readonly maxExclusiveCheckedRef: React.RefObject<HTMLInputElement>;
+
+    constructor(props: NodeProps) {
+        super(props);
+
+        this.minExclusiveCheckedRef = React.createRef<HTMLInputElement>();
+        this.maxExclusiveCheckedRef = React.createRef<HTMLInputElement>();
+    }
 
     recordField(fieldName: keyof NumberField, event: React.ChangeEvent<HTMLInputElement>): void {
 
-        if (fieldName === "default" || fieldName === "constant" || fieldName === "minValue" || fieldName === "maxValue" || fieldName === "multipleOf") {
+        if (fieldName === "default" || fieldName === "constant" || fieldName === "multipleOf") {
 
-            this.field[fieldName] = parseFloat(event.target.value);
+            this.setField<number>(fieldName, parseFloat(event.target.value));
 
-        } else if (fieldName === "maxExclusive" || fieldName === "minExclusive") {
+        } else if (fieldName === "minimum") {
 
-            this.field[fieldName] = event.target.checked;
+            if (this.minExclusiveCheckedRef.current!.checked) {
 
+                this.setField<number>("exclusiveMinimum", parseFloat(event.target.value))
+                this.setField<undefined>("minimum", undefined)
+
+            } else {
+
+                this.setField<number>("minimum", parseFloat(event.target.value))
+                this.setField<undefined>("exclusiveMinimum", undefined)
+
+            }
+
+        } else if (fieldName === "maximum") {
+
+            if (this.maxExclusiveCheckedRef.current!.checked) {
+
+                this.setField<number>("exclusiveMaximum", parseFloat(event.target.value))
+                this.setField<undefined>("maximum", undefined)
+
+            } else {
+
+                this.setField<number>("maximum", parseFloat(event.target.value))
+                this.setField<undefined>("exclusiveMaximum", undefined)
+            }
+
+        } else if (fieldName === "exclusiveMinimum") {
+
+            console.log(event.target.checked)
+
+            if (event.target.checked && this.state.field.minimum) {
+
+                this.setField<number>("exclusiveMinimum", this.state.field.minimum)
+                this.setField<undefined>("minimum", undefined)
+
+            } else if (!event.target.checked && this.state.field.exclusiveMinimum) {
+
+                this.setField<number>("minimum", this.state.field.exclusiveMinimum)
+                this.setField<undefined>("exclusiveMinimum", undefined)
+            }
+        } else if (fieldName === "exclusiveMaximum") {
+
+            if (event.target.checked && this.state.field.maximum) {
+
+                this.setField<number>("exclusiveMaximum", this.state.field.maximum)
+                this.setField<undefined>("maximum", undefined)
+
+            } else if (!event.target.checked && this.state.field.exclusiveMaximum) {
+
+                this.setField<number>("maximum", this.state.field.exclusiveMaximum)
+                this.setField<undefined>("exclusiveMaximum", undefined)
+            }
         }
     }
 
     recordEnumField(key: number, event: React.ChangeEvent<HTMLInputElement>): void {
 
-        this.field.enum![key] = parseFloat(event.target.value);
+        event.preventDefault();
+
+        this.setField<(number | string)[]>("enum", this.state.field.enum!.map((e, i) => i === key ? parseFloat(event.target.value) : e))
     }
 
-    addEnum(): void {
+    addEnum(event: React.MouseEvent<HTMLButtonElement>): void {
 
-        if (!this.field.enum)
-            this.field.enum = [];
+        event.preventDefault();
 
-        this.field.enum!.push("")
+        let e: (number | string)[];
 
-        this.forceUpdate();
+        if (!this.state.field.enum)
+            e = [""]
+        else
+            e = [...this.state.field.enum, ""];
+
+        this.setField<(number | string)[]>("enum", e)
     }
 
     exportSchemaObj(): any {
 
-        let range: any = {};
-        if (this.field.minValue) {
-            if (this.field.minExclusive)
-                range['exclusiveMinimum'] = this.field.minValue;
-            else
-                range['minimum'] = this.field.minValue;
-        }
-
-        if (this.field.maxValue) {
-            if (this.field.maxExclusive)
-                range['exclusiveMaximum'] = this.field.maxValue;
-            else
-                range['maximum'] = this.field.maxValue;
-        }
-
         return {
             type: "number",
-            title: this.field.title,
-            description: this.field.description,
-
-            constant: this.field.constant,
-            default: this.field.default,
-            ...range,
-            multipleOf: this.field.multipleOf,
-
-            enum: this.field.enum,
+            ...this.state.field,
         };
     }
 
@@ -77,10 +119,14 @@ class Number extends Node {
                         Min Value
                     </Form.Label>
                     <Col lg="4">
-                        <Form.Control type="number" onChange={this.recordField.bind(this, "minValue")} />
+                        <Form.Control type="number" onChange={this.recordField.bind(this, "minimum")} />
                     </Col>
                     <Col lg="6">
-                        <Form.Check id="ExclusiveMin" inline label="Exclusive" type="checkbox" style={{ height: "100%" }} onChange={this.recordField.bind(this, "minExclusive")} />
+                        <Form.Check id="ExclusiveMin" inline label="Exclusive"
+                            ref={this.minExclusiveCheckedRef}
+                            onChange={this.recordField.bind(this, "exclusiveMinimum")}
+                            defaultChecked={this.state.field.exclusiveMinimum ? true : false}
+                            type="checkbox" style={{ height: "100%" }} />
                     </Col>
                 </Form.Group>
 
@@ -89,10 +135,14 @@ class Number extends Node {
                         Max Value
                     </Form.Label>
                     <Col lg="4">
-                        <Form.Control type="number" onChange={this.recordField.bind(this, "maxValue")} />
+                        <Form.Control type="number" onChange={this.recordField.bind(this, "maximum")} />
                     </Col>
                     <Col lg="6">
-                        <Form.Check id="ExclusiveMax" inline label="Exclusive" type="checkbox" style={{ height: "100%" }} onChange={this.recordField.bind(this, "maxExclusive")} />
+                        <Form.Check id="ExclusiveMax" inline label="Exclusive"
+                            ref={this.maxExclusiveCheckedRef}
+                            onChange={this.recordField.bind(this, "exclusiveMaximum")}
+                            defaultChecked={this.state.field.exclusiveMaximum ? true : false}
+                            type="checkbox" style={{ height: "100%" }} />
                     </Col>
                 </Form.Group>
 
@@ -122,17 +172,17 @@ class Number extends Node {
                 </Form.Group>
 
                 {
-                    this.field.enum
+                    this.state.field.enum
                         ?
                         (
-                            (this.field.enum as Array<number | string>).map((enumeration, index: number) => (
+                            (this.state.field.enum as Array<number | string>).map((enumeration, index: number) => (
                                 <Form.Group as={Row} key={index}>
                                     <Form.Label column lg="2">
                                         {index === 0 ? "Enum" : ""}
                                     </Form.Label>
                                     <Col lg="6">
                                         {
-                                            index === this.field.enum!.length - 1
+                                            index === this.state.field.enum!.length - 1
                                                 ?
                                                 (
                                                     <InputGroup>

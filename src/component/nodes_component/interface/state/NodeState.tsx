@@ -7,4 +7,6 @@ export default interface NodeState {
     isDeleteAble: boolean;
     hasChild: boolean;
     hasSibling: boolean;
+
+    field: NodeField;
 };

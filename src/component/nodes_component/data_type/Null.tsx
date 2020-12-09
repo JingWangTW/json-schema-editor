@@ -22,8 +22,7 @@ class Null extends Node {
 
         return {
             type: "null",
-            title: this.field.title,
-            description: this.field.description,
+            ...this.state.field
         }
     }
 
