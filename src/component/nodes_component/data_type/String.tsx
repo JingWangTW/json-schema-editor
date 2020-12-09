@@ -51,7 +51,7 @@ class String extends Node {
     exportSchemaObj(): any {
         return {
             type: "string",
-            ...this.state.field,
+            ...{ ...this.state.field, required: undefined, name: undefined }
         };
     }
 

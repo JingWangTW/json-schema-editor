@@ -23,7 +23,7 @@ class Boolean extends Node {
 
         return {
             type: "boolean",
-            ...this.state.field
+            ...{ ...this.state.field, required: undefined, name: undefined }
         };
     }
 

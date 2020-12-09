@@ -107,7 +107,7 @@ class Number extends Node {
 
         return {
             type: "number",
-            ...this.state.field,
+            ...{ ...this.state.field, required: undefined, name: undefined }
         };
     }
 

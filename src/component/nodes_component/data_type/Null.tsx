@@ -22,7 +22,7 @@ class Null extends Node {
 
         return {
             type: "null",
-            ...this.state.field
+            ...{ ...this.state.field, required: undefined, name: undefined }
         }
     }
 

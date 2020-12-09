@@ -37,7 +37,7 @@ class Array extends Node {
 
         return {
             type: "array",
-            ...this.state.field,
+            ...{ ...this.state.field, required: undefined, name: undefined },
 
             items: child
         }

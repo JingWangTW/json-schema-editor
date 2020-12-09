@@ -56,8 +56,6 @@ class Integer extends Node {
             }
         } else if (fieldName === "exclusiveMinimum") {
 
-            console.log(event.target.checked)
-
             if (event.target.checked && this.state.field.minimum) {
 
                 this.setField<number>("exclusiveMinimum", this.state.field.minimum)
@@ -108,7 +106,7 @@ class Integer extends Node {
 
         return {
             type: "integer",
-            ...this.state.field,
+            ...{ ...this.state.field, required: undefined, name: undefined }
         };
     }
 
