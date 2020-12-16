@@ -17,6 +17,15 @@ class String extends Node<StringField> {
 
             this.setField<number>(fieldName, parseInt(event.target.value))
 
+            // to check if value is correct
+            if ((fieldName === "minLength" && this.state.field.maxLength && parseInt(event.target.value) > this.state.field.maxLength) ||
+                (fieldName === "maxLength" && this.state.field.minLength && parseInt(event.target.value) < this.state.field.minLength)) {
+
+                this.setState({ optionError: "The number of Min Length should less than or equal to Max Length." })
+            } else {
+                this.setState({ optionError: undefined })
+            }
+
         } else if (fieldName === "default" || fieldName === "const" || fieldName === "pattern") {
 
             this.setField<string>(fieldName, event.target.value)
@@ -50,6 +59,10 @@ class String extends Node<StringField> {
     }
 
     exportSchemaObj(): StringSchema {
+
+        if (this.state.field.maxLength && this.state.field.minLength && this.state.field.maxLength > this.state.field.minLength)
+            throw new Error("Find Error");
+
         return {
             type: "string",
             ...{ ...this.state.field, required: undefined, name: undefined }
@@ -59,6 +72,10 @@ class String extends Node<StringField> {
     OptionModal(): JSX.Element {
         return (
             <>
+                {
+                    this.state.optionError &&
+                    <span style={{ color: "red" }}>{this.state.optionError} </span>
+                }
                 <Form.Group as={Row}>
                     <Form.Label column lg="2" htmlFor="Default">
                         Default

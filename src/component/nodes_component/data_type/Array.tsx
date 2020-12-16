@@ -25,9 +25,12 @@ class Array extends Node<ArrayField> {
 
     exportSchemaObj(): ArraySchema {
 
+        if (this.state.field.maxItems && this.state.field.minItems && this.state.field.minItems > this.state.field.maxItems)
+            throw new Error("Find Error");
+
+
         let child = this.childRef.current!.exportSchemaObj();
         let items: Schema | Schema[];
-
 
         if (child.length === 1) {
 
@@ -80,6 +83,15 @@ class Array extends Node<ArrayField> {
 
             this.setField<number>(fieldName, parseInt(event.target.value))
 
+            // to check if value is correct
+            if ((fieldName === "minItems" && this.state.field.maxItems && parseInt(event.target.value) > this.state.field.maxItems) ||
+                (fieldName === "maxItems" && this.state.field.minItems && parseInt(event.target.value) < this.state.field.minItems)) {
+
+                this.setState({ optionError: "The number of Min Items should less than or equal to Max Items." })
+            } else {
+                this.setState({ optionError: undefined })
+            }
+
             // uniqueItems
         } else {
 
@@ -90,6 +102,10 @@ class Array extends Node<ArrayField> {
     OptionModal(): JSX.Element {
         return (
             <>
+                {
+                    this.state.optionError &&
+                    <span style={{ color: "red" }}>{this.state.optionError} </span>
+                }
                 <Form.Group as={Row}>
                     <Form.Label column lg="2" htmlFor="MinItems">
                         Min Items

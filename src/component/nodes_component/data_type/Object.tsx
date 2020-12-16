@@ -17,6 +17,15 @@ class ObjectNode extends Node<ObjectField> {
         if (fieldName === "maxProperties" || fieldName === "minProperties") {
 
             this.setField<number>(fieldName, parseInt(event.target.value))
+
+            // to check if value is correct
+            if ((fieldName === "minProperties" && this.state.field.maxProperties && parseInt(event.target.value) > this.state.field.maxProperties) ||
+                (fieldName === "maxProperties" && this.state.field.minProperties && parseInt(event.target.value) < this.state.field.minProperties)) {
+
+                this.setState({ optionError: "The number of Min Properties should less than or equal to Max Properties." })
+            } else {
+                this.setState({ optionError: undefined })
+            }
         }
 
     }
@@ -29,6 +38,9 @@ class ObjectNode extends Node<ObjectField> {
     }
 
     exportSchemaObj(): ObjectSchema {
+
+        if (this.state.field.maxProperties && this.state.field.minProperties && this.state.field.minProperties > this.state.field.maxProperties)
+            throw new Error("Find Error");
 
         let children = this.childRef.current?.exportSchemaObj();
 
@@ -56,18 +68,22 @@ class ObjectNode extends Node<ObjectField> {
     OptionModal(): JSX.Element {
         return (
             <>
+                {
+                    this.state.optionError &&
+                    <span style={{ color: "red" }}>{this.state.optionError} </span>
+                }
                 <Form.Group as={Row}>
-                    <Form.Label column lg="2" htmlFor="MaxProperties">
-                        Maximum Properties
-                    </Form.Label>
-                    <Col lg="4">
-                        <Form.Control type="number" min="0" id="MaxProperties" defaultValue={this.state.field.minProperties} onChange={this.recordField.bind(this, "maxProperties")} />
-                    </Col>
                     <Form.Label column lg="2" htmlFor="MinProperties">
-                        Minimum Properties
+                        Min Properties
                     </Form.Label>
                     <Col lg="4">
                         <Form.Control type="number" min="0" id="MinProperties" defaultValue={this.state.field.minProperties} onChange={this.recordField.bind(this, "minProperties")} />
+                    </Col>
+                    <Form.Label column lg="2" htmlFor="MaxProperties">
+                        Max Properties
+                    </Form.Label>
+                    <Col lg="4">
+                        <Form.Control type="number" min="0" id="MaxProperties" defaultValue={this.state.field.maxProperties} onChange={this.recordField.bind(this, "maxProperties")} />
                     </Col>
                 </Form.Group>
 

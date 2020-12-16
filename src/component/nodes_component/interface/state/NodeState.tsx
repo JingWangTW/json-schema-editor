@@ -11,4 +11,5 @@ export default interface NodeState<T> {
 
     field: T;
     info?: string;
+    optionError?: string;
 };
