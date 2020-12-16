@@ -65,10 +65,6 @@ class Array extends Node<ArrayField> {
                 requiredReadOnly: true,
             });
         }
-
-        if (this.childRef.current!.length >= 2)
-            this.setState({ info: "Ordinal index of each item in Array type is meaningful." })
-
     }
 
     delete(): void {
