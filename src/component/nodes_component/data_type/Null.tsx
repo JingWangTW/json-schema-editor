@@ -14,7 +14,6 @@ class Null extends Node<NullField> {
     constructor(props: any) {
         super({
             ...props,
-            isOptionExist: false,
         });
     }
 

@@ -73,16 +73,16 @@ class ObjectNode extends Node<ObjectField> {
                     <span style={{ color: "red" }}>{this.state.optionError} </span>
                 }
                 <Form.Group as={Row}>
-                    <Form.Label column lg="2" htmlFor="MinProperties">
+                    <Form.Label column lg="auto" htmlFor="MinProperties">
                         Min Properties
                     </Form.Label>
-                    <Col lg="4">
+                    <Col>
                         <Form.Control type="number" min="0" id="MinProperties" defaultValue={this.state.field.minProperties} onChange={this.recordField.bind(this, "minProperties")} />
                     </Col>
-                    <Form.Label column lg="2" htmlFor="MaxProperties">
+                    <Form.Label column lg="auto" htmlFor="MaxProperties">
                         Max Properties
                     </Form.Label>
-                    <Col lg="4">
+                    <Col>
                         <Form.Control type="number" min="0" id="MaxProperties" defaultValue={this.state.field.maxProperties} onChange={this.recordField.bind(this, "maxProperties")} />
                     </Col>
                 </Form.Group>

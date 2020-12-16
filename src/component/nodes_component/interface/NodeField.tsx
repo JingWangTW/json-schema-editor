@@ -3,6 +3,7 @@ interface GenericField {
     required: boolean;
     title?: string;
     description?: string;
+    $comment?: string;
 }
 
 interface ArrayField extends GenericField {

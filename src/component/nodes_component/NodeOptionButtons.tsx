@@ -10,7 +10,6 @@ interface NodeOptionButtonsProps {
     hasChild: boolean;
     hasSibling: boolean;
 
-    isOptionExist: boolean;
     isDeleteAble: boolean;
 
     clickOption(): void;
@@ -95,18 +94,17 @@ class NodeOptionButtons extends React.Component<NodeOptionButtonsProps, {}> {
                     )
                 }
 
-                {
-                    this.props.isOptionExist && (
-                        <div className="node-option-btn-block" onClick={this.props.clickOption}>
-                            <OverlayTrigger
-                                trigger={["hover", "focus"]}
-                                overlay={<Tooltip id="option-tooltip"> Option </Tooltip>}
-                            >
-                                <span><AiOutlineSetting /></span>
-                            </OverlayTrigger>
-                        </div>
-                    )
-                }
+
+                <div className="node-option-btn-block" onClick={this.props.clickOption}>
+                    <OverlayTrigger
+                        trigger={["hover", "focus"]}
+                        overlay={<Tooltip id="option-tooltip"> Option </Tooltip>}
+                    >
+                        <span><AiOutlineSetting /></span>
+                    </OverlayTrigger>
+                </div>
+
+
             </div>
         );
     }

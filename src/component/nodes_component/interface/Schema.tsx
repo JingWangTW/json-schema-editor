@@ -3,6 +3,7 @@ interface GenericSchema {
     type: "array" | "boolean" | "integer" | "null" | "number" | "object" | "string";
     description?: string;
     title?: string;
+    $comment?: string;
 }
 
 interface ArraySchema extends GenericSchema {

@@ -11,7 +11,6 @@ export default interface NodeProps<T> {
 
     field?: T;
     isDeleteAble?: boolean;
-    isOptionExist?: boolean;
     requiredReadOnly?: boolean;
 
     changeType(keyId: string, type: keyof typeof Type): void;

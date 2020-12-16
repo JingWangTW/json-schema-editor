@@ -120,14 +120,12 @@ class Array extends Node<ArrayField> {
                         <Form.Control type="number" min="0" id="MaxItems" defaultValue={this.state.field.maxItems} onChange={this.recordField.bind(this, "maxItems")} />
                     </Col>
                 </Form.Group>
-
                 <Form.Group>
                     <Form.Check type="checkbox" id="uniqueCheckbox">
                         <Form.Check.Input type="checkbox" defaultChecked={this.state.field.uniqueItems} checked={this.state.field.uniqueItems} onChange={this.recordField.bind(this, "uniqueItems")} />
-                        <Form.Check.Label>Unique</Form.Check.Label>
+                        <Form.Check.Label>Unique Items</Form.Check.Label>
                     </Form.Check>
                 </Form.Group>
-
             </>
         );
     }

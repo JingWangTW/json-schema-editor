@@ -42,7 +42,6 @@ abstract class Node<NodeFieldType extends GenericField> extends React.Component<
             showOptionModal: false,
             showDescriptionModal: false,
             isDeleteAble: true,
-            isOptionExist: true,
             hasChild: false,
             hasSibling: true,
             requiredReadOnly: false,
@@ -118,6 +117,7 @@ abstract class Node<NodeFieldType extends GenericField> extends React.Component<
 
         if (fieldName === "name") {
 
+            // needs to check duplicated
             this.props.changeName(this.props.keyId, event.target.value)
 
             this.setField<string>(fieldName, event.target.value)
@@ -126,7 +126,7 @@ abstract class Node<NodeFieldType extends GenericField> extends React.Component<
 
             this.setField<boolean>(fieldName, event.target.checked)
         }
-        // description, title
+        // description, title, $comment
         else {
 
             this.setField<string>(fieldName, event.target.value)
@@ -245,7 +245,6 @@ abstract class Node<NodeFieldType extends GenericField> extends React.Component<
                                 hasChild={this.state.hasChild}
                                 hasSibling={this.state.hasSibling}
                                 isDeleteAble={this.state.isDeleteAble}
-                                isOptionExist={this.state.isOptionExist}
                                 clickAddChild={this.addChild.bind(this)}
                                 clickAddSibling={this.addSibling.bind(this)}
                                 clickDelete={this.delete.bind(this)}
@@ -267,10 +266,17 @@ abstract class Node<NodeFieldType extends GenericField> extends React.Component<
                                 <Modal.Body>
                                     <Form ref={this.optionFieldFormRef}>
                                         {this.OptionModal()}
+                                        <Form.Group as={Row} controlId="comment">
+                                            <Form.Label column lg="2">Comment</Form.Label>
+                                            <Col lg="10">
+                                                <Form.Control as="textarea" rows={3} onChange={this.recordGenericField.bind(this, "$comment")} />
+                                            </Col>
+                                        </Form.Group>
                                     </Form>
                                 </Modal.Body>
                                 <Modal.Footer>
                                     <Button variant="outline-secondary" onClick={this.resetOptionFiledForm.bind(this)}>Clear</Button>
+                                    <Button variant="outline-success" onClick={this.setShowOptionModal.bind(this, false)}>Close</Button>
                                 </Modal.Footer>
                             </Modal>
                         </Col>
