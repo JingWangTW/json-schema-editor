@@ -46,6 +46,8 @@ interface NullField extends GenericField {
 
 interface ObjectField extends GenericField {
 
+    maxProperties?: number;
+    minProperties?: number;
 }
 
 interface StringField extends GenericField {

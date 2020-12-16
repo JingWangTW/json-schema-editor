@@ -60,6 +60,9 @@ interface ObjectSchema extends GenericSchema {
 
     properties: Record<string, Schema>;
     required: string[];
+
+    maxProperties?: number;
+    minProperties?: number;
 }
 
 interface StringSchema extends GenericSchema {

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Form, Row, Col } from 'react-bootstrap';
 
 import { ObjectField } from '../interface/NodeField';
 import { ObjectSchema } from '../interface/Schema';
@@ -11,13 +12,19 @@ class ObjectNode extends Node<ObjectField> {
 
     protected readonly selfType = Type.Object;
 
-    recordField(fieldName: keyof ObjectField, event: React.ChangeEvent<HTMLInputElement>): void { }
+    recordField(fieldName: keyof ObjectField, event: React.ChangeEvent<HTMLInputElement>): void {
+
+        if (fieldName === "maxProperties" || fieldName === "minProperties") {
+
+            this.setField<number>(fieldName, parseInt(event.target.value))
+        }
+
+    }
 
     constructor(props: any) {
         super({
             ...props,
             hasChild: true,
-            isOptionExist: false,
         });
     }
 
@@ -40,14 +47,33 @@ class ObjectNode extends Node<ObjectField> {
 
         return {
             type: "object",
-            title: this.state.field.title,
-            description: this.state.field.description,
+            ...{ ...this.state.field, name: undefined },
             properties,
             required
         }
     }
 
-    OptionModal(): JSX.Element { return <></> }
+    OptionModal(): JSX.Element {
+        return (
+            <>
+                <Form.Group as={Row}>
+                    <Form.Label column lg="2" htmlFor="MaxProperties">
+                        Maximum Properties
+                    </Form.Label>
+                    <Col lg="4">
+                        <Form.Control type="number" min="0" id="MaxProperties" defaultValue={this.state.field.minProperties} onChange={this.recordField.bind(this, "maxProperties")} />
+                    </Col>
+                    <Form.Label column lg="2" htmlFor="MinProperties">
+                        Minimum Properties
+                    </Form.Label>
+                    <Col lg="4">
+                        <Form.Control type="number" min="0" id="MinProperties" defaultValue={this.state.field.minProperties} onChange={this.recordField.bind(this, "minProperties")} />
+                    </Col>
+                </Form.Group>
+
+            </>
+        );
+    }
 }
 
 export default ObjectNode;
