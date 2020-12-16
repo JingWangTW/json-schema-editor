@@ -2,11 +2,12 @@ import React from 'react';
 import { Form, Col, Row, InputGroup, FormControl, Button } from 'react-bootstrap';
 import { FaPlus } from 'react-icons/fa';
 
+import { StringSchema } from '../interface/Schema'
 import { StringField } from '../interface/NodeField';
 import { Type } from './DataType';
 import Node from './Node'
 
-class String extends Node {
+class String extends Node<StringField> {
 
     protected readonly selfType = Type.String;
 
@@ -48,7 +49,7 @@ class String extends Node {
         this.setField<(number | string)[]>("enum", e)
     }
 
-    exportSchemaObj(): any {
+    exportSchemaObj(): StringSchema {
         return {
             type: "string",
             ...{ ...this.state.field, required: undefined, name: undefined }

@@ -2,14 +2,16 @@ import React from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
 
 import { ArrayField } from '../interface/NodeField';
+import { NodeProps } from '../interface/Props';
+import Schema, { ArraySchema } from '../interface/Schema';
 import { Type } from './DataType';
 import Node from './Node'
 
-class Array extends Node {
+class Array extends Node<ArrayField> {
 
     protected readonly selfType = Type.Array;
 
-    constructor(props: any) {
+    constructor(props: NodeProps<ArrayField>) {
         super({
             ...props,
             hasChild: true,
@@ -21,17 +23,19 @@ class Array extends Node {
         this.addChild();
     }
 
-    exportSchemaObj(): any {
+    exportSchemaObj(): ArraySchema {
 
         let child = this.childRef.current!.exportSchemaObj();
+        let items: Schema | Schema[];
+
 
         if (child.length === 1) {
 
-            child = child[0].value;
+            items = child[0].value;
 
         } else {
 
-            child = child.map((c: any) => c.value)
+            items = child.map(c => c.value)
 
         }
 
@@ -39,7 +43,7 @@ class Array extends Node {
             type: "array",
             ...{ ...this.state.field, required: undefined, name: undefined },
 
-            items: child
+            items
         }
     }
 

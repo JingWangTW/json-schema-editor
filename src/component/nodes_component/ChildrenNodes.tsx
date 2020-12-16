@@ -2,6 +2,8 @@ import React from 'react';
 import { Row, Col } from 'react-bootstrap';
 import nextId from "react-id-generator";
 
+import NodeField from './interface/NodeField';
+import { ChildrenSchema } from './interface/Schema';
 import { NewChildNodeProps } from './interface/Props';
 import * as DataType from './data_type/DataType';
 import { Type, Node } from './data_type/DataType';
@@ -15,7 +17,7 @@ interface ChildNodeProperty {
     hasSibling: boolean;
     requiredReadOnly: boolean;
     keyId: string;
-    ref: React.RefObject<DataType.Node>;
+    ref: React.RefObject<DataType.Node<NodeField>>;
 
     delete(keyId: string): void;
     addSibling(keyId: string): void;
@@ -78,7 +80,7 @@ class ChildrenNodes extends React.Component<ChildrenNodesProps, ChildrenNodesSta
             hasSibling: p.hasSibling as boolean,
             requiredReadOnly: p.requiredReadOnly as boolean,
             keyId: nextId('child_node-'),
-            ref: React.createRef<Node>()
+            ref: React.createRef<Node<NodeField>>()
         })
 
         this.setState({ children: originChildren })
@@ -116,7 +118,7 @@ class ChildrenNodes extends React.Component<ChildrenNodesProps, ChildrenNodesSta
         });
     }
 
-    exportSchemaObj(): any {
+    exportSchemaObj(): ChildrenSchema {
 
         if (this.state.error) {
 

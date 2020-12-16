@@ -1,10 +1,11 @@
 import React from 'react';
 
 import { NullField } from '../interface/NodeField';
+import { NullSchema } from '../interface/Schema';
 import { Type } from './DataType';
 import Node from './Node'
 
-class Null extends Node {
+class Null extends Node<NullField> {
 
     protected readonly selfType = Type.Null;
 
@@ -17,7 +18,7 @@ class Null extends Node {
         });
     }
 
-    exportSchemaObj(): any {
+    exportSchemaObj(): NullSchema {
 
         return {
             type: "null",

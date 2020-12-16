@@ -6,14 +6,15 @@ import { NodeProps } from '../interface/Props';
 import { IntegerField } from '../interface/NodeField';
 import { Type } from './DataType';
 import Node from './Node'
+import { IntegerSchema } from '../interface/Schema';
 
-class Integer extends Node {
+class Integer extends Node<IntegerField> {
 
     protected readonly selfType = Type.Integer;
     private readonly minExclusiveCheckedRef: React.RefObject<HTMLInputElement>;
     private readonly maxExclusiveCheckedRef: React.RefObject<HTMLInputElement>;
 
-    constructor(props: NodeProps) {
+    constructor(props: NodeProps<IntegerField>) {
         super(props);
 
         this.minExclusiveCheckedRef = React.createRef<HTMLInputElement>();
@@ -102,11 +103,11 @@ class Integer extends Node {
         this.setField<(number | string)[]>("enum", e)
     }
 
-    exportSchemaObj(): any {
+    exportSchemaObj(): IntegerSchema {
 
         return {
             type: "integer",
-            ...{ ...this.state.field, required: undefined, name: undefined }
+            ...{ ...this.state.field, required: undefined, name: undefined },
         };
     }
 

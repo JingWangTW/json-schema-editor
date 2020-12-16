@@ -1,7 +1,7 @@
 import { Type } from '../../data_type/DataType';
 import NodeField from '../NodeField';
 
-export default interface NodeProps {
+export default interface NodeProps<T> {
 
     keyId: string;
     depth: number;
@@ -9,7 +9,7 @@ export default interface NodeProps {
     hasChild?: boolean;
     hasSibling?: boolean;
 
-    field?: NodeField;
+    field?: T;
     isDeleteAble?: boolean;
     isOptionExist?: boolean;
     requiredReadOnly?: boolean;

@@ -3,33 +3,41 @@ import { Form, Col, InputGroup, Button, Modal, OverlayTrigger, Tooltip, FormCont
 import nextId from 'react-id-generator';
 import { TiPencil } from 'react-icons/ti';
 
-import NodeField, { GenericField } from '../interface/NodeField';
+import { GenericField } from '../interface/NodeField';
 import { NodeState } from '../interface/State';
 import { NodeProps } from '../interface/Props';
+import Schema from '../interface/Schema';
 import ChildrenNodes from '../ChildrenNodes';
 import { Type } from './DataType';
 import NodeOptionButtons from '../NodeOptionButtons';
 
 
-abstract class Node extends React.Component<NodeProps, NodeState> {
+abstract class Node<NodeFieldType extends GenericField> extends React.Component<NodeProps<NodeFieldType>, NodeState<NodeFieldType>> {
 
     abstract OptionModal(): JSX.Element;
-    abstract recordField(fieldName: keyof NodeField, event: React.ChangeEvent<HTMLElement>): void;
-    abstract exportSchemaObj(): any;
+    abstract recordField(fieldName: keyof NodeFieldType, event: React.ChangeEvent<HTMLElement>): void;
+    abstract exportSchemaObj(): Schema;
 
     protected abstract readonly selfType: keyof typeof Type;
 
     protected childRef: React.RefObject<ChildrenNodes>;
     private optionFieldFormRef: React.RefObject<HTMLFormElement>;
 
-    constructor(props: NodeProps) {
+    constructor(props: NodeProps<NodeFieldType>) {
 
         super(props);
 
         this.childRef = React.createRef<ChildrenNodes>();
         this.optionFieldFormRef = React.createRef<HTMLFormElement>();
 
-        this.state = {
+        let fieldDefault = {
+            name: nextId("field_"),
+            required: true,
+        } as NodeFieldType
+
+        // I don't know why, but sometimes props will bring property "filed" and it's value is undefiend.
+        // As a result, I setState in two steps
+        let s = {
             // default value
             showOptionModal: false,
             showDescriptionModal: false,
@@ -39,30 +47,21 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
             hasSibling: true,
             requiredReadOnly: false,
 
-            field: {
-                name: nextId("field_"),
-                required: true,
-            },
+            field: props.field ? { ...props.field, ...fieldDefault } : fieldDefault,
 
             // set arguments
             ...props,
         }
 
-        if (this.props.field) {
-            this.setState({
-                field: {
-                    ...this.props.field,
-                    ...this.state.field,
-                }
-            })
-        }
+        if (!s.field)
+            s.field = fieldDefault;
+
+        this.state = s;
     }
 
     get form() {
         return this.state.field;
     }
-
-
 
     setShowOptionModal(isShow: boolean): void {
 
@@ -105,7 +104,7 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
         }
     }
 
-    setField<T>(fieldName: keyof NodeField, value: T): void {
+    setField<T>(fieldName: keyof NodeFieldType, value: T): void {
 
         this.setState(prevState => ({
             field: {
@@ -136,8 +135,8 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
 
     resetOptionFiledForm(): void {
 
-        let fieldName: keyof NodeField;
-        let ff: NodeField = this.state.field;
+        let fieldName: keyof NodeFieldType;
+        let ff: NodeFieldType = this.state.field;
 
         for (fieldName in ff) {
             if (fieldName !== "name" && fieldName !== "title" && fieldName !== "description" && fieldName !== "required")

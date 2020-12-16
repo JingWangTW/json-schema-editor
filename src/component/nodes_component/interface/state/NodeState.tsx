@@ -1,6 +1,6 @@
 import NodeField from "../NodeField";
 
-export default interface NodeState {
+export default interface NodeState<T> {
     showOptionModal: boolean;
     showDescriptionModal: boolean;
     isOptionExist: boolean;
@@ -9,6 +9,6 @@ export default interface NodeState {
     hasChild: boolean;
     hasSibling: boolean;
 
-    field: NodeField;
+    field: T;
     info?: string;
 };

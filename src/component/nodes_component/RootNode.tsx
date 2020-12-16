@@ -3,18 +3,20 @@ import nextId from "react-id-generator";
 
 import { Type, Node } from './data_type/DataType';
 import Factory from './data_type/Factory';
+import NodeField from './interface/NodeField';
+import Schema from './interface/Schema';
 
 interface RootNodeState {
     type: keyof typeof Type;
 }
 class RootNode extends React.Component<{}, RootNodeState> {
 
-    private nodeRef: React.RefObject<Node>;
+    private nodeRef: React.RefObject<Node<NodeField>>;
 
     constructor(props: any) {
         super(props);
 
-        this.nodeRef = React.createRef<Node>();
+        this.nodeRef = React.createRef<Node<NodeField>>();
 
         this.state = {
             type: Type.Object,
@@ -29,7 +31,7 @@ class RootNode extends React.Component<{}, RootNodeState> {
 
     }
 
-    exportSchemaObj(): any {
+    exportSchemaObj(): Schema {
 
         return this.nodeRef.current!.exportSchemaObj();
     }

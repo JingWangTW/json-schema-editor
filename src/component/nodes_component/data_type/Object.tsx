@@ -1,11 +1,12 @@
 import React from 'react';
 
 import { ObjectField } from '../interface/NodeField';
+import { ObjectSchema } from '../interface/Schema';
 import { Type } from './DataType';
 import Node from './Node'
 
 // It will failed if we name a class as "Object"
-class ObjectNode extends Node {
+class ObjectNode extends Node<ObjectField> {
     //class Object extends Node {
 
     protected readonly selfType = Type.Object;
@@ -20,19 +21,21 @@ class ObjectNode extends Node {
         });
     }
 
-    exportSchemaObj(): any {
+    exportSchemaObj(): ObjectSchema {
 
         let children = this.childRef.current?.exportSchemaObj();
 
-        let properties: any = {}
-        let required: string[] = [];
+        let properties: ObjectSchema["properties"] = {};
+        let required: ObjectSchema["required"] = [];
 
-        for (const child of children) {
-            properties[child.name] = {
-                ...child.value
+        if (children) {
+            for (const child of children) {
+                properties[child.name] = {
+                    ...child.value
+                }
+                if (child.required)
+                    required.push(child.name);
             }
-            if (child.required)
-                required.push(child.name);
         }
 
         return {

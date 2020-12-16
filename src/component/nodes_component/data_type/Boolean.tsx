@@ -2,10 +2,11 @@ import React from 'react';
 import { Form, Col, Row } from 'react-bootstrap';
 
 import { BooleanField } from '../interface/NodeField';
+import { BooleanSchema } from '../interface/Schema';
 import { Type } from './DataType';
 import Node from './Node';
 
-class Boolean extends Node {
+class Boolean extends Node<BooleanField> {
 
     protected readonly selfType = Type.Boolean;
 
@@ -19,11 +20,11 @@ class Boolean extends Node {
             this.setField<boolean>(fieldName, false);
     }
 
-    exportSchemaObj(): any {
+    exportSchemaObj(): BooleanSchema {
 
         return {
             type: "boolean",
-            ...{ ...this.state.field, required: undefined, name: undefined }
+            default: this.state.field.default,
         };
     }
 

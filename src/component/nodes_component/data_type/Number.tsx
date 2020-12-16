@@ -6,14 +6,15 @@ import { NodeProps } from '../interface/Props'
 import { NumberField } from '../interface/NodeField';
 import { Type } from './DataType';
 import Node from './Node'
+import { NumberSchema } from '../interface/Schema';
 
-class Number extends Node {
+class Number extends Node<NumberField> {
 
     protected readonly selfType = Type.Number;
     private readonly minExclusiveCheckedRef: React.RefObject<HTMLInputElement>;
     private readonly maxExclusiveCheckedRef: React.RefObject<HTMLInputElement>;
 
-    constructor(props: NodeProps) {
+    constructor(props: NodeProps<NumberField>) {
         super(props);
 
         this.minExclusiveCheckedRef = React.createRef<HTMLInputElement>();
@@ -103,7 +104,7 @@ class Number extends Node {
         this.setField<(number | string)[]>("enum", e)
     }
 
-    exportSchemaObj(): any {
+    exportSchemaObj(): NumberSchema {
 
         return {
             type: "number",
