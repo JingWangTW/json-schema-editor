@@ -7,12 +7,14 @@ import draft_06_meta from 'ajv/lib/refs/json-schema-draft-06.json';
 
 import * as hljs from 'react-syntax-highlighter/dist/esm/styles/hljs';
 
+import Schema from '../nodes_component/interface/Schema';
 import RootNode from '../nodes_component/RootNode';
 
 interface SchemaEditorState {
     showExport: boolean;
     errorMessage?: string;
     exportString: string;
+    schema?: Schema;
 }
 
 class SchemaEditor extends React.Component<{}, SchemaEditorState> {
@@ -25,15 +27,15 @@ class SchemaEditor extends React.Component<{}, SchemaEditorState> {
 
         super(props);
 
-        this.fileUploadRef = React.createRef<HTMLInputElement>();
-
-        this.rootNodeRef = React.createRef<RootNode>();
-        this.rootNode = <RootNode ref={this.rootNodeRef} />
-
         this.state = {
             showExport: false,
             exportString: ""
-        }
+        };
+
+        this.fileUploadRef = React.createRef<HTMLInputElement>();
+
+        this.rootNodeRef = React.createRef<RootNode>();
+        this.rootNode = <RootNode ref={this.rootNodeRef} schema={this.state.schema} />
     }
 
     toggleImport(show: boolean): void {
@@ -63,6 +65,8 @@ class SchemaEditor extends React.Component<{}, SchemaEditorState> {
                     })
 
                 } else {
+
+                    this.setState({ schema });
 
                 }
 
@@ -124,7 +128,7 @@ class SchemaEditor extends React.Component<{}, SchemaEditorState> {
                 <Button variant="outline-success" onClick={this.toggleExport.bind(this, true)}>Export Schema</Button>
                 <div>
                     {this.rootNode}
-                    {/* <RootNode ref={this.rootNodeRef} /> */}
+                    {/* <RootNode ref={this.rootNodeRef} schema={this.state.schema} /> */}
                 </div>
 
                 <Modal size="xl" scrollable show={this.state.showExport} onHide={this.toggleExport.bind(this, false)}>
