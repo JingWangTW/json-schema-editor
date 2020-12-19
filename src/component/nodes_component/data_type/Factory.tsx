@@ -6,8 +6,6 @@ import * as DataType from './DataType';
 
 const Factory = React.forwardRef<DataType.Node<NodeField.default>, NodeFactoryProps<NodeField.default>>((props, ref) => {
 
-    console.log(props.type, props.field)
-
     switch (props.type) {
         case DataType.Type.Array:
             return <DataType.ArrayNode  {...{ ...props, field: props.field as NodeField.ArrayField }} ref={ref as React.RefObject<DataType.ArrayNode>} />
