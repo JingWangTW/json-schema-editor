@@ -2,67 +2,80 @@ import React from 'react';
 import { Form, Col, Row, InputGroup, FormControl, Button } from 'react-bootstrap';
 import { FaPlus } from 'react-icons/fa';
 
+import { StringSchema } from '../interface/Schema'
 import { StringField } from '../interface/NodeField';
 import { Type } from './DataType';
 import Node from './Node'
 
-class String extends Node {
+class String extends Node<StringField> {
 
     protected readonly selfType = Type.String;
 
     recordField(fieldName: keyof StringField, event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>): void {
 
-        if (fieldName === "min_length" || fieldName === "max_length") {
+        if (fieldName === "minLength" || fieldName === "maxLength") {
 
-            this.field[fieldName] = Number(event.target.value);
+            this.setField<number>(fieldName, parseInt(event.target.value))
 
-        } else if (fieldName === "default" || fieldName === "constant" || fieldName === "pattern") {
+            // to check if value is correct
+            if ((fieldName === "minLength" && this.state.field.maxLength && parseInt(event.target.value) > this.state.field.maxLength) ||
+                (fieldName === "maxLength" && this.state.field.minLength && parseInt(event.target.value) < this.state.field.minLength)) {
 
-            this.field[fieldName] = event.target.value;
+                this.setState({ optionError: "The number of Min Length should less than or equal to Max Length." })
+            } else {
+                this.setState({ optionError: undefined })
+            }
+
+        } else if (fieldName === "default" || fieldName === "const" || fieldName === "pattern") {
+
+            this.setField<string>(fieldName, event.target.value)
 
         } else if (fieldName === "format") {
 
-            this.field[fieldName] = event.target.value as StringField["format"]
-
+            if (event.target.value === "")
+                this.setField<undefined>(fieldName, undefined)
+            else
+                this.setField<StringField["format"]>(fieldName, event.target.value as StringField["format"])
         }
     }
 
     recordEnumField(key: number, event: React.ChangeEvent<HTMLInputElement>): void {
 
-        this.field.enum![key] = event.target.value;
+        this.setField<(string | number)[]>("enum", this.state.field.enum!.map((e, i) => i === key ? event.target.value : e))
     }
 
-    addEnum(): void {
+    addEnum(event: React.MouseEvent<HTMLButtonElement>): void {
 
-        if (!this.field.enum)
-            this.field.enum = [];
+        event.preventDefault();
 
-        this.field.enum!.push("")
+        let e: (number | string)[];
 
-        this.forceUpdate();
+        if (!this.state.field.enum)
+            e = [""]
+        else
+            e = [...this.state.field.enum, ""];
+
+        this.setField<(number | string)[]>("enum", e)
     }
 
-    exportSchemaObj(): any {
+    exportSchemaObj(): StringSchema {
+
+        if (this.state.field.maxLength && this.state.field.minLength && this.state.field.maxLength > this.state.field.minLength)
+            throw new Error("Find Error");
+
         return {
             type: "string",
-            title: this.field.title,
-            description: this.field.description,
-
-            constant: this.field.constant,
-            default: this.field.default,
-
-            minLength: this.field.min_length,
-            maxLength: this.field.max_length,
-            format: this.field.format,
-            pattern: this.field.pattern,
-
-            enum: this.field.enum,
+            ...{ ...this.state.field, required: undefined, name: undefined }
         };
     }
 
     OptionModal(): JSX.Element {
         return (
             <>
+                {
+                    this.state.optionError &&
+                    <span style={{ color: "red" }}>{this.state.optionError} </span>
+                }
                 <Form.Group as={Row}>
                     <Form.Label column lg="2" htmlFor="Default">
                         Default
@@ -77,13 +90,13 @@ class String extends Node {
                         Min Length
                     </Form.Label>
                     <Col lg="4">
-                        <Form.Control type="number" min="0" id="MinLength" onChange={this.recordField.bind(this, "min_length")} />
+                        <Form.Control type="number" min="0" id="MinLength" onChange={this.recordField.bind(this, "minLength")} />
                     </Col>
                     <Form.Label column lg="2" htmlFor="MaxLength">
                         Max Length
                     </Form.Label>
                     <Col lg="4">
-                        <Form.Control type="number" min="0" id="MaxLength" onChange={this.recordField.bind(this, "max_length")} />
+                        <Form.Control type="number" min="0" id="MaxLength" onChange={this.recordField.bind(this, "maxLength")} />
                     </Col>
                 </Form.Group>
 
@@ -91,7 +104,7 @@ class String extends Node {
                     <Form.Label column lg="2">Format</Form.Label>
                     <Col lg="10">
                         <Form.Control as="select" onChange={this.recordField.bind(this, "format")}>
-                            {["date-time", "time", "date", "email", "idn-email", "hostname", "idn-hostname", "ipv4", "ipv6", "uri", "uri-reference", "iri", "iri-reference", "uri-template", "json-pointer", "relative-json-pointer", "regex"].map((v, i) => <option key={i}>{v}</option>)}
+                            {["", "date-time", "time", "date", "email", "idn-email", "hostname", "idn-hostname", "ipv4", "ipv6", "uri", "uri-reference", "iri", "iri-reference", "uri-template", "json-pointer", "relative-json-pointer", "regex"].map((v, i) => <option key={i}>{v}</option>)}
                         </Form.Control>
                     </Col>
                 </Form.Group>
@@ -103,25 +116,25 @@ class String extends Node {
                     </Col>
                 </Form.Group>
 
-                <Form.Group as={Row} controlId="Constant">
+                <Form.Group as={Row} controlId="const">
                     <Form.Label column lg="2">Constant</Form.Label>
                     <Col lg="10">
-                        <Form.Control type="text" placeholder="Restricted Value" onChange={this.recordField.bind(this, "constant")} />
+                        <Form.Control type="text" placeholder="Restricted Value" onChange={this.recordField.bind(this, "const")} />
                     </Col>
                 </Form.Group>
 
                 {
-                    this.field.enum
+                    this.state.field.enum
                         ?
                         (
-                            (this.field.enum as Array<number | string>).map((enumeration, index: number) => (
+                            (this.state.field.enum as Array<number | string>).map((enumeration, index: number) => (
                                 <Form.Group as={Row} key={index}>
                                     <Form.Label column lg="2">
                                         {index === 0 ? "Enum" : ""}
                                     </Form.Label>
                                     <Col lg="10">
                                         {
-                                            index === this.field.enum!.length - 1
+                                            index === this.state.field.enum!.length - 1
                                                 ?
                                                 (
                                                     <InputGroup>

@@ -3,9 +3,21 @@ import { OverlayTrigger, Tooltip, Dropdown } from 'react-bootstrap';
 import nextId from "react-id-generator";
 import { FaRegTrashAlt, FaPlus } from 'react-icons/fa';
 import { AiOutlineSetting } from 'react-icons/ai';
-import { NodeOptionButtonsProps } from './interface/Props';
 
 import '../../index.css';
+
+interface NodeOptionButtonsProps {
+    hasChild: boolean;
+    hasSibling: boolean;
+
+    isDeleteAble: boolean;
+
+    clickOption(): void;
+
+    clickAddChild(): void;
+    clickAddSibling(): void;
+    clickDelete(): void;
+}
 
 interface ToggleAddButtonProps {
     id: string;
@@ -82,18 +94,17 @@ class NodeOptionButtons extends React.Component<NodeOptionButtonsProps, {}> {
                     )
                 }
 
-                {
-                    this.props.isOptionExist && (
-                        <div className="node-option-btn-block" onClick={this.props.clickOption}>
-                            <OverlayTrigger
-                                trigger={["hover", "focus"]}
-                                overlay={<Tooltip id="option-tooltip"> Option </Tooltip>}
-                            >
-                                <span><AiOutlineSetting /></span>
-                            </OverlayTrigger>
-                        </div>
-                    )
-                }
+
+                <div className="node-option-btn-block" onClick={this.props.clickOption}>
+                    <OverlayTrigger
+                        trigger={["hover", "focus"]}
+                        overlay={<Tooltip id="option-tooltip"> Option </Tooltip>}
+                    >
+                        <span><AiOutlineSetting /></span>
+                    </OverlayTrigger>
+                </div>
+
+
             </div>
         );
     }

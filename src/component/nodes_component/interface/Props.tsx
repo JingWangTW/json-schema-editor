@@ -1,9 +1,6 @@
-import NodeOptionButtonsProps from './props/NodeOptionButtonsProps';
-import NodeProps from './props/NodeProps';
-import ChildNodesProps from './props/ChildNodesProps';
+import NodeProps, { NewChildNodeProps } from './props/NodeProps';
 import NodeFactoryProps from './props/NodeFactoryProps';
 
-export type { NodeOptionButtonsProps };
 export type { NodeProps };
-export type { ChildNodesProps };
+export type { NewChildNodeProps };
 export type { NodeFactoryProps };

@@ -3,26 +3,40 @@ import nextId from "react-id-generator";
 
 import { Type, Node } from './data_type/DataType';
 import Factory from './data_type/Factory';
-class RootNode extends React.Component {
+import NodeField from './interface/NodeField';
+import Schema from './interface/Schema';
 
-    private selfType: keyof typeof Type;
-    private nodeRef: React.RefObject<Node>;
+interface RootNodeProps {
+    schema?: Schema;
+}
+
+interface RootNodeState {
+    type: keyof typeof Type;
+}
+class RootNode extends React.Component<RootNodeProps, RootNodeState> {
+
+    private nodeRef: React.RefObject<Node<NodeField>>;
 
     constructor(props: any) {
+
         super(props);
 
-        this.selfType = Type.Object;
-        this.nodeRef = React.createRef<Node>();
+        this.nodeRef = React.createRef<Node<NodeField>>();
+
+        this.state = {
+            type: Type.Object,
+        }
     }
 
     changeType(keyId: string, type: keyof typeof Type): void {
 
-        this.selfType = type;
-        this.forceUpdate()
+        this.setState({
+            type
+        })
 
     }
 
-    exportSchemaObj(): any {
+    exportSchemaObj(): Schema {
 
         return this.nodeRef.current!.exportSchemaObj();
     }
@@ -35,9 +49,10 @@ class RootNode extends React.Component {
                 key={nextId("childId")}
                 keyId={nextId("childId")}
                 depth={0}
-                type={this.selfType}
+                type={this.state.type}
                 isDeleteAble={false}
                 hasSibling={false}
+                requiredReadOnly={true}
                 field={{ name: "root", required: true }}
                 changeType={this.changeType.bind(this)}
                 changeName={() => true}

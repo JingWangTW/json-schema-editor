@@ -2,26 +2,29 @@ import React from 'react';
 import { Form, Col, Row } from 'react-bootstrap';
 
 import { BooleanField } from '../interface/NodeField';
+import { BooleanSchema } from '../interface/Schema';
 import { Type } from './DataType';
 import Node from './Node';
 
-class Boolean extends Node {
+class Boolean extends Node<BooleanField> {
 
     protected readonly selfType = Type.Boolean;
 
     recordField(fieldName: keyof BooleanField, event: React.ChangeEvent<HTMLSelectElement>): void {
 
-        this.field[fieldName] = event.target.value === "True" ? true : false;
-
+        if (event.target.value === "")
+            this.setField<undefined>(fieldName, undefined);
+        else if (event.target.value === "True")
+            this.setField<boolean>(fieldName, true);
+        else
+            this.setField<boolean>(fieldName, false);
     }
 
-    exportSchemaObj(): any {
+    exportSchemaObj(): BooleanSchema {
 
         return {
             type: "boolean",
-            default: this.field.default,
-            title: this.field.title,
-            description: this.field.description,
+            default: this.state.field.default,
         };
     }
 

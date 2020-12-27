@@ -3,63 +3,63 @@ import { Form, Col, InputGroup, Button, Modal, OverlayTrigger, Tooltip, FormCont
 import nextId from 'react-id-generator';
 import { TiPencil } from 'react-icons/ti';
 
-import NodeField, { GenericField } from '../interface/NodeField';
+import { GenericField } from '../interface/NodeField';
 import { NodeState } from '../interface/State';
 import { NodeProps } from '../interface/Props';
-import ChildNodes from '../ChildNodes';
+import Schema from '../interface/Schema';
+import ChildrenNodes from '../ChildrenNodes';
 import { Type } from './DataType';
 import NodeOptionButtons from '../NodeOptionButtons';
 
 
-abstract class Node extends React.Component<NodeProps, NodeState> {
+abstract class Node<NodeFieldType extends GenericField> extends React.Component<NodeProps<NodeFieldType>, NodeState<NodeFieldType>> {
 
     abstract OptionModal(): JSX.Element;
-    abstract recordField(fieldName: keyof NodeField, event: React.ChangeEvent<HTMLElement>): void;
-    abstract exportSchemaObj(): any;
+    abstract recordField(fieldName: keyof NodeFieldType, event: React.ChangeEvent<HTMLElement>): void;
+    abstract exportSchemaObj(): Schema;
 
     protected abstract readonly selfType: keyof typeof Type;
 
-    protected field: NodeField;
-    protected childRef: React.RefObject<ChildNodes>;
+    protected childRef: React.RefObject<ChildrenNodes>;
     private optionFieldFormRef: React.RefObject<HTMLFormElement>;
 
-    constructor(props: NodeProps) {
+    constructor(props: NodeProps<NodeFieldType>) {
 
         super(props);
 
-        this.childRef = React.createRef<ChildNodes>();
+        this.childRef = React.createRef<ChildrenNodes>();
         this.optionFieldFormRef = React.createRef<HTMLFormElement>();
 
-        this.state = {
+        let fieldDefault = {
+            name: nextId("field_"),
+            required: true,
+        } as NodeFieldType
+
+        // I don't know why, but sometimes props will bring property "filed" and it's value is undefiend.
+        // As a result, I setState in two steps
+        let s = {
             // default value
             showOptionModal: false,
             showDescriptionModal: false,
             isDeleteAble: true,
-            isOptionExist: true,
             hasChild: false,
             hasSibling: true,
+            requiredReadOnly: false,
+
+            field: props.field ? { ...props.field, ...fieldDefault } : fieldDefault,
 
             // set arguments
             ...props,
         }
 
-        this.field = {
-            name: nextId("field_"),
-            required: true,
-        };
+        if (!s.field)
+            s.field = fieldDefault;
 
-        if (this.props.field) {
-
-            this.field = {
-                ...this.field,
-                ...this.props.field
-            };
-
-        }
+        this.state = s;
     }
 
     get form() {
-        return this.field;
+        return this.state.field;
     }
 
     setShowOptionModal(isShow: boolean): void {
@@ -82,9 +82,9 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
             this.props.addSibling(this.props.keyId);
     }
 
-    addChild(isDeleteAble: boolean = true, hasSibling: boolean = true): void {
+    addChild(): void {
 
-        this.childRef.current!.add("", isDeleteAble, hasSibling);
+        this.childRef.current!.add("");
 
     }
 
@@ -103,42 +103,67 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
         }
     }
 
+    setField<T>(fieldName: keyof NodeFieldType, value: T): void {
+
+        this.setState(prevState => ({
+            field: {
+                ...prevState.field,
+                [fieldName]: value
+            }
+        }))
+    }
+
     recordGenericField(fieldName: keyof GenericField, event: React.ChangeEvent<HTMLInputElement>): void {
 
         if (fieldName === "name") {
 
+            // needs to check duplicated
             this.props.changeName(this.props.keyId, event.target.value)
-            this.field[fieldName] = event.target.value;
+
+            this.setField<string>(fieldName, event.target.value)
         }
         else if (fieldName === "required") {
-            this.field[fieldName] = event.target.checked;
+
+            this.setField<boolean>(fieldName, event.target.checked)
         }
+        // description, title, $comment
         else {
-            this.field[fieldName] = event.target.value;
+
+            this.setField<string>(fieldName, event.target.value)
         }
-
-        // need to sync for both input blank
-        if (fieldName === "description")
-            this.forceUpdate()
-
     }
 
     resetOptionFiledForm(): void {
 
-        let fieldName: keyof NodeField;
-        for (fieldName in this.field) {
+        let fieldName: keyof NodeFieldType;
+        let ff: NodeFieldType = this.state.field;
+
+        for (fieldName in ff) {
             if (fieldName !== "name" && fieldName !== "title" && fieldName !== "description" && fieldName !== "required")
-                delete this.field[fieldName]
+                delete ff[fieldName]
         }
 
         if (this.optionFieldFormRef.current)
             this.optionFieldFormRef.current.reset();
+
+        this.setState({
+            field: ff
+        });
     }
 
     render(): JSX.Element {
 
         return (
             <div className="my-1">
+                {
+                    this.state.info &&
+                    <Row>
+                        <Col lg="auto" className="px-0 mx-0" style={{ width: (this.props.depth * 20).toString() + "px" }} />
+                        <Col>
+                            <span style={{ color: "green" }}>{this.state.info} </span>
+                        </Col>
+                    </Row>
+                }
                 <Form>
                     <Form.Row>
                         <Col lg={3}>
@@ -153,14 +178,14 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
                                             overlay={<Tooltip id="add-tooltip"> Required </Tooltip>}
                                         >
                                             <InputGroup.Prepend>
-                                                <InputGroup.Checkbox defaultChecked={this.field.required} disabled={!this.state.isDeleteAble} onChange={this.recordGenericField.bind(this, "required")} />
+                                                <InputGroup.Checkbox defaultChecked={this.state.field.required} disabled={this.state.requiredReadOnly} onChange={this.recordGenericField.bind(this, "required")} />
                                             </InputGroup.Prepend>
                                         </OverlayTrigger>
 
                                         <Form.Control placeholder="items"
                                             required
-                                            readOnly={this.state.isDeleteAble ? false : true}
-                                            defaultValue={this.field.name}
+                                            readOnly={this.state.requiredReadOnly}
+                                            defaultValue={this.state.field.name}
                                             onChange={this.recordGenericField.bind(this, "name")} />
                                     </InputGroup>
                                 </Col>
@@ -173,16 +198,17 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
                                 <option>String</option>
                                 <option>Integer</option>
                                 <option>Number</option>
+                                <option>Null</option>
                                 <option>Boolean</option>
                             </Form.Control>
                         </Col>
                         <Col lg={3}>
-                            <Form.Control placeholder="Titile" onChange={this.recordGenericField.bind(this, "title")} />
+                            <Form.Control placeholder="Titile" defaultValue={this.state.field.title} onChange={this.recordGenericField.bind(this, "title")} />
                         </Col>
                         <Col lg={4}>
 
                             <InputGroup>
-                                <FormControl type="text" id="Description" placeholder="Description" defaultValue={this.field.description} value={this.field.description} onChange={this.recordGenericField.bind(this, "description")} />
+                                <FormControl type="text" id="Description" placeholder="Description" defaultValue={this.state.field.description} onChange={this.recordGenericField.bind(this, "description")} />
                                 <OverlayTrigger
                                     trigger={["hover", "focus"]}
                                     overlay={<Tooltip id="add-tooltip"> Edit </Tooltip>}
@@ -209,17 +235,16 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
                                 </Modal.Header>
                                 <Modal.Body>
                                     <Form.Group>
-                                        <Form.Control as="textarea" rows={3} defaultValue={this.field.description} onChange={this.recordGenericField.bind(this, "description")} />
+                                        <Form.Control as="textarea" rows={3} defaultValue={this.state.field.description} onChange={this.recordGenericField.bind(this, "description")} />
                                     </Form.Group>
                                 </Modal.Body>
                             </Modal>
                         </Col>
                         <Col lg={1}>
                             <NodeOptionButtons
-                                hasChild={this.selfType === Type.Array ? false : this.state.hasChild}
+                                hasChild={this.state.hasChild}
                                 hasSibling={this.state.hasSibling}
                                 isDeleteAble={this.state.isDeleteAble}
-                                isOptionExist={this.state.isOptionExist}
                                 clickAddChild={this.addChild.bind(this)}
                                 clickAddSibling={this.addSibling.bind(this)}
                                 clickDelete={this.delete.bind(this)}
@@ -241,16 +266,23 @@ abstract class Node extends React.Component<NodeProps, NodeState> {
                                 <Modal.Body>
                                     <Form ref={this.optionFieldFormRef}>
                                         {this.OptionModal()}
+                                        <Form.Group as={Row} controlId="comment">
+                                            <Form.Label column lg="2">Comment</Form.Label>
+                                            <Col lg="10">
+                                                <Form.Control as="textarea" rows={3} onChange={this.recordGenericField.bind(this, "$comment")} />
+                                            </Col>
+                                        </Form.Group>
                                     </Form>
                                 </Modal.Body>
                                 <Modal.Footer>
                                     <Button variant="outline-secondary" onClick={this.resetOptionFiledForm.bind(this)}>Clear</Button>
+                                    <Button variant="outline-success" onClick={this.setShowOptionModal.bind(this, false)}>Close</Button>
                                 </Modal.Footer>
                             </Modal>
                         </Col>
                     </Form.Row>
                 </Form>
-                {this.state.hasChild && <ChildNodes ref={this.childRef} depth={this.props.depth + 1} />}
+                {this.state.hasChild && <ChildrenNodes ref={this.childRef} depth={this.props.depth + 1} />}
             </div>
         );
     }
