@@ -8,5 +8,6 @@ https://jingwangtw.github.io/json-schema-editor/
 * Export to file from the edited JSON schema.
 
 ## TODO
+* Refactor this spaghetti.
 * Import from a schema file.
 * To support newer schema spec.
