@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navbar } from 'react-bootstrap';
-import SchemaEditor from './layout/SchemaEditor';
+import SchemaEditor from './SchemaEditor';
 
 class App extends React.Component {
 
