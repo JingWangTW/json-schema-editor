@@ -1,7 +1,6 @@
-import { DataType, FieldType } from '../type';
+import { DataType, FieldType } from "../type";
 
 export interface INodeProps<T extends DataType> {
-
     keyId: string;
     depth: number;
 
@@ -19,7 +18,6 @@ export interface INodeProps<T extends DataType> {
 }
 
 export default interface NodeState<T extends DataType> {
-
     hasChild: boolean;
     hasSibling: boolean;
 
@@ -32,4 +30,4 @@ export default interface NodeState<T extends DataType> {
 
     info?: string;
     optionError?: string;
-};
+}

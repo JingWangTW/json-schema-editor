@@ -1,7 +1,6 @@
 // https://stackoverflow.com/questions/42123407/does-typescript-support-mutually-exclusive-types
 type Without<T, U> = { [P in Exclude<keyof T, keyof U>]?: never };
-export type XOR_Partial<T, U> = (Without<T, U> & Partial<U>) | (Without<U, T> & Partial<T>)
-
+export type XOR_Partial<T, U> = (Without<T, U> & Partial<U>) | (Without<U, T> & Partial<T>);
 
 export enum DataType {
     Array = "array",
@@ -11,11 +10,10 @@ export enum DataType {
     Number = "number",
     Object = "object",
     String = "string",
-};
+}
 
 export interface IGenericField {
-
-    type: DataType
+    type: DataType;
 
     name: string;
     required: boolean;
@@ -25,7 +23,6 @@ export interface IGenericField {
 }
 
 interface IArrayField extends IGenericField {
-
     type: DataType.Array;
 
     minItems?: number;
@@ -34,14 +31,12 @@ interface IArrayField extends IGenericField {
 }
 
 interface IBooleanField extends IGenericField {
-
     type: DataType.Boolean;
 
     default?: boolean;
 }
 
 interface IIntegerField extends IGenericField {
-
     type: DataType.Integer;
 
     default?: number;
@@ -55,7 +50,6 @@ interface IIntegerField extends IGenericField {
 }
 
 interface INumberField extends IGenericField {
-
     type: DataType.Number;
 
     default?: number;
@@ -66,24 +60,20 @@ interface INumberField extends IGenericField {
     exclusiveMinimum?: number;
     exclusiveMaximum?: number;
     multipleOf?: number;
-
 }
 
 interface INullField extends IGenericField {
-
     type: DataType.Null;
 }
 
 interface IObjectField extends IGenericField {
-
-    type: DataType.Object
+    type: DataType.Object;
 
     maxProperties?: number;
     minProperties?: number;
 }
 
 interface IStringField extends IGenericField {
-
     type: DataType.String;
 
     default?: string;
@@ -91,18 +81,42 @@ interface IStringField extends IGenericField {
     enum?: string[];
     minLength?: number;
     maxLength?: number;
-    format?: "date-time" | "time" | "date" | "email" | "idn-email" | "hostname" | "idn-hostname" | "ipv4" | "ipv6" | "uri" | "uri-reference" | "iri" | "iri-reference" | "uri-template" | "json-pointer" | "relative-json-pointer" | "regex";
+    format?:
+        | "date-time"
+        | "time"
+        | "date"
+        | "email"
+        | "idn-email"
+        | "hostname"
+        | "idn-hostname"
+        | "ipv4"
+        | "ipv6"
+        | "uri"
+        | "uri-reference"
+        | "iri"
+        | "iri-reference"
+        | "uri-template"
+        | "json-pointer"
+        | "relative-json-pointer"
+        | "regex";
     pattern?: string;
 }
 
-export type FieldType<T extends DataType> =
-    T extends DataType.Array ? IArrayField :
-    T extends DataType.Boolean ? IBooleanField :
-    T extends DataType.Integer ? IIntegerField :
-    T extends DataType.Null ? INullField :
-    T extends DataType.Number ? INumberField :
-    T extends DataType.Object ? IObjectField :
-    T extends DataType.String ? IStringField : never;
+export type FieldType<T extends DataType> = T extends DataType.Array
+    ? IArrayField
+    : T extends DataType.Boolean
+    ? IBooleanField
+    : T extends DataType.Integer
+    ? IIntegerField
+    : T extends DataType.Null
+    ? INullField
+    : T extends DataType.Number
+    ? INumberField
+    : T extends DataType.Object
+    ? IObjectField
+    : T extends DataType.String
+    ? IStringField
+    : never;
 
 type OmitFromGenericField<T extends IGenericField> = Omit<T, "name" | "required">;
 type OmitFromField<T extends IGenericField, U extends keyof T> = Omit<OmitFromGenericField<T>, U>;
@@ -110,15 +124,15 @@ type OmitFromField<T extends IGenericField, U extends keyof T> = Omit<OmitFromGe
 export type IGenericSchema = OmitFromGenericField<IGenericField>;
 export type IArraySchema = OmitFromGenericField<IArrayField> & { items?: ISchema[] | ISchema };
 export type IBooleanSchema = OmitFromGenericField<IBooleanField>;
-export type IIntegerSchema = OmitFromField<IIntegerField, "exclusiveMinimum" | "exclusiveMaximum" | "minimum" | "maximum">
-    & XOR_Partial<{ exclusiveMinimum: number }, { minimum: number }>
-    & XOR_Partial<{ exclusiveMaximum: number }, { maximum: number }>;
+export type IIntegerSchema = OmitFromField<IIntegerField, "exclusiveMinimum" | "exclusiveMaximum" | "minimum" | "maximum"> &
+    XOR_Partial<{ exclusiveMinimum: number }, { minimum: number }> &
+    XOR_Partial<{ exclusiveMaximum: number }, { maximum: number }>;
 export type INullSchema = OmitFromGenericField<INullField>;
-export type INumberSchema = OmitFromField<INumberField, "exclusiveMinimum" | "exclusiveMaximum" | "minimum" | "maximum">
-    & XOR_Partial<{ exclusiveMinimum: number }, { minimum: number }>
-    & XOR_Partial<{ exclusiveMaximum: number }, { maximum: number }>;
-export type IObjectSchema = OmitFromGenericField<IObjectField> & { properties: Record<string, ISchema>, required: string[] }
-export type IStringSchema = OmitFromGenericField<IStringField>
+export type INumberSchema = OmitFromField<INumberField, "exclusiveMinimum" | "exclusiveMaximum" | "minimum" | "maximum"> &
+    XOR_Partial<{ exclusiveMinimum: number }, { minimum: number }> &
+    XOR_Partial<{ exclusiveMaximum: number }, { maximum: number }>;
+export type IObjectSchema = OmitFromGenericField<IObjectField> & { properties: Record<string, ISchema>; required: string[] };
+export type IStringSchema = OmitFromGenericField<IStringField>;
 
 export interface IChildSchema {
     name: string;

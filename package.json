@@ -2,7 +2,7 @@
     "name": "json-schema-editor",
     "homepage": "https://jingwangtw.github.io/json-schema-editor",
     "version": "0.1.0",
-    "private": true,
+    "private": false,
     "dependencies": {
         "@testing-library/jest-dom": "^4.2.4",
         "@testing-library/react": "^9.5.0",
@@ -18,7 +18,6 @@
         "react-bootstrap": "^1.4.0",
         "react-dom": "^17.0.1",
         "react-icons": "^3.11.0",
-        "react-id-generator": "^3.0.1",
         "react-scripts": "3.4.4",
         "react-syntax-highlighter": "^15.3.1",
         "typescript": "^4.0.3"
@@ -29,7 +28,11 @@
         "start": "react-scripts start",
         "build": "react-scripts build",
         "test": "react-scripts test",
-        "eject": "react-scripts eject"
+        "eject": "react-scripts eject",
+        "lint": "eslint . --ext .js,.jsx,.ts,.tsx --quiet",
+        "lint-fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
+        "precommit": "lint-staged",
+        "commit": "git-cz"
     },
     "eslintConfig": {
         "extends": "react-app"
@@ -48,6 +51,46 @@
         ]
     },
     "devDependencies": {
-        "gh-pages": "^3.1.0"
+        "@commitlint/cli": "^11.0.0",
+        "@commitlint/config-conventional": "^11.0.0",
+        "@typescript-eslint/eslint-plugin": "^4.13.0",
+        "eslint-config-prettier": "^7.1.0",
+        "eslint-plugin-import": "^2.22.1",
+        "eslint-plugin-jest": "^24.1.3",
+        "eslint-plugin-json": "^2.1.2",
+        "eslint-plugin-prettier": "^3.3.1",
+        "eslint-plugin-react": "^7.22.0",
+        "gh-pages": "^3.1.0",
+        "git-cz": "^4.7.6",
+        "husky": "^4.3.8",
+        "import-sort-style-module": "^6.0.0",
+        "lint-staged": "^10.5.3",
+        "prettier": "^2.2.1",
+        "prettier-eslint": "^12.0.0",
+        "prettier-plugin-import-sort": "0.0.6"
+    },
+    "importSort": {
+        ".js, .jsx, .ts, .tsx": {
+            "style": "module",
+            "parser": "typescript"
+        }
+    },
+    "husky": {
+        "hooks": {
+            "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+            "pre-commit": "lint-staged"
+        }
+    },
+    "lint-staged": {
+        "src/**/*.{js,ts,tsx,ts}": [
+            "prettier --config .prettierrc.json --write",
+            "eslint --fix \"src/**/*.{ts,tsx,js,jsx}\"",
+            "eslint \"src/**/*.{ts,tsx,js,jsx}\""
+        ]
+    },
+    "commitlint": {
+        "extends": [
+            "@commitlint/config-conventional"
+        ]
     }
 }
