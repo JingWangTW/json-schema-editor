@@ -1,7 +1,7 @@
 import React from "react";
 import { Navbar } from "react-bootstrap";
 
-import SchemaEditor from "./SchemaEditor";
+import Editor from "./Editor";
 
 class App extends React.Component {
     render(): JSX.Element {
@@ -18,7 +18,7 @@ class App extends React.Component {
                     </Navbar.Collapse>
                 </Navbar>
 
-                <SchemaEditor />
+                <Editor />
             </>
         );
     }

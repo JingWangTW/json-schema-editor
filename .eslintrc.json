@@ -51,7 +51,7 @@
             "error",
             {
                 "arrays": "never",
-                "objects": "always",
+                "objects": "always-multiline",
                 "imports": "never",
                 "exports": "never",
                 "functions": "never"
@@ -64,6 +64,7 @@
         "class-methods-use-this": "off",
         "import/extensions": "off",
         "import/prefer-default-export": "off",
+        "@typescript-eslint/no-empty-function": "warn",
         "@typescript-eslint/explicit-function-return-type": "error",
         "@typescript-eslint/no-var-requires": "off",
         "no-multiple-empty-lines": [
