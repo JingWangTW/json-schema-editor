@@ -7,15 +7,16 @@ import GenericField from "../node_component/GeneralField";
 import HintText from "../node_component/HintText";
 import OptionsButtons from "../node_component/OptionsButtons";
 import SpaceFront from "../node_component/SpaceFront";
-import { DefaultGenericField, OmitGenericField, type_Hints } from "../node_component/type_NodeComponent";
+import {
+    DefaultGenericField,
+    IGenericFieldOptions,
+    IOptionsButtonsAttr,
+    OmitGenericField,
+    type_Hints,
+} from "../node_component/type_NodeComponent";
 import { IObjectEditorField, ISchemaEditorProps } from "./type_SchemaEditor";
 
 interface IObjectSchemaEditorState {
-    hasSibling: boolean;
-    isDeletable: boolean;
-    isRequiredFieldReadonly: boolean;
-    isNameFieldReadonly: boolean;
-
     field: OmitGenericField<IObjectEditorField>;
 
     hint?: type_Hints;
@@ -24,6 +25,8 @@ interface IObjectSchemaEditorState {
 class ObjectSchemaEditor extends React.Component<ISchemaEditorProps<IObjectEditorField>, IObjectSchemaEditorState> {
     private defaultField: DefaultGenericField & Required<OmitGenericField<IObjectEditorField>>;
     private optionModalRef: React.RefObject<EditorOptionModal>;
+    private optionsButtonsAttr: IOptionsButtonsAttr;
+    private genericFieldOptions: IGenericFieldOptions;
 
     constructor(props: ISchemaEditorProps<IObjectEditorField>) {
         super(props);
@@ -31,6 +34,17 @@ class ObjectSchemaEditor extends React.Component<ISchemaEditorProps<IObjectEdito
         const propsRemoveField = { ...props, field: undefined } as Omit<ISchemaEditorProps<IObjectEditorField>, "field">;
 
         this.optionModalRef = React.createRef<EditorOptionModal>();
+        this.optionsButtonsAttr = {
+            hasChild: true,
+            hasSibling: true,
+            isDeleteAble: true,
+            isOptionExist: true,
+            ...props, // override hasSibling, isDeleteAble
+        };
+
+        this.genericFieldOptions = {
+            ...props, // override isRequiredFieldReadonly, isNameFieldReadonly
+        };
 
         this.defaultField = {
             type: DataType.Object,
@@ -41,11 +55,6 @@ class ObjectSchemaEditor extends React.Component<ISchemaEditorProps<IObjectEdito
 
         this.state = {
             field: this.defaultField,
-
-            hasSibling: true,
-            isDeletable: false,
-            isRequiredFieldReadonly: false,
-            isNameFieldReadonly: false,
 
             ...propsRemoveField,
         };
@@ -69,17 +78,9 @@ class ObjectSchemaEditor extends React.Component<ISchemaEditorProps<IObjectEdito
 
                         <Form>
                             <Form.Row>
-                                <GenericField
-                                    defaultField={this.defaultField}
-                                    isRequiredFieldReadonly={this.state.isRequiredFieldReadonly}
-                                    isNameFieldReadonly={this.state.isNameFieldReadonly}
-                                />
+                                <GenericField defaultField={this.defaultField} options={this.genericFieldOptions} />
                                 <OptionsButtons
-                                    buttonOptions={{
-                                        hasChild: true,
-                                        hasSibling: this.state.hasSibling,
-                                        isDeleteAble: this.state.isDeletable,
-                                    }}
+                                    buttonOptions={this.optionsButtonsAttr}
                                     delete={this.nullFunction.bind(this)}
                                     addChild={this.nullFunction.bind(this)}
                                     addSibling={this.nullFunction.bind(this)}

@@ -6,14 +6,10 @@ import { AiOutlineSetting } from "react-icons/ai";
 import { FaPlus, FaRegTrashAlt } from "react-icons/fa";
 
 import { NextId } from "../../model/utility";
-import { EmptyState } from "../type_component";
+import { IOptionsButtonsAttr } from "./type_NodeComponent";
 
 interface INodeOptionsButtonsProps {
-    buttonOptions: {
-        hasChild: boolean;
-        hasSibling: boolean;
-        isDeleteAble: boolean;
-    };
+    buttonOptions: IOptionsButtonsAttr;
 
     showOptionModal(): void;
 
@@ -36,74 +32,67 @@ const ToggleAddButton = React.forwardRef<HTMLSpanElement, ToggleAddButtonProps>(
 // to make eslint happy
 ToggleAddButton.displayName = "ToggleAddButton";
 
-class NodeOptionsButtons extends React.Component<INodeOptionsButtonsProps, EmptyState> {
-    private readonly addHtmlDropId = NextId.next("Key").toString();
-    private readonly addToolTipId = NextId.next("Key").toString();
+function NodeOptionsButtons(props: INodeOptionsButtonsProps): JSX.Element {
+    if (props.buttonOptions.hasChild && !props.addChild)
+        throw new Error("Bad arguments to create NodeOptionsButtons: Provide buttonOptions.hasChild = true, without addChild()");
+    else if (props.buttonOptions.hasSibling && !props.addSibling)
+        throw new Error("Bad arguments to create NodeOptionsButtons: Provide buttonOptions.hasSibling = true, without addSibling()");
+    else if (props.buttonOptions.isDeleteAble && !props.delete)
+        throw new Error("Bad arguments to create NodeOptionsButtons: Provide buttonOptions.isDeleteAble = true, without delete()");
 
-    constructor(props: INodeOptionsButtonsProps) {
-        super(props);
+    const addHtmlDropId = NextId.next("Key").toString();
+    const addToolTipId = NextId.next("Key").toString();
 
-        // check props
-        if (props.buttonOptions.hasChild && !props.addChild)
-            throw new Error("Bad arguments to create NodeOptionsButtons: Provide buttonOptions.hasChild = true, without addChild()");
-        else if (props.buttonOptions.hasSibling && !props.addSibling)
-            throw new Error("Bad arguments to create NodeOptionsButtons: Provide buttonOptions.hasSibling = true, without addSibling()");
-        else if (props.buttonOptions.isDeleteAble && !props.delete)
-            throw new Error("Bad arguments to create NodeOptionsButtons: Provide buttonOptions.isDeleteAble = true, without delete()");
-    }
+    return (
+        <div className="node-option-block">
+            {props.buttonOptions.hasChild && props.buttonOptions.hasSibling && (
+                <div className="node-option-btn-block">
+                    <Dropdown>
+                        <Dropdown.Toggle as={ToggleAddButton} id={addHtmlDropId} />
 
-    render(): JSX.Element {
-        return (
-            <div className="node-option-block">
-                {this.props.buttonOptions.hasChild && this.props.buttonOptions.hasSibling && (
-                    <div className="node-option-btn-block">
-                        <Dropdown>
-                            <Dropdown.Toggle as={ToggleAddButton} id={this.addHtmlDropId} />
+                        <Dropdown.Menu>
+                            <Dropdown.Item href="#" eventKey="1" onClick={props.addSibling}>
+                                Add Sibling
+                            </Dropdown.Item>
+                            <Dropdown.Item href="#" eventKey="2" onClick={props.addChild}>
+                                Add Child
+                            </Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
+                </div>
+            )}
 
-                            <Dropdown.Menu>
-                                <Dropdown.Item href="#" eventKey="1" onClick={this.props.addSibling}>
-                                    Add Sibling
-                                </Dropdown.Item>
-                                <Dropdown.Item href="#" eventKey="2" onClick={this.props.addChild}>
-                                    Add Child
-                                </Dropdown.Item>
-                            </Dropdown.Menu>
-                        </Dropdown>
-                    </div>
-                )}
-                {this.props.buttonOptions.hasChild !== this.props.buttonOptions.hasSibling && (
-                    <div
-                        className="node-option-btn-block"
-                        onClick={this.props.buttonOptions.hasChild ? this.props.addChild : this.props.addSibling}
-                    >
-                        <OverlayTrigger trigger={["hover", "focus"]} overlay={<Tooltip id={this.addToolTipId}> Add </Tooltip>}>
-                            <span>
-                                <FaPlus color="green" />
-                            </span>
-                        </OverlayTrigger>
-                    </div>
-                )}
+            {props.buttonOptions.hasChild !== props.buttonOptions.hasSibling && (
+                <div className="node-option-btn-block" onClick={props.buttonOptions.hasChild ? props.addChild : props.addSibling}>
+                    <OverlayTrigger trigger={["hover", "focus"]} overlay={<Tooltip id={addToolTipId}> Add </Tooltip>}>
+                        <span>
+                            <FaPlus color="green" />
+                        </span>
+                    </OverlayTrigger>
+                </div>
+            )}
 
-                {this.props.buttonOptions.isDeleteAble && (
-                    <div className="node-option-btn-block" onClick={this.props.delete}>
-                        <OverlayTrigger trigger={["hover", "focus"]} overlay={<Tooltip id="delete-tooltip"> Delete </Tooltip>}>
-                            <span>
-                                <FaRegTrashAlt color="red" />
-                            </span>
-                        </OverlayTrigger>
-                    </div>
-                )}
+            {props.buttonOptions.isDeleteAble && (
+                <div className="node-option-btn-block" onClick={props.delete}>
+                    <OverlayTrigger trigger={["hover", "focus"]} overlay={<Tooltip id="delete-tooltip"> Delete </Tooltip>}>
+                        <span>
+                            <FaRegTrashAlt color="red" />
+                        </span>
+                    </OverlayTrigger>
+                </div>
+            )}
 
-                <div className="node-option-btn-block" onClick={this.props.showOptionModal.bind(this)}>
+            {props.buttonOptions.isOptionExist && (
+                <div className="node-option-btn-block" onClick={props.showOptionModal}>
                     <OverlayTrigger trigger={["hover", "focus"]} overlay={<Tooltip id="option-tooltip"> Option </Tooltip>}>
                         <span>
                             <AiOutlineSetting />
                         </span>
                     </OverlayTrigger>
                 </div>
-            </div>
-        );
-    }
+            )}
+        </div>
+    );
 }
 
 export default NodeOptionsButtons;

@@ -4,12 +4,11 @@ import { TiPencil } from "react-icons/ti";
 
 import { NextId, getOrDefault } from "../../model/utility";
 import { PartialBy } from "../../type";
-import { IGenericField } from "./type_NodeComponent";
+import { IGenericField, IGenericFieldOptions } from "./type_NodeComponent";
 
 interface IGenericFieldProps {
     defaultField: PartialBy<IGenericField, "required" | "name">;
-    isRequiredFieldReadonly?: boolean;
-    isNameFieldReadonly?: boolean;
+    options: IGenericFieldOptions;
 }
 
 interface IGenericFieldState {
@@ -37,8 +36,8 @@ class GenericField extends React.Component<IGenericFieldProps, IGenericFieldStat
 
         this.state = {
             field,
-            isRequiredFieldReadonly: getOrDefault(this.props.isRequiredFieldReadonly, false),
-            isNameFieldReadonly: getOrDefault(this.props.isNameFieldReadonly, false),
+            isRequiredFieldReadonly: getOrDefault(this.props.options.isRequiredFieldReadonly, false),
+            isNameFieldReadonly: getOrDefault(this.props.options.isNameFieldReadonly, false),
 
             isDescriptionModalShow: false,
         };

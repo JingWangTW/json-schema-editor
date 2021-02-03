@@ -11,6 +11,18 @@ export interface IGenericField {
     $comment?: string;
 }
 
+export interface IOptionsButtonsAttr {
+    hasChild: boolean;
+    hasSibling: boolean;
+    isDeleteAble: boolean;
+    isOptionExist: boolean;
+}
+
+export type IGenericFieldOptions = {
+    isRequiredFieldReadonly?: boolean;
+    isNameFieldReadonly?: boolean;
+};
+
 export type DefaultGenericField = PartialBy<IGenericField, "name" | "required">;
 
 export type OmitGenericField<T> = Omit<T, keyof IGenericField>;
