@@ -45,6 +45,11 @@
             }
         }
     },
+    "ignorePatterns": [
+        "node_modules/",
+        "build/",
+        "src/serviceWorker.ts"
+    ],
     "rules": {
         "no-trailing-spaces": "error",
         "comma-dangle": [
@@ -68,6 +73,9 @@
         "@typescript-eslint/explicit-function-return-type": "error",
         "@typescript-eslint/no-var-requires": "off",
         "no-multiple-empty-lines": [
+            "error"
+        ],
+        "@typescript-eslint/no-unused-vars": [
             "error"
         ]
     }

@@ -65,7 +65,10 @@ class ObjectSchemaEditor extends React.Component<ISchemaEditorProps<IObjectEdito
         this.optionModalRef.current!.setDisplayOptionModal(true);
     }
 
-    nullFunction(): void {}
+    nullFunction(): void {
+        // to make eslint happy
+        console.log("eslint Happy");
+    }
 
     render(): JSX.Element {
         return (

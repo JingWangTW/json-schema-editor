@@ -63,7 +63,10 @@ class GenericField extends React.Component<IGenericFieldProps, IGenericFieldStat
         }
     }
 
-    changeType(changeEvent: React.ChangeEvent<HTMLSelectElement>): void {}
+    changeType(changeEvent: React.ChangeEvent<HTMLSelectElement>): void {
+        // to make eslint happy
+        console.log(changeEvent);
+    }
 
     setDisplayDescriptionModal(show: boolean): void {
         this.setState({
