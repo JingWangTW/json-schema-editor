@@ -1,5 +1,8 @@
+import "../../index.css";
+
 import React from "react";
-import { Button, Col, Form, FormControl, InputGroup, Modal, OverlayTrigger, Row, Tooltip } from "react-bootstrap";
+import { Accordion, Button, Col, Form, FormControl, InputGroup, Modal, OverlayTrigger, Tooltip } from "react-bootstrap";
+import { AiOutlineDown } from "react-icons/ai";
 import { TiPencil } from "react-icons/ti";
 
 import { NextId, getOrDefault } from "../../model/utility";
@@ -17,6 +20,7 @@ interface IGenericFieldState {
     isNameFieldReadonly: boolean;
 
     isDescriptionModalShow: boolean;
+    isCommentFieldShow: boolean;
 }
 
 class GenericField extends React.Component<IGenericFieldProps, IGenericFieldState> {
@@ -40,6 +44,7 @@ class GenericField extends React.Component<IGenericFieldProps, IGenericFieldStat
             isNameFieldReadonly: getOrDefault(this.props.options.isNameFieldReadonly, false),
 
             isDescriptionModalShow: false,
+            isCommentFieldShow: false,
         };
     }
 
@@ -74,101 +79,122 @@ class GenericField extends React.Component<IGenericFieldProps, IGenericFieldStat
         });
     }
 
+    ff(event: React.SyntheticEvent<Element, Event>): void {
+        console.log(event);
+    }
+
     render(): JSX.Element {
         return (
-            <>
-                <Col lg={3}>
-                    <Row>
-                        <Col>
-                            <InputGroup>
-                                <OverlayTrigger trigger={["hover", "focus"]} overlay={<Tooltip id="add-tooltip"> Required </Tooltip>}>
-                                    <InputGroup.Prepend>
-                                        <InputGroup.Checkbox
-                                            defaultChecked={this.state.field.required}
-                                            disabled={this.state.isRequiredFieldReadonly}
-                                            onChange={this.recordGenericField.bind(this, "required")}
-                                        />
-                                    </InputGroup.Prepend>
-                                </OverlayTrigger>
+            <Accordion>
+                <Form.Row>
+                    <Col>
+                        <Form.Row>
+                            <Col lg={3}>
+                                <InputGroup>
+                                    <OverlayTrigger trigger={["hover", "focus"]} overlay={<Tooltip id="add-tooltip"> Required </Tooltip>}>
+                                        <InputGroup.Prepend>
+                                            <InputGroup.Checkbox
+                                                defaultChecked={this.state.field.required}
+                                                disabled={this.state.isRequiredFieldReadonly}
+                                                onChange={this.recordGenericField.bind(this, "required")}
+                                            />
+                                        </InputGroup.Prepend>
+                                    </OverlayTrigger>
 
+                                    <Form.Control
+                                        placeholder="items"
+                                        required
+                                        readOnly={this.state.isNameFieldReadonly}
+                                        defaultValue={this.state.field.name}
+                                        onChange={this.recordGenericField.bind(this, "name")}
+                                    />
+                                </InputGroup>
+                            </Col>
+                            <Col lg={1}>
                                 <Form.Control
-                                    placeholder="items"
-                                    required
-                                    readOnly={this.state.isNameFieldReadonly}
-                                    defaultValue={this.state.field.name}
-                                    onChange={this.recordGenericField.bind(this, "name")}
+                                    as="select"
+                                    custom
+                                    placeholder="DataType"
+                                    onChange={this.changeType.bind(this)}
+                                    defaultValue={this.props.defaultField.type}
+                                >
+                                    <option value={DataType.Object}>Object</option>
+                                    <option value={DataType.Array}>Array</option>
+                                    <option value={DataType.String}>String</option>
+                                    <option value={DataType.Integer}>Integer</option>
+                                    <option value={DataType.Number}>Number</option>
+                                    <option value={DataType.Null}>Null</option>
+                                    <option value={DataType.Boolean}>Boolean</option>
+                                </Form.Control>
+                            </Col>
+                            <Col lg={4}>
+                                <Form.Control
+                                    placeholder="Titile"
+                                    defaultValue={this.state.field.title}
+                                    onChange={this.recordGenericField.bind(this, "title")}
                                 />
-                            </InputGroup>
-                        </Col>
-                    </Row>
-                </Col>
-                <Col lg={1}>
-                    <Form.Control
-                        as="select"
-                        custom
-                        placeholder="DataType"
-                        onChange={this.changeType.bind(this)}
-                        defaultValue={this.props.defaultField.type}
-                    >
-                        <option value={DataType.Object}>Object</option>
-                        <option value={DataType.Array}>Array</option>
-                        <option value={DataType.String}>String</option>
-                        <option value={DataType.Integer}>Integer</option>
-                        <option value={DataType.Number}>Number</option>
-                        <option value={DataType.Null}>Null</option>
-                        <option value={DataType.Boolean}>Boolean</option>
-                    </Form.Control>
-                </Col>
-                <Col lg={3}>
-                    <Form.Control
-                        placeholder="Titile"
-                        defaultValue={this.state.field.title}
-                        onChange={this.recordGenericField.bind(this, "title")}
-                    />
-                </Col>
-                <Col lg={4}>
-                    <InputGroup>
-                        <FormControl
-                            type="text"
-                            id="Description"
-                            placeholder="Description"
-                            defaultValue={this.state.field.description}
-                            value={this.state.field.description}
-                            onChange={this.recordGenericField.bind(this, "description")}
-                        />
-                        <OverlayTrigger trigger={["hover", "focus"]} overlay={<Tooltip id="add-tooltip"> Edit </Tooltip>}>
-                            <InputGroup.Append>
-                                <Button variant="outline-primary" onClick={this.setDisplayDescriptionModal.bind(this, true)}>
-                                    <TiPencil />
-                                </Button>
-                            </InputGroup.Append>
-                        </OverlayTrigger>
-                    </InputGroup>
+                            </Col>
+                            <Col lg={4}>
+                                <InputGroup>
+                                    <FormControl
+                                        type="text"
+                                        id="Description"
+                                        placeholder="Description"
+                                        defaultValue={this.state.field.description}
+                                        value={this.state.field.description}
+                                        onChange={this.recordGenericField.bind(this, "description")}
+                                    />
+                                    <OverlayTrigger trigger={["hover", "focus"]} overlay={<Tooltip id="add-tooltip"> Edit </Tooltip>}>
+                                        <InputGroup.Append>
+                                            <Button variant="outline-primary" onClick={this.setDisplayDescriptionModal.bind(this, true)}>
+                                                <TiPencil />
+                                            </Button>
+                                        </InputGroup.Append>
+                                    </OverlayTrigger>
+                                </InputGroup>
 
-                    <Modal
-                        onHide={this.setDisplayDescriptionModal.bind(this, false)}
-                        show={this.state.isDescriptionModalShow}
-                        size="lg"
-                        aria-labelledby="description-modal"
-                        centered
-                    >
-                        <Modal.Header closeButton>
-                            <Modal.Title id="description-modal">Description</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                            <Form.Group>
-                                <Form.Control
-                                    as="textarea"
-                                    rows={3}
-                                    defaultValue={this.state.field.description}
-                                    value={this.state.field.description}
-                                    onChange={this.recordGenericField.bind(this, "description")}
-                                />
-                            </Form.Group>
-                        </Modal.Body>
-                    </Modal>
-                </Col>
-            </>
+                                <Modal
+                                    onHide={this.setDisplayDescriptionModal.bind(this, false)}
+                                    show={this.state.isDescriptionModalShow}
+                                    size="lg"
+                                    aria-labelledby="description-modal"
+                                    centered
+                                >
+                                    <Modal.Header closeButton>
+                                        <Modal.Title id="description-modal">Description</Modal.Title>
+                                    </Modal.Header>
+                                    <Modal.Body>
+                                        <Form.Group>
+                                            <Form.Control
+                                                as="textarea"
+                                                rows={3}
+                                                defaultValue={this.state.field.description}
+                                                value={this.state.field.description}
+                                                onChange={this.recordGenericField.bind(this, "description")}
+                                            />
+                                        </Form.Group>
+                                    </Modal.Body>
+                                </Modal>
+                            </Col>
+
+                            <Col lg={12} style={{ paddingTop: "5px" }}>
+                                <Accordion.Collapse eventKey="0">
+                                    <Form.Control
+                                        placeholder="$comment"
+                                        defaultValue={this.state.field.$comment}
+                                        onChange={this.recordGenericField.bind(this, "$comment")}
+                                    />
+                                </Accordion.Collapse>
+                            </Col>
+                        </Form.Row>
+                    </Col>
+                    <Col lg="auto" style={{ cursor: "pointer" }}>
+                        <Accordion.Toggle eventKey="0" as="span" className="node-option-block">
+                            <AiOutlineDown color="blue" />
+                        </Accordion.Toggle>
+                    </Col>
+                </Form.Row>
+            </Accordion>
         );
     }
 }

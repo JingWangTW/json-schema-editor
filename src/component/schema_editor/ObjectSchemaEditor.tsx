@@ -70,6 +70,15 @@ class ObjectSchemaEditor extends React.Component<ISchemaEditorProps<IObjectEdito
         console.log("eslint Happy");
     }
 
+    recordField(fieldName: keyof OmitGenericField<IObjectEditorField>, event: React.ChangeEvent<HTMLInputElement>): void {
+        this.setState(prevState => ({
+            field: {
+                ...prevState.field,
+                [fieldName]: event.target.value,
+            },
+        }));
+    }
+
     render(): JSX.Element {
         return (
             <div className="my-1">
@@ -81,14 +90,18 @@ class ObjectSchemaEditor extends React.Component<ISchemaEditorProps<IObjectEdito
 
                         <Form>
                             <Form.Row>
-                                <GenericField defaultField={this.defaultField} options={this.genericFieldOptions} />
-                                <OptionsButtons
-                                    buttonOptions={this.optionsButtonsAttr}
-                                    delete={this.nullFunction.bind(this)}
-                                    addChild={this.nullFunction.bind(this)}
-                                    addSibling={this.nullFunction.bind(this)}
-                                    showOptionModal={this.showOptionModal.bind(this, true)}
-                                />
+                                <Col lg={11}>
+                                    <GenericField defaultField={this.defaultField} options={this.genericFieldOptions} />
+                                </Col>
+                                <Col lg={1}>
+                                    <OptionsButtons
+                                        buttonOptions={this.optionsButtonsAttr}
+                                        delete={this.nullFunction.bind(this)}
+                                        addChild={this.nullFunction.bind(this)}
+                                        addSibling={this.nullFunction.bind(this)}
+                                        showOptionModal={this.showOptionModal.bind(this, true)}
+                                    />
+                                </Col>
                                 <EditorOptionModal resetOptionFiledForm={this.nullFunction} ref={this.optionModalRef}>
                                     <Form.Group as={Row}>
                                         <Form.Label column lg="auto" htmlFor="MinProperties">
@@ -100,7 +113,7 @@ class ObjectSchemaEditor extends React.Component<ISchemaEditorProps<IObjectEdito
                                                 min="0"
                                                 id="MinProperties"
                                                 defaultValue={this.defaultField.minProperties}
-                                                // onChange={this.recordField.bind(this, "minProperties")}
+                                                onChange={this.recordField.bind(this, "minProperties")}
                                             />
                                         </Col>
                                         <Form.Label column lg="auto" htmlFor="MaxProperties">
@@ -112,7 +125,7 @@ class ObjectSchemaEditor extends React.Component<ISchemaEditorProps<IObjectEdito
                                                 min="0"
                                                 id="MaxProperties"
                                                 defaultValue={this.defaultField.maxProperties}
-                                                // onChange={this.recordField.bind(this, "maxProperties")}
+                                                onChange={this.recordField.bind(this, "maxProperties")}
                                             />
                                         </Col>
                                     </Form.Group>
