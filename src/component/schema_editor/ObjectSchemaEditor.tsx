@@ -14,7 +14,7 @@ import {
     OmitGenericField,
     type_Hints,
 } from "../node_component/type_NodeComponent";
-import { IObjectEditorField, ISchemaEditorProps } from "./type_SchemaEditor";
+import { IObjectEditorField, ISchemaEditorProps, SchemaEditor } from "./type_SchemaEditor";
 
 interface IObjectSchemaEditorState {
     field: OmitGenericField<IObjectEditorField>;
@@ -22,7 +22,7 @@ interface IObjectSchemaEditorState {
     hint?: type_Hints;
 }
 
-class ObjectSchemaEditor extends React.Component<ISchemaEditorProps<IObjectEditorField>, IObjectSchemaEditorState> {
+class ObjectSchemaEditor extends React.Component<ISchemaEditorProps<IObjectEditorField>, IObjectSchemaEditorState> implements SchemaEditor {
     private defaultField: DefaultGenericField & Required<OmitGenericField<IObjectEditorField>>;
     private optionModalRef: React.RefObject<EditorOptionModal>;
     private optionsButtonsAttr: IOptionsButtonsAttr;
@@ -37,10 +37,12 @@ class ObjectSchemaEditor extends React.Component<ISchemaEditorProps<IObjectEdito
         this.optionsButtonsAttr = {
             hasChild: true,
             hasSibling: true,
-            isDeleteAble: true,
+            isDeleteable: true,
             isOptionExist: true,
-            ...props, // override hasSibling, isDeleteAble
+            ...props, // override hasSibling, isDeleteable
         };
+
+        console.log(this.optionsButtonsAttr);
 
         this.genericFieldOptions = {
             ...props, // override isRequiredFieldReadonly, isNameFieldReadonly

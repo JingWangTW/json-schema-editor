@@ -1,12 +1,16 @@
 import { DataType } from "../../type";
 import { IGenericField } from "../node_component/type_NodeComponent";
 
+// used to recognize subclass of editor
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface SchemaEditor {}
+
 export interface ISchemaEditorProps<FieldType extends IGenericField> {
     selfId: string;
     depth: number;
 
     hasSibling?: boolean;
-    isDeletable?: boolean;
+    isDeleteable?: boolean;
     isRequiredFieldReadonly?: boolean;
     isNameFieldReadonly?: boolean;
 

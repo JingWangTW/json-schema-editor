@@ -37,9 +37,9 @@ class ArraySchemaEditor extends React.Component<ISchemaEditorProps<IArrayEditorF
         this.optionsButtonsAttr = {
             hasChild: true,
             hasSibling: true,
-            isDeleteAble: true,
+            isDeleteable: true,
             isOptionExist: true,
-            ...props, // override hasSibling, isDeleteAble
+            ...props, // override hasSibling, isDeleteable
         };
 
         this.genericFieldOptions = {

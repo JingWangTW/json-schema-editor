@@ -14,7 +14,7 @@ export interface IGenericField {
 export interface IOptionsButtonsAttr {
     hasChild: boolean;
     hasSibling: boolean;
-    isDeleteAble: boolean;
+    isDeleteable: boolean;
     isOptionExist: boolean;
 }
 

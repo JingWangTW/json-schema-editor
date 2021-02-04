@@ -37,8 +37,8 @@ function NodeOptionsButtons(props: INodeOptionsButtonsProps): JSX.Element {
         throw new Error("Bad arguments to create NodeOptionsButtons: Provide buttonOptions.hasChild = true, without addChild()");
     else if (props.buttonOptions.hasSibling && !props.addSibling)
         throw new Error("Bad arguments to create NodeOptionsButtons: Provide buttonOptions.hasSibling = true, without addSibling()");
-    else if (props.buttonOptions.isDeleteAble && !props.delete)
-        throw new Error("Bad arguments to create NodeOptionsButtons: Provide buttonOptions.isDeleteAble = true, without delete()");
+    else if (props.buttonOptions.isDeleteable && !props.delete)
+        throw new Error("Bad arguments to create NodeOptionsButtons: Provide buttonOptions.isDeleteable = true, without delete()");
 
     const addHtmlDropId = NextId.next("Key").toString();
     const addToolTipId = NextId.next("Key").toString();
@@ -72,7 +72,7 @@ function NodeOptionsButtons(props: INodeOptionsButtonsProps): JSX.Element {
                 </div>
             )}
 
-            {props.buttonOptions.isDeleteAble && (
+            {props.buttonOptions.isDeleteable && (
                 <div className="node-option-btn-block" onClick={props.delete}>
                     <OverlayTrigger trigger={["hover", "focus"]} overlay={<Tooltip id="delete-tooltip"> Delete </Tooltip>}>
                         <span>
