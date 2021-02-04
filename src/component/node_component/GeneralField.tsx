@@ -3,7 +3,7 @@ import { Button, Col, Form, FormControl, InputGroup, Modal, OverlayTrigger, Row,
 import { TiPencil } from "react-icons/ti";
 
 import { NextId, getOrDefault } from "../../model/utility";
-import { PartialBy } from "../../type";
+import { DataType, PartialBy } from "../../type";
 import { IGenericField, IGenericFieldOptions } from "./type_NodeComponent";
 
 interface IGenericFieldProps {
@@ -110,13 +110,13 @@ class GenericField extends React.Component<IGenericFieldProps, IGenericFieldStat
                         onChange={this.changeType.bind(this)}
                         defaultValue={this.props.defaultField.type}
                     >
-                        <option>Object</option>
-                        <option>Array</option>
-                        <option>String</option>
-                        <option>Integer</option>
-                        <option>Number</option>
-                        <option>Null</option>
-                        <option>Boolean</option>
+                        <option value={DataType.Object}>Object</option>
+                        <option value={DataType.Array}>Array</option>
+                        <option value={DataType.String}>String</option>
+                        <option value={DataType.Integer}>Integer</option>
+                        <option value={DataType.Number}>Number</option>
+                        <option value={DataType.Null}>Null</option>
+                        <option value={DataType.Boolean}>Boolean</option>
                     </Form.Control>
                 </Col>
                 <Col lg={3}>
