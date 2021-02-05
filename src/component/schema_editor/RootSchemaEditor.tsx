@@ -12,7 +12,7 @@ class RootSchemaEditor extends React.Component<EmptyProps, { type: DataType }> {
         this.state = { type: DataType.Object };
     }
 
-    changeType(type: DataType): void {
+    changeType(selfId: string, type: DataType): void {
         this.setState({ type });
     }
 

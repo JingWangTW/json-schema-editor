@@ -42,8 +42,6 @@ class ObjectSchemaEditor extends React.Component<ISchemaEditorProps<IObjectEdito
             ...props, // override hasSibling, isDeleteable
         };
 
-        console.log(this.optionsButtonsAttr);
-
         this.genericFieldOptions = {
             ...props, // override isRequiredFieldReadonly, isNameFieldReadonly
         };
@@ -65,6 +63,10 @@ class ObjectSchemaEditor extends React.Component<ISchemaEditorProps<IObjectEdito
     showOptionModal(): void {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         this.optionModalRef.current!.setDisplayOptionModal(true);
+    }
+
+    changeType(newType: DataType): void {
+        this.props.changeType(this.props.selfId, newType);
     }
 
     nullFunction(): void {
@@ -93,7 +95,11 @@ class ObjectSchemaEditor extends React.Component<ISchemaEditorProps<IObjectEdito
                         <Form>
                             <Form.Row>
                                 <Col lg={11}>
-                                    <GenericField defaultField={this.defaultField} options={this.genericFieldOptions} />
+                                    <GenericField
+                                        defaultField={this.defaultField}
+                                        options={this.genericFieldOptions}
+                                        changeType={this.changeType.bind(this)}
+                                    />
                                 </Col>
                                 <Col lg={1}>
                                     <OptionsButtons

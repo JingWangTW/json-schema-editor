@@ -12,6 +12,8 @@ import { IGenericField, IGenericFieldOptions } from "./type_NodeComponent";
 interface IGenericFieldProps {
     defaultField: PartialBy<IGenericField, "required" | "name">;
     options: IGenericFieldOptions;
+
+    changeType(props: DataType): void;
 }
 
 interface IGenericFieldState {
@@ -69,8 +71,13 @@ class GenericField extends React.Component<IGenericFieldProps, IGenericFieldStat
     }
 
     changeType(changeEvent: React.ChangeEvent<HTMLSelectElement>): void {
-        // to make eslint happy
-        console.log(changeEvent);
+        changeEvent.preventDefault();
+
+        const newType = changeEvent.target.value as DataType;
+
+        if (Object.values(DataType).includes(newType)) {
+            this.props.changeType(newType);
+        }
     }
 
     setDisplayDescriptionModal(show: boolean): void {
@@ -176,7 +183,6 @@ class GenericField extends React.Component<IGenericFieldProps, IGenericFieldStat
                                     </Modal.Body>
                                 </Modal>
                             </Col>
-
                             <Col lg={12} style={{ paddingTop: "5px" }}>
                                 <Accordion.Collapse eventKey="0">
                                     <Form.Control

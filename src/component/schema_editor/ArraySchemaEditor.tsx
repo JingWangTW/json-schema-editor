@@ -66,6 +66,10 @@ class ArraySchemaEditor extends React.Component<ISchemaEditorProps<IArrayEditorF
         this.optionModalRef.current!.setDisplayOptionModal(true);
     }
 
+    changeType(newType: DataType): void {
+        this.props.changeType(this.props.selfId, newType);
+    }
+
     nullFunction(): void {
         // to make eslint happy
         console.log("eslint Happy");
@@ -82,7 +86,11 @@ class ArraySchemaEditor extends React.Component<ISchemaEditorProps<IArrayEditorF
 
                         <Form>
                             <Form.Row>
-                                <GenericField defaultField={this.defaultField} options={this.genericFieldOptions} />
+                                <GenericField
+                                    defaultField={this.defaultField}
+                                    options={this.genericFieldOptions}
+                                    changeType={this.changeType.bind(this)}
+                                />
                                 <OptionsButtons
                                     buttonOptions={this.optionsButtonsAttr}
                                     delete={this.nullFunction.bind(this)}
