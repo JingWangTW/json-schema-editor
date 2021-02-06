@@ -14,6 +14,7 @@ import {
     OmitGenericField,
     type_Hints,
 } from "../node_component/type_NodeComponent";
+import ChildrenSchemaEditor from "./ChildrenSchemaEditor";
 import { IArrayEditorField, ISchemaEditorProps } from "./type_SchemaEditor";
 
 interface IArraySchemaEditorState {
@@ -24,7 +25,10 @@ interface IArraySchemaEditorState {
 
 class ArraySchemaEditor extends React.Component<ISchemaEditorProps<IArrayEditorField>, IArraySchemaEditorState> {
     private defaultField: DefaultGenericField & Required<OmitGenericField<IArrayEditorField>>;
+
     private optionModalRef: React.RefObject<EditorOptionModal>;
+    private childrenRef: React.RefObject<ChildrenSchemaEditor>;
+
     private optionsButtonsAttr: IOptionsButtonsAttr;
     private genericFieldOptions: IGenericFieldOptions;
 
@@ -34,6 +38,8 @@ class ArraySchemaEditor extends React.Component<ISchemaEditorProps<IArrayEditorF
         const propsRemoveField = { ...props, field: undefined } as Omit<ISchemaEditorProps<IArrayEditorField>, "field">;
 
         this.optionModalRef = React.createRef<EditorOptionModal>();
+        this.childrenRef = React.createRef<ChildrenSchemaEditor>();
+
         this.optionsButtonsAttr = {
             hasChild: true,
             hasSibling: true,
@@ -61,6 +67,23 @@ class ArraySchemaEditor extends React.Component<ISchemaEditorProps<IArrayEditorF
         };
     }
 
+    componentDidMount(): void {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        this.childrenRef.current!.add("", {
+            isDeleteable: false,
+            hasSibling: true,
+            isRequiredFieldReadonly: true,
+            isNameFieldReadonly: true,
+
+            field: {
+                type: DataType.Object,
+                name: "items",
+
+                required: true,
+            },
+        });
+    }
+
     showOptionModal(): void {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         this.optionModalRef.current!.setDisplayOptionModal(true);
@@ -68,6 +91,15 @@ class ArraySchemaEditor extends React.Component<ISchemaEditorProps<IArrayEditorF
 
     changeType(newType: DataType): void {
         this.props.changeType(this.props.selfId, newType);
+    }
+
+    addChild(): void {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        this.childrenRef.current!.add();
+    }
+
+    addSibling(): void {
+        if (this.props.addSibling) this.props.addSibling();
     }
 
     nullFunction(): void {
@@ -86,18 +118,22 @@ class ArraySchemaEditor extends React.Component<ISchemaEditorProps<IArrayEditorF
 
                         <Form>
                             <Form.Row>
-                                <GenericField
-                                    defaultField={this.defaultField}
-                                    options={this.genericFieldOptions}
-                                    changeType={this.changeType.bind(this)}
-                                />
-                                <OptionsButtons
-                                    buttonOptions={this.optionsButtonsAttr}
-                                    delete={this.nullFunction.bind(this)}
-                                    addChild={this.nullFunction.bind(this)}
-                                    addSibling={this.nullFunction.bind(this)}
-                                    showOptionModal={this.showOptionModal.bind(this, true)}
-                                />
+                                <Col lg={11}>
+                                    <GenericField
+                                        defaultField={this.defaultField}
+                                        options={this.genericFieldOptions}
+                                        changeType={this.changeType.bind(this)}
+                                    />
+                                </Col>
+                                <Col lg={1}>
+                                    <OptionsButtons
+                                        buttonOptions={this.optionsButtonsAttr}
+                                        delete={this.nullFunction.bind(this)}
+                                        addChild={this.nullFunction.bind(this)}
+                                        addSibling={this.nullFunction.bind(this)}
+                                        showOptionModal={this.showOptionModal.bind(this, true)}
+                                    />
+                                </Col>
                                 <EditorOptionModal resetOptionFiledForm={this.nullFunction} ref={this.optionModalRef}>
                                     <>
                                         <Form.Group as={Row}>
@@ -142,8 +178,7 @@ class ArraySchemaEditor extends React.Component<ISchemaEditorProps<IArrayEditorF
                         </Form>
                     </Col>
                 </Row>
-
-                {/* {this.state.hasChild && <ChildrenNodes ref={this.childRef} depth={this.props.depth + 1} />} */}
+                <ChildrenSchemaEditor ref={this.childrenRef} depth={this.props.depth} />
             </div>
         );
     }

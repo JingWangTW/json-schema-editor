@@ -1,9 +1,9 @@
 import React from "react";
 
 import { NextId } from "../../model/utility";
-import { DataType } from "../../type";
+import { DataType, PartialBy } from "../../type";
 import HintText from "../node_component/HintText";
-import { type_Hints } from "../node_component/type_NodeComponent";
+import { IGenericField, type_Hints } from "../node_component/type_NodeComponent";
 import SchemaEditorFactory from "./SchemaEditorFactory";
 import { SchemaEditor } from "./type_SchemaEditor";
 
@@ -12,6 +12,8 @@ interface NewChildNodeProps {
     isDeleteable?: boolean;
     isRequiredFieldReadonly?: boolean;
     isNameFieldReadonly?: boolean;
+
+    field?: IGenericField;
 }
 
 interface ChildNodeProperty {
@@ -52,7 +54,7 @@ class ChildrenSchemaEditor extends React.Component<ChildrenNodesProps, ChildrenN
         const originChildren = this.state.children;
         let currentIndex;
 
-        let p: Required<NewChildNodeProps> = {
+        let p: PartialBy<Required<NewChildNodeProps>, "field"> = {
             isDeleteable: true,
             hasSibling: true,
             isRequiredFieldReadonly: false,
@@ -66,7 +68,7 @@ class ChildrenSchemaEditor extends React.Component<ChildrenNodesProps, ChildrenN
             };
         }
 
-        if (selfId === undefined) {
+        if (selfId === undefined || selfId === "") {
             // push to the last one
             currentIndex = originChildren.length + 1;
         } else {
