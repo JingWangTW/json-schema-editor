@@ -29,14 +29,18 @@ class ObjectSchemaEditor extends React.Component<ISchemaEditorProps<IObjectEdito
     private genericFieldOptions: IGenericFieldOptions;
 
     private optionModalRef: React.RefObject<EditorOptionModal>;
+    private optionFormRef: React.RefObject<HTMLFormElement>;
     private childrenRef: React.RefObject<ChildrenSchemaEditor>;
 
     constructor(props: ISchemaEditorProps<IObjectEditorField>) {
         super(props);
 
-        const propsRemoveField = { ...props, field: undefined } as Omit<ISchemaEditorProps<IObjectEditorField>, "field">;
+        // remove field from props
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { field: temp, ...propsRemoveField } = props;
 
         this.optionModalRef = React.createRef<EditorOptionModal>();
+        this.optionFormRef = React.createRef<HTMLFormElement>();
         this.childrenRef = React.createRef<ChildrenSchemaEditor>();
 
         this.optionsButtonsAttr = {
@@ -87,9 +91,10 @@ class ObjectSchemaEditor extends React.Component<ISchemaEditorProps<IObjectEdito
         if (this.props.delete) this.props.delete();
     }
 
-    nullFunction(): void {
-        // to make eslint happy
-        console.log("eslint Happy");
+    resetOptionField(): void {
+        this.setState({
+            field: this.defaultField,
+        });
     }
 
     recordField(fieldName: keyof OmitGenericField<IObjectEditorField>, event: React.ChangeEvent<HTMLInputElement>): void {
@@ -128,33 +133,37 @@ class ObjectSchemaEditor extends React.Component<ISchemaEditorProps<IObjectEdito
                                         showOptionModal={this.showOptionModal.bind(this, true)}
                                     />
                                 </Col>
-                                <EditorOptionModal resetOptionFiledForm={this.nullFunction} ref={this.optionModalRef}>
-                                    <Form.Group as={Row}>
-                                        <Form.Label column lg="auto" htmlFor="MinProperties">
-                                            Min Properties
-                                        </Form.Label>
-                                        <Col>
-                                            <Form.Control
-                                                type="number"
-                                                min="0"
-                                                id="MinProperties"
-                                                defaultValue={this.defaultField.minProperties}
-                                                onChange={this.recordField.bind(this, "minProperties")}
-                                            />
-                                        </Col>
-                                        <Form.Label column lg="auto" htmlFor="MaxProperties">
-                                            Max Properties
-                                        </Form.Label>
-                                        <Col>
-                                            <Form.Control
-                                                type="number"
-                                                min="0"
-                                                id="MaxProperties"
-                                                defaultValue={this.defaultField.maxProperties}
-                                                onChange={this.recordField.bind(this, "maxProperties")}
-                                            />
-                                        </Col>
-                                    </Form.Group>
+                                <EditorOptionModal resetOptionFiledForm={this.resetOptionField.bind(this)} ref={this.optionModalRef}>
+                                    <Form ref={this.optionFormRef}>
+                                        <Form.Group as={Row}>
+                                            <Form.Label column lg="auto" htmlFor="MinProperties">
+                                                Min Properties
+                                            </Form.Label>
+                                            <Col>
+                                                <Form.Control
+                                                    type="number"
+                                                    min="0"
+                                                    id="MinProperties"
+                                                    value={this.state.field.minProperties}
+                                                    defaultValue={this.defaultField.minProperties}
+                                                    onChange={this.recordField.bind(this, "minProperties")}
+                                                />
+                                            </Col>
+                                            <Form.Label column lg="auto" htmlFor="MaxProperties">
+                                                Max Properties
+                                            </Form.Label>
+                                            <Col>
+                                                <Form.Control
+                                                    type="number"
+                                                    min="0"
+                                                    id="MaxProperties"
+                                                    value={this.state.field.maxProperties}
+                                                    defaultValue={this.defaultField.minProperties}
+                                                    onChange={this.recordField.bind(this, "maxProperties")}
+                                                />
+                                            </Col>
+                                        </Form.Group>
+                                    </Form>
                                 </EditorOptionModal>
                             </Form.Row>
                         </Form>

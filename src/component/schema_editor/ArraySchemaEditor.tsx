@@ -27,6 +27,7 @@ class ArraySchemaEditor extends React.Component<ISchemaEditorProps<IArrayEditorF
     private defaultField: DefaultGenericField & Required<OmitGenericField<IArrayEditorField>>;
 
     private optionModalRef: React.RefObject<EditorOptionModal>;
+    private optionFormRef: React.RefObject<HTMLFormElement>;
     private childrenRef: React.RefObject<ChildrenSchemaEditor>;
 
     private optionsButtonsAttr: IOptionsButtonsAttr;
@@ -35,9 +36,12 @@ class ArraySchemaEditor extends React.Component<ISchemaEditorProps<IArrayEditorF
     constructor(props: ISchemaEditorProps<IArrayEditorField>) {
         super(props);
 
-        const propsRemoveField = { ...props, field: undefined } as Omit<ISchemaEditorProps<IArrayEditorField>, "field">;
+        // remove field from props
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { field: temp, ...propsRemoveField } = props;
 
         this.optionModalRef = React.createRef<EditorOptionModal>();
+        this.optionFormRef = React.createRef<HTMLFormElement>();
         this.childrenRef = React.createRef<ChildrenSchemaEditor>();
 
         this.optionsButtonsAttr = {
@@ -105,9 +109,28 @@ class ArraySchemaEditor extends React.Component<ISchemaEditorProps<IArrayEditorF
         if (this.props.delete) this.props.delete();
     }
 
-    nullFunction(): void {
-        // to make eslint happy
-        console.log("eslint Happy");
+    resetOptionField(): void {
+        this.setState({
+            field: this.defaultField,
+        });
+    }
+
+    recordField(fieldName: keyof OmitGenericField<IArrayEditorField>, event: React.ChangeEvent<HTMLInputElement>): void {
+        if (fieldName === "minItems" || fieldName === "maxItems") {
+            this.setState(prevState => ({
+                field: {
+                    ...prevState.field,
+                    [fieldName]: event.target.value,
+                },
+            }));
+        } else {
+            this.setState(prevState => ({
+                field: {
+                    ...prevState.field,
+                    [fieldName]: event.target.checked,
+                },
+            }));
+        }
     }
 
     render(): JSX.Element {
@@ -137,8 +160,8 @@ class ArraySchemaEditor extends React.Component<ISchemaEditorProps<IArrayEditorF
                                         showOptionModal={this.showOptionModal.bind(this, true)}
                                     />
                                 </Col>
-                                <EditorOptionModal resetOptionFiledForm={this.nullFunction} ref={this.optionModalRef}>
-                                    <>
+                                <EditorOptionModal resetOptionFiledForm={this.resetOptionField.bind(this)} ref={this.optionModalRef}>
+                                    <Form ref={this.optionFormRef}>
                                         <Form.Group as={Row}>
                                             <Form.Label column lg="2" htmlFor="MinItems">
                                                 Min Items
@@ -148,8 +171,9 @@ class ArraySchemaEditor extends React.Component<ISchemaEditorProps<IArrayEditorF
                                                     type="number"
                                                     min="0"
                                                     id="MinItems"
-                                                    defaultValue={this.defaultField.minItems}
-                                                    // onChange={this.recordField.bind(this, "minItems")}
+                                                    value={this.state.field.minItems}
+                                                    defaultValue={this.state.field.minItems}
+                                                    onChange={this.recordField.bind(this, "minItems")}
                                                 />
                                             </Col>
                                             <Form.Label column lg="2" htmlFor="MaxItems">
@@ -160,8 +184,9 @@ class ArraySchemaEditor extends React.Component<ISchemaEditorProps<IArrayEditorF
                                                     type="number"
                                                     min="0"
                                                     id="MaxItems"
-                                                    defaultValue={this.defaultField.maxItems}
-                                                    // onChange={this.recordField.bind(this, "maxItems")}
+                                                    value={this.state.field.maxItems}
+                                                    defaultValue={this.state.field.maxItems}
+                                                    onChange={this.recordField.bind(this, "maxItems")}
                                                 />
                                             </Col>
                                         </Form.Group>
@@ -169,13 +194,14 @@ class ArraySchemaEditor extends React.Component<ISchemaEditorProps<IArrayEditorF
                                             <Form.Check type="checkbox" id="uniqueCheckbox">
                                                 <Form.Check.Input
                                                     type="checkbox"
-                                                    defaultChecked={this.defaultField.uniqueItems}
-                                                    // onChange={this.recordField.bind(this, "uniqueItems")}
+                                                    checked={this.state.field.uniqueItems}
+                                                    defaultChecked={this.state.field.uniqueItems}
+                                                    onChange={this.recordField.bind(this, "uniqueItems")}
                                                 />
                                                 <Form.Check.Label>Unique Items</Form.Check.Label>
                                             </Form.Check>
                                         </Form.Group>
-                                    </>
+                                    </Form>
                                 </EditorOptionModal>
                             </Form.Row>
                         </Form>

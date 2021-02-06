@@ -1,8 +1,7 @@
-import React from "react";
+import React, { PropsWithChildren } from "react";
 import { Button, Modal } from "react-bootstrap";
 
 interface EditorOptionModalProps {
-    children: JSX.Element;
     resetOptionFiledForm(): void;
 }
 
@@ -10,7 +9,7 @@ interface EditorOptionModalState {
     isOptionModalShow: boolean;
 }
 
-class EditorOptionModal extends React.Component<EditorOptionModalProps, EditorOptionModalState> {
+class EditorOptionModal extends React.Component<PropsWithChildren<EditorOptionModalProps>, EditorOptionModalState> {
     constructor(props: EditorOptionModalProps) {
         super(props);
 
@@ -37,11 +36,8 @@ class EditorOptionModal extends React.Component<EditorOptionModalProps, EditorOp
                 </Modal.Header>
                 <Modal.Body>{this.props.children}</Modal.Body>
                 <Modal.Footer>
-                    <Button
-                        variant="outline-secondary"
-                        // onClick={this.resetOptionFiledForm.bind(this)}
-                    >
-                        Clear
+                    <Button variant="outline-secondary" onClick={this.props.resetOptionFiledForm}>
+                        Reset
                     </Button>
                     <Button variant="outline-success" onClick={this.setDisplayOptionModal.bind(this, false)}>
                         Close
