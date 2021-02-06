@@ -83,6 +83,10 @@ class ObjectSchemaEditor extends React.Component<ISchemaEditorProps<IObjectEdito
         if (this.props.addSibling) this.props.addSibling();
     }
 
+    delete(): void {
+        if (this.props.delete) this.props.delete();
+    }
+
     nullFunction(): void {
         // to make eslint happy
         console.log("eslint Happy");
@@ -118,7 +122,7 @@ class ObjectSchemaEditor extends React.Component<ISchemaEditorProps<IObjectEdito
                                 <Col lg={1}>
                                     <OptionsButtons
                                         buttonOptions={this.optionsButtonsAttr}
-                                        delete={this.nullFunction.bind(this)}
+                                        delete={this.delete.bind(this)}
                                         addChild={this.addChild.bind(this)}
                                         addSibling={this.addSibling.bind(this)}
                                         showOptionModal={this.showOptionModal.bind(this, true)}

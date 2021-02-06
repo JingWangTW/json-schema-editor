@@ -68,20 +68,7 @@ class ArraySchemaEditor extends React.Component<ISchemaEditorProps<IArrayEditorF
     }
 
     componentDidMount(): void {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        this.childrenRef.current!.add("", {
-            isDeleteable: false,
-            hasSibling: true,
-            isRequiredFieldReadonly: true,
-            isNameFieldReadonly: true,
-
-            field: {
-                type: DataType.Object,
-                name: "items",
-
-                required: true,
-            },
-        });
+        this.addChild();
     }
 
     showOptionModal(): void {
@@ -95,11 +82,27 @@ class ArraySchemaEditor extends React.Component<ISchemaEditorProps<IArrayEditorF
 
     addChild(): void {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        this.childrenRef.current!.add();
+        this.childrenRef.current!.add("", {
+            isDeleteable: this.childrenRef.current!.length >= 1 ? true : false,
+            hasSibling: true,
+            isRequiredFieldReadonly: true,
+            isNameFieldReadonly: true,
+
+            field: {
+                type: DataType.Object,
+                name: "items",
+
+                required: true,
+            },
+        });
     }
 
     addSibling(): void {
         if (this.props.addSibling) this.props.addSibling();
+    }
+
+    delete(): void {
+        if (this.props.delete) this.props.delete();
     }
 
     nullFunction(): void {
@@ -128,9 +131,9 @@ class ArraySchemaEditor extends React.Component<ISchemaEditorProps<IArrayEditorF
                                 <Col lg={1}>
                                     <OptionsButtons
                                         buttonOptions={this.optionsButtonsAttr}
-                                        delete={this.nullFunction.bind(this)}
-                                        addChild={this.nullFunction.bind(this)}
-                                        addSibling={this.nullFunction.bind(this)}
+                                        delete={this.delete.bind(this)}
+                                        addChild={this.addChild.bind(this)}
+                                        addSibling={this.addSibling.bind(this)}
                                         showOptionModal={this.showOptionModal.bind(this, true)}
                                     />
                                 </Col>

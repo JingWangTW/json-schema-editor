@@ -50,6 +50,10 @@ class ChildrenSchemaEditor extends React.Component<ChildrenNodesProps, ChildrenN
         };
     }
 
+    get length(): number {
+        return this.state.children.length;
+    }
+
     add(selfId?: string, props?: NewChildNodeProps): void {
         const originChildren = this.state.children;
         let currentIndex;
@@ -143,12 +147,12 @@ class ChildrenSchemaEditor extends React.Component<ChildrenNodesProps, ChildrenN
                 {this.state.children.map(child => (
                     <SchemaEditorFactory
                         key={child.selfId}
+                        depth={this.props.depth + 1}
                         {...child}
-                        ref={child.ref}
+                        delete={this.delete.bind(this, child.selfId)}
                         addSibling={this.add.bind(this, child.selfId)}
                         changeType={this.changeType.bind(this)}
                         changeName={this.changeChildName.bind(this)}
-                        depth={this.props.depth + 1}
                     />
                 ))}
             </>
