@@ -14,6 +14,7 @@ import {
     OmitGenericField,
     type_Hints,
 } from "../node_component/type_NodeComponent";
+import ChildrenSchemaEditor from "./ChildrenSchemaEditor";
 import { IObjectEditorField, ISchemaEditorProps, SchemaEditor } from "./type_SchemaEditor";
 
 interface IObjectSchemaEditorState {
@@ -24,9 +25,11 @@ interface IObjectSchemaEditorState {
 
 class ObjectSchemaEditor extends React.Component<ISchemaEditorProps<IObjectEditorField>, IObjectSchemaEditorState> implements SchemaEditor {
     private defaultField: DefaultGenericField & Required<OmitGenericField<IObjectEditorField>>;
-    private optionModalRef: React.RefObject<EditorOptionModal>;
     private optionsButtonsAttr: IOptionsButtonsAttr;
     private genericFieldOptions: IGenericFieldOptions;
+
+    private optionModalRef: React.RefObject<EditorOptionModal>;
+    private childrenRef: React.RefObject<ChildrenSchemaEditor>;
 
     constructor(props: ISchemaEditorProps<IObjectEditorField>) {
         super(props);
@@ -34,6 +37,8 @@ class ObjectSchemaEditor extends React.Component<ISchemaEditorProps<IObjectEdito
         const propsRemoveField = { ...props, field: undefined } as Omit<ISchemaEditorProps<IObjectEditorField>, "field">;
 
         this.optionModalRef = React.createRef<EditorOptionModal>();
+        this.childrenRef = React.createRef<ChildrenSchemaEditor>();
+
         this.optionsButtonsAttr = {
             hasChild: true,
             hasSibling: true,
@@ -67,6 +72,15 @@ class ObjectSchemaEditor extends React.Component<ISchemaEditorProps<IObjectEdito
 
     changeType(newType: DataType): void {
         this.props.changeType(this.props.selfId, newType);
+    }
+
+    addChild(): void {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        this.childrenRef.current!.add();
+    }
+
+    addSibling(): void {
+        if (this.props.addSibling) this.props.addSibling();
     }
 
     nullFunction(): void {
@@ -105,8 +119,8 @@ class ObjectSchemaEditor extends React.Component<ISchemaEditorProps<IObjectEdito
                                     <OptionsButtons
                                         buttonOptions={this.optionsButtonsAttr}
                                         delete={this.nullFunction.bind(this)}
-                                        addChild={this.nullFunction.bind(this)}
-                                        addSibling={this.nullFunction.bind(this)}
+                                        addChild={this.addChild.bind(this)}
+                                        addSibling={this.addSibling.bind(this)}
                                         showOptionModal={this.showOptionModal.bind(this, true)}
                                     />
                                 </Col>
@@ -142,8 +156,7 @@ class ObjectSchemaEditor extends React.Component<ISchemaEditorProps<IObjectEdito
                         </Form>
                     </Col>
                 </Row>
-
-                {/* {this.state.hasChild && <ChildrenNodes ref={this.childRef} depth={this.props.depth + 1} />} */}
+                <ChildrenSchemaEditor depth={this.props.depth + 1} ref={this.childrenRef} />
             </div>
         );
     }

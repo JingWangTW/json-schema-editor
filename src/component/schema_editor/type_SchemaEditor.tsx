@@ -18,7 +18,7 @@ export interface ISchemaEditorProps<FieldType extends IGenericField> {
 
     changeType(keyId: string, type: DataType): void;
     changeName(keyId: string, name: string): void;
-    addSibling?(keyId: string): void;
+    addSibling?(): void;
     delete?(keyId: string): void;
 }
 
