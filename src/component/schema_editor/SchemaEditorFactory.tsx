@@ -19,13 +19,13 @@ import {
     INumberEditorField,
     IObjectEditorField,
     ISchemaEditorProps,
+    ISchemaEditorType,
     IStringEditorField,
-    SchemaEditor,
 } from "./type_SchemaEditor";
 
 type FactoryProps = Omit<ISchemaEditorProps<IGenericField>, "field"> & { type: DataType; field?: PartialBy<IGenericField, "type"> };
 
-const SchemaEditorFactory = React.forwardRef<SchemaEditor, FactoryProps>((props, ref) => {
+const SchemaEditorFactory = React.forwardRef<ISchemaEditorType, FactoryProps>((props, ref) => {
     switch (props.type) {
         case DataType.Array:
             return (

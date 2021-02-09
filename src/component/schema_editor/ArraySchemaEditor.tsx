@@ -7,31 +7,19 @@ import GenericField from "../node_component/GeneralField";
 import HintText from "../node_component/HintText";
 import OptionsButtons from "../node_component/OptionsButtons";
 import SpaceFront from "../node_component/SpaceFront";
-import {
-    DefaultGenericField,
-    IGenericFieldOptions,
-    IOptionsButtonsAttr,
-    OmitGenericField,
-    type_Hints,
-} from "../node_component/type_NodeComponent";
+import { DefaultGenericField, IGenericFieldOptions, IOptionsButtonsAttr, OmitGenericField } from "../node_component/type_NodeComponent";
 import ChildrenSchemaEditor from "./ChildrenSchemaEditor";
+import SchemaEditor from "./SchemaEditor";
 import { IArrayEditorField, ISchemaEditorProps } from "./type_SchemaEditor";
 
-interface IArraySchemaEditorState {
-    field: OmitGenericField<IArrayEditorField>;
+class ArraySchemaEditor extends SchemaEditor<IArrayEditorField> {
+    protected defaultField: DefaultGenericField & Required<OmitGenericField<IArrayEditorField>>;
 
-    hint?: type_Hints;
-}
+    protected optionsButtonsAttr: IOptionsButtonsAttr;
+    protected genericFieldOptions: IGenericFieldOptions;
 
-class ArraySchemaEditor extends React.Component<ISchemaEditorProps<IArrayEditorField>, IArraySchemaEditorState> {
-    private defaultField: DefaultGenericField & Required<OmitGenericField<IArrayEditorField>>;
-
-    private optionModalRef: React.RefObject<EditorOptionModal>;
-    private optionFormRef: React.RefObject<HTMLFormElement>;
-    private childrenRef: React.RefObject<ChildrenSchemaEditor>;
-
-    private optionsButtonsAttr: IOptionsButtonsAttr;
-    private genericFieldOptions: IGenericFieldOptions;
+    protected optionModalRef: React.RefObject<EditorOptionModal>;
+    protected childrenRef: React.RefObject<ChildrenSchemaEditor>;
 
     constructor(props: ISchemaEditorProps<IArrayEditorField>) {
         super(props);
@@ -41,7 +29,6 @@ class ArraySchemaEditor extends React.Component<ISchemaEditorProps<IArrayEditorF
         const { field: temp, ...propsRemoveField } = props;
 
         this.optionModalRef = React.createRef<EditorOptionModal>();
-        this.optionFormRef = React.createRef<HTMLFormElement>();
         this.childrenRef = React.createRef<ChildrenSchemaEditor>();
 
         this.optionsButtonsAttr = {
@@ -73,15 +60,6 @@ class ArraySchemaEditor extends React.Component<ISchemaEditorProps<IArrayEditorF
 
     componentDidMount(): void {
         this.addChild();
-    }
-
-    showOptionModal(): void {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        this.optionModalRef.current!.setDisplayOptionModal(true);
-    }
-
-    changeType(newType: DataType): void {
-        this.props.changeType(this.props.selfId, newType);
     }
 
     addChild(): void {
@@ -117,19 +95,9 @@ class ArraySchemaEditor extends React.Component<ISchemaEditorProps<IArrayEditorF
 
     recordField(fieldName: keyof OmitGenericField<IArrayEditorField>, event: React.ChangeEvent<HTMLInputElement>): void {
         if (fieldName === "minItems" || fieldName === "maxItems") {
-            this.setState(prevState => ({
-                field: {
-                    ...prevState.field,
-                    [fieldName]: event.target.value,
-                },
-            }));
+            this.setField(fieldName, event.target.value);
         } else {
-            this.setState(prevState => ({
-                field: {
-                    ...prevState.field,
-                    [fieldName]: event.target.checked,
-                },
-            }));
+            this.setField(fieldName, event.target.checked);
         }
     }
 
@@ -161,7 +129,7 @@ class ArraySchemaEditor extends React.Component<ISchemaEditorProps<IArrayEditorF
                                     />
                                 </Col>
                                 <EditorOptionModal resetOptionFiledForm={this.resetOptionField.bind(this)} ref={this.optionModalRef}>
-                                    <Form ref={this.optionFormRef}>
+                                    <Form>
                                         <Form.Group as={Row}>
                                             <Form.Label column lg="2" htmlFor="MinItems">
                                                 Min Items

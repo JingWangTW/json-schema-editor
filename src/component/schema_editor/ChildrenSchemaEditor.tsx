@@ -5,7 +5,7 @@ import { DataType, PartialBy } from "../../type";
 import HintText from "../node_component/HintText";
 import { IGenericField, type_Hints } from "../node_component/type_NodeComponent";
 import SchemaEditorFactory from "./SchemaEditorFactory";
-import { SchemaEditor } from "./type_SchemaEditor";
+import { ISchemaEditorType } from "./type_SchemaEditor";
 
 interface NewChildNodeProps {
     hasSibling?: boolean;
@@ -25,7 +25,7 @@ interface ChildNodeProperty {
     isRequiredFieldReadonly: boolean;
     isNameFieldReadonly: boolean;
 
-    ref: React.RefObject<SchemaEditor>;
+    ref: React.RefObject<ISchemaEditorType>;
 
     delete(keyId: string): void;
     addSibling(keyId: string): void;
@@ -87,7 +87,7 @@ class ChildrenSchemaEditor extends React.Component<ChildrenNodesProps, ChildrenN
             // hasSibling, isDeletable, isRequiredFieldReadonly, isNameFieldReadonly
             ...p,
 
-            ref: React.createRef<SchemaEditor>(),
+            ref: React.createRef<ISchemaEditorType>(),
 
             delete: this.delete.bind(this),
             addSibling: this.add.bind(this),

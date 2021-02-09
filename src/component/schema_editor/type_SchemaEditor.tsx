@@ -1,9 +1,8 @@
 import { DataType } from "../../type";
-import { IGenericField } from "../node_component/type_NodeComponent";
+import { IGenericField, OmitGenericField, type_Hints } from "../node_component/type_NodeComponent";
 
-// used to recognize subclass of editor
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface SchemaEditor {}
+// Type to represent all schema editor
+export type ISchemaEditorType = React.Component<ISchemaEditorProps<IGenericField>, ISchemaEditorState<IGenericField>>;
 
 export interface ISchemaEditorProps<FieldType extends IGenericField> {
     selfId: string;
@@ -20,6 +19,12 @@ export interface ISchemaEditorProps<FieldType extends IGenericField> {
     changeName(keyId: string, name: string): void;
     addSibling?(): void;
     delete?(): void;
+}
+
+export interface ISchemaEditorState<FieldType extends IGenericField> {
+    field: OmitGenericField<FieldType>;
+
+    hint?: type_Hints;
 }
 
 export interface IArrayEditorField extends IGenericField {

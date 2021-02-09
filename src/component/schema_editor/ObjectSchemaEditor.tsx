@@ -7,30 +7,19 @@ import GenericField from "../node_component/GeneralField";
 import HintText from "../node_component/HintText";
 import OptionsButtons from "../node_component/OptionsButtons";
 import SpaceFront from "../node_component/SpaceFront";
-import {
-    DefaultGenericField,
-    IGenericFieldOptions,
-    IOptionsButtonsAttr,
-    OmitGenericField,
-    type_Hints,
-} from "../node_component/type_NodeComponent";
+import { DefaultGenericField, IGenericFieldOptions, IOptionsButtonsAttr, OmitGenericField } from "../node_component/type_NodeComponent";
 import ChildrenSchemaEditor from "./ChildrenSchemaEditor";
-import { IObjectEditorField, ISchemaEditorProps, SchemaEditor } from "./type_SchemaEditor";
+import SchemaEditor from "./SchemaEditor";
+import { IObjectEditorField, ISchemaEditorProps } from "./type_SchemaEditor";
 
-interface IObjectSchemaEditorState {
-    field: OmitGenericField<IObjectEditorField>;
+class ObjectSchemaEditor extends SchemaEditor<IObjectEditorField> {
+    protected defaultField: DefaultGenericField & Required<OmitGenericField<IObjectEditorField>>;
 
-    hint?: type_Hints;
-}
+    protected optionsButtonsAttr: IOptionsButtonsAttr;
+    protected genericFieldOptions: IGenericFieldOptions;
 
-class ObjectSchemaEditor extends React.Component<ISchemaEditorProps<IObjectEditorField>, IObjectSchemaEditorState> implements SchemaEditor {
-    private defaultField: DefaultGenericField & Required<OmitGenericField<IObjectEditorField>>;
-    private optionsButtonsAttr: IOptionsButtonsAttr;
-    private genericFieldOptions: IGenericFieldOptions;
-
-    private optionModalRef: React.RefObject<EditorOptionModal>;
-    private optionFormRef: React.RefObject<HTMLFormElement>;
-    private childrenRef: React.RefObject<ChildrenSchemaEditor>;
+    protected optionModalRef: React.RefObject<EditorOptionModal>;
+    protected childrenRef: React.RefObject<ChildrenSchemaEditor>;
 
     constructor(props: ISchemaEditorProps<IObjectEditorField>) {
         super(props);
@@ -40,7 +29,6 @@ class ObjectSchemaEditor extends React.Component<ISchemaEditorProps<IObjectEdito
         const { field: temp, ...propsRemoveField } = props;
 
         this.optionModalRef = React.createRef<EditorOptionModal>();
-        this.optionFormRef = React.createRef<HTMLFormElement>();
         this.childrenRef = React.createRef<ChildrenSchemaEditor>();
 
         this.optionsButtonsAttr = {
@@ -69,41 +57,8 @@ class ObjectSchemaEditor extends React.Component<ISchemaEditorProps<IObjectEdito
         };
     }
 
-    showOptionModal(): void {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        this.optionModalRef.current!.setDisplayOptionModal(true);
-    }
-
-    changeType(newType: DataType): void {
-        this.props.changeType(this.props.selfId, newType);
-    }
-
-    addChild(): void {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        this.childrenRef.current!.add();
-    }
-
-    addSibling(): void {
-        if (this.props.addSibling) this.props.addSibling();
-    }
-
-    delete(): void {
-        if (this.props.delete) this.props.delete();
-    }
-
-    resetOptionField(): void {
-        this.setState({
-            field: this.defaultField,
-        });
-    }
-
     recordField(fieldName: keyof OmitGenericField<IObjectEditorField>, event: React.ChangeEvent<HTMLInputElement>): void {
-        this.setState(prevState => ({
-            field: {
-                ...prevState.field,
-                [fieldName]: event.target.value,
-            },
-        }));
+        this.setField(fieldName, event.target.value);
     }
 
     render(): JSX.Element {
@@ -134,7 +89,7 @@ class ObjectSchemaEditor extends React.Component<ISchemaEditorProps<IObjectEdito
                                     />
                                 </Col>
                                 <EditorOptionModal resetOptionFiledForm={this.resetOptionField.bind(this)} ref={this.optionModalRef}>
-                                    <Form ref={this.optionFormRef}>
+                                    <Form>
                                         <Form.Group as={Row}>
                                             <Form.Label column lg="auto" htmlFor="MinProperties">
                                                 Min Properties
