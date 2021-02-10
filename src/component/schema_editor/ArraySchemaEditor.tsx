@@ -1,6 +1,8 @@
 import React from "react";
 import { Col, Form, Row } from "react-bootstrap";
 
+import ArraySchema from "../../model/schema/ArraySchema";
+import { IArraySchemaType } from "../../model/schema/type_schema";
 import { DataType } from "../../type";
 import EditorOptionModal from "../node_component/EditorOptionModal";
 import GenericField from "../node_component/GeneralField";
@@ -17,8 +19,10 @@ class ArraySchemaEditor extends SchemaEditor<IArrayEditorField> {
 
     protected optionsButtonsAttr: IOptionsButtonsAttr;
     protected genericFieldOptions: IGenericFieldOptions;
+    protected schema: ArraySchema;
 
     protected optionModalRef: React.RefObject<EditorOptionModal>;
+    protected genericFieldRef: React.RefObject<GenericField>;
     protected childrenRef: React.RefObject<ChildrenSchemaEditor>;
 
     constructor(props: ISchemaEditorProps<IArrayEditorField>) {
@@ -29,7 +33,10 @@ class ArraySchemaEditor extends SchemaEditor<IArrayEditorField> {
         const { field: temp, ...propsRemoveField } = props;
 
         this.optionModalRef = React.createRef<EditorOptionModal>();
+        this.genericFieldRef = React.createRef<GenericField>();
         this.childrenRef = React.createRef<ChildrenSchemaEditor>();
+
+        this.schema = new ArraySchema();
 
         this.optionsButtonsAttr = {
             hasChild: true,
@@ -65,6 +72,7 @@ class ArraySchemaEditor extends SchemaEditor<IArrayEditorField> {
     addChild(): void {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         this.childrenRef.current!.add("", {
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             isDeleteable: this.childrenRef.current!.length >= 1 ? true : false,
             hasSibling: true,
             isRequiredFieldReadonly: true,
@@ -79,26 +87,21 @@ class ArraySchemaEditor extends SchemaEditor<IArrayEditorField> {
         });
     }
 
-    addSibling(): void {
-        if (this.props.addSibling) this.props.addSibling();
-    }
-
-    delete(): void {
-        if (this.props.delete) this.props.delete();
-    }
-
-    resetOptionField(): void {
-        this.setState({
-            field: this.defaultField,
-        });
-    }
-
     recordField(fieldName: keyof OmitGenericField<IArrayEditorField>, event: React.ChangeEvent<HTMLInputElement>): void {
         if (fieldName === "minItems" || fieldName === "maxItems") {
             this.setField(fieldName, event.target.value);
         } else {
             this.setField(fieldName, event.target.checked);
         }
+    }
+
+    exportSchema(): IArraySchemaType {
+        return this.schema.exportSchemaFromField(
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            { ...this.state.field, ...this.getGeneircField() },
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            this.childrenRef.current!.exportSchema()
+        );
     }
 
     render(): JSX.Element {
@@ -114,9 +117,10 @@ class ArraySchemaEditor extends SchemaEditor<IArrayEditorField> {
                             <Form.Row>
                                 <Col lg={11}>
                                     <GenericField
+                                        ref={this.genericFieldRef}
                                         defaultField={this.defaultField}
                                         options={this.genericFieldOptions}
-                                        changeType={this.changeType.bind(this)}
+                                        changeType={this.props.changeType.bind(this)}
                                     />
                                 </Col>
                                 <Col lg={1}>

@@ -1,7 +1,8 @@
 import React from "react";
 
-import { DataType } from "../../type";
+import { ISchema, ISchemaType } from "../../model/schema/type_schema";
 import EditorOptionModal from "../node_component/EditorOptionModal";
+import GenericField from "../node_component/GeneralField";
 import {
     DefaultGenericField,
     IGenericField,
@@ -17,21 +18,28 @@ abstract class SchemaEditor<FieldType extends IGenericField> extends React.Compo
     ISchemaEditorState<FieldType>
 > {
     protected abstract defaultField: DefaultGenericField & Required<OmitGenericField<FieldType>>;
+
     protected abstract optionsButtonsAttr: IOptionsButtonsAttr;
     protected abstract genericFieldOptions: IGenericFieldOptions;
+    protected abstract schema: ISchema;
 
     // may not have options button in the child class
     protected optionModalRef?: React.RefObject<EditorOptionModal>;
 
+    protected abstract genericFieldRef: React.RefObject<GenericField>;
+
     // may not have children in the child class
     protected childrenRef?: React.RefObject<ChildrenSchemaEditor>;
 
-    showOptionModal(): void {
-        if (this.optionModalRef && this.optionModalRef.current) this.optionModalRef.current.setDisplayOptionModal(true);
+    abstract exportSchema(): ISchemaType;
+
+    getGeneircField(): IGenericField {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        return this.genericFieldRef.current!.getFields();
     }
 
-    changeType(newType: DataType): void {
-        this.props.changeType(this.props.selfId, newType);
+    showOptionModal(): void {
+        if (this.optionModalRef && this.optionModalRef.current) this.optionModalRef.current.setDisplayOptionModal(true);
     }
 
     addChild(): void {

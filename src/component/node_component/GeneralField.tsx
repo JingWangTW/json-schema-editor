@@ -59,6 +59,10 @@ class GenericField extends React.Component<IGenericFieldProps, IGenericFieldStat
         }));
     }
 
+    getFields(): IGenericField {
+        return this.state.field;
+    }
+
     recordGenericField(fieldName: keyof Omit<IGenericField, "type">, changeEvent: React.ChangeEvent<HTMLInputElement>): void {
         switch (typeof this.state.field[fieldName]) {
             case "string":
@@ -84,10 +88,6 @@ class GenericField extends React.Component<IGenericFieldProps, IGenericFieldStat
         this.setState({
             isDescriptionModalShow: show,
         });
-    }
-
-    ff(event: React.SyntheticEvent<Element, Event>): void {
-        console.log(event);
     }
 
     render(): JSX.Element {

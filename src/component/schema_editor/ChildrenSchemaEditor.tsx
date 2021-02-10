@@ -1,9 +1,11 @@
 import React from "react";
 
+import { IChildrenSchemaType } from "../../model/schema/type_schema";
 import { NextId } from "../../model/utility";
 import { DataType, PartialBy } from "../../type";
 import HintText from "../node_component/HintText";
 import { IGenericField, type_Hints } from "../node_component/type_NodeComponent";
+import SchemaEditor from "./SchemaEditor";
 import SchemaEditorFactory from "./SchemaEditorFactory";
 import { ISchemaEditorType } from "./type_SchemaEditor";
 
@@ -52,6 +54,17 @@ class ChildrenSchemaEditor extends React.Component<ChildrenNodesProps, ChildrenN
 
     get length(): number {
         return this.state.children.length;
+    }
+
+    exportSchema(): IChildrenSchemaType {
+        return this.state.children.map(child => {
+            const c: SchemaEditor<IGenericField> = child.ref.current as SchemaEditor<IGenericField>;
+            return {
+                name: c.getGeneircField().name,
+                value: c.exportSchema(),
+                required: c.getGeneircField().required,
+            };
+        });
     }
 
     add(selfId?: string, props?: NewChildNodeProps): void {
@@ -151,7 +164,7 @@ class ChildrenSchemaEditor extends React.Component<ChildrenNodesProps, ChildrenN
                         {...child}
                         delete={this.delete.bind(this, child.selfId)}
                         addSibling={this.add.bind(this, child.selfId)}
-                        changeType={this.changeType.bind(this)}
+                        changeType={this.changeType.bind(this, child.selfId)}
                         changeName={this.changeChildName.bind(this)}
                     />
                 ))}

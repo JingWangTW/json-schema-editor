@@ -26,6 +26,8 @@ import {
 type FactoryProps = Omit<ISchemaEditorProps<IGenericField>, "field"> & { type: DataType; field?: PartialBy<IGenericField, "type"> };
 
 const SchemaEditorFactory = React.forwardRef<ISchemaEditorType, FactoryProps>((props, ref) => {
+    if (props.field) props.field.type = props.type;
+
     switch (props.type) {
         case DataType.Array:
             return (

@@ -1,6 +1,8 @@
 import React from "react";
 import { Col, Form, Row } from "react-bootstrap";
 
+import ObjectSchema from "../../model/schema/ObjectSchema";
+import { IObjectSchemaType } from "../../model/schema/type_schema";
 import { DataType } from "../../type";
 import EditorOptionModal from "../node_component/EditorOptionModal";
 import GenericField from "../node_component/GeneralField";
@@ -17,8 +19,10 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectEditorField> {
 
     protected optionsButtonsAttr: IOptionsButtonsAttr;
     protected genericFieldOptions: IGenericFieldOptions;
+    protected schema: ObjectSchema;
 
     protected optionModalRef: React.RefObject<EditorOptionModal>;
+    protected genericFieldRef: React.RefObject<GenericField>;
     protected childrenRef: React.RefObject<ChildrenSchemaEditor>;
 
     constructor(props: ISchemaEditorProps<IObjectEditorField>) {
@@ -29,7 +33,10 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectEditorField> {
         const { field: temp, ...propsRemoveField } = props;
 
         this.optionModalRef = React.createRef<EditorOptionModal>();
+        this.genericFieldRef = React.createRef<GenericField>();
         this.childrenRef = React.createRef<ChildrenSchemaEditor>();
+
+        this.schema = new ObjectSchema();
 
         this.optionsButtonsAttr = {
             hasChild: true,
@@ -61,6 +68,15 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectEditorField> {
         this.setField(fieldName, event.target.value);
     }
 
+    exportSchema(): IObjectSchemaType {
+        return this.schema.exportSchemaFromField(
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            { ...this.state.field, ...this.getGeneircField() },
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            this.childrenRef.current!.exportSchema()
+        );
+    }
+
     render(): JSX.Element {
         return (
             <div className="my-1">
@@ -74,9 +90,10 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectEditorField> {
                             <Form.Row>
                                 <Col lg={11}>
                                     <GenericField
+                                        ref={this.genericFieldRef}
                                         defaultField={this.defaultField}
                                         options={this.genericFieldOptions}
-                                        changeType={this.changeType.bind(this)}
+                                        changeType={this.props.changeType.bind(this)}
                                     />
                                 </Col>
                                 <Col lg={1}>

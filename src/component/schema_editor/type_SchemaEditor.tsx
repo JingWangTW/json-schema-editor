@@ -1,8 +1,10 @@
 import { DataType } from "../../type";
 import { IGenericField, OmitGenericField, type_Hints } from "../node_component/type_NodeComponent";
+import SchemaEditor from "./SchemaEditor";
 
 // Type to represent all schema editor
-export type ISchemaEditorType = React.Component<ISchemaEditorProps<IGenericField>, ISchemaEditorState<IGenericField>>;
+// Type cannot check class derived from generic class
+export type ISchemaEditorType = SchemaEditor<IGenericField>;
 
 export interface ISchemaEditorProps<FieldType extends IGenericField> {
     selfId: string;
@@ -15,7 +17,7 @@ export interface ISchemaEditorProps<FieldType extends IGenericField> {
 
     field?: FieldType;
 
-    changeType(keyId: string, type: DataType): void;
+    changeType(type: DataType): void;
     changeName(keyId: string, name: string): void;
     addSibling?(): void;
     delete?(): void;
