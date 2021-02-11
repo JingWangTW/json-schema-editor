@@ -30,14 +30,14 @@ class GenericField extends React.Component<IGenericFieldProps, IGenericFieldStat
         super(props);
 
         const field: IGenericField = {
-            required: true,
-            name: `Field_${NextId.next("Field")}`,
+            type: this.props.defaultField.type,
 
-            title: "",
-            description: "",
-            $comment: "",
+            required: getOrDefault(this.props.defaultField.required, true),
+            name: getOrDefault(this.props.defaultField.name, `Field_${NextId.next("Field")}`),
 
-            ...this.props.defaultField,
+            title: getOrDefault(this.props.defaultField.title, ""),
+            description: getOrDefault(this.props.defaultField.description, ""),
+            $comment: getOrDefault(this.props.defaultField.$comment, ""),
         };
 
         this.state = {

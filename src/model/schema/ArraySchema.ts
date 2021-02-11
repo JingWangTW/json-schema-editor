@@ -1,12 +1,15 @@
 import { IArrayEditorField } from "../../component/schema_editor/type_SchemaEditor";
 import { DataType } from "../../type";
-import { IArraySchemaType, IChildrenSchemaType, ISchema } from "./type_schema";
+import Schema from "./Schema";
+import { IArraySchemaType, IChildrenSchemaType, IGenericSchemaType } from "./type_schema";
 
-class ArraySchema implements ISchema {
+class ArraySchema extends Schema {
+    protected type = DataType.Array;
+
     exportSchemaFromField(field: IArrayEditorField, children?: IChildrenSchemaType): IArraySchemaType {
         const type = DataType.Array;
 
-        const { title, description, $comment } = field;
+        const genericSchema: IGenericSchemaType = this.getGenericSchemaFromField(field);
 
         const { minItems, maxItems, uniqueItems } = field;
 
@@ -16,7 +19,7 @@ class ArraySchema implements ISchema {
             itemsRestricted = { minItems, maxItems };
         }
 
-        let items: IArraySchemaType["items"];
+        let items: IArraySchemaType["items"] = [];
 
         if (children) {
             if (children.length === 1) {
@@ -28,12 +31,22 @@ class ArraySchema implements ISchema {
 
         return {
             type,
-            title,
-            description,
-            $comment,
+            ...genericSchema,
             ...itemsRestricted,
             uniqueItems,
             items,
+        };
+    }
+
+    extractFieldFromSchema(schema?: IArraySchemaType, field?: IArrayEditorField): Required<IArrayEditorField> {
+        const genericField = this.getGenericFieldFromSchema(schema, field);
+
+        return {
+            ...genericField,
+
+            minItems: this.retrieveDefaultValue("minItems", 0, schema, field),
+            maxItems: this.retrieveDefaultValue("maxItems", 0, schema, field),
+            uniqueItems: this.retrieveDefaultValue("uniqueItems", false, schema, field),
         };
     }
 }

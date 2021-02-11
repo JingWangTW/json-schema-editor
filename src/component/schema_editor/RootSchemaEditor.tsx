@@ -1,22 +1,29 @@
 import React from "react";
 
-import { ISchemaType } from "../../model/schema/type_schema";
+import { IGenericSchemaType, ISchemaType } from "../../model/schema/type_schema";
 import { NextId } from "../../model/utility";
 import { DataType } from "../../type";
 import { IGenericField } from "../node_component/type_NodeComponent";
-import { EmptyProps } from "../type_component";
 import SchemaEditor from "./SchemaEditor";
 import SchemaEditorFactory from "./SchemaEditorFactory";
 
-class RootSchemaEditor extends React.Component<EmptyProps, { type: DataType }> {
-    private editorRef: React.RefObject<SchemaEditor<IGenericField>>;
+interface RootSchemaEditorProps {
+    schema?: ISchemaType;
+}
 
-    constructor(props: EmptyProps) {
+class RootSchemaEditor extends React.Component<RootSchemaEditorProps, { type: DataType }> {
+    private editorRef: React.RefObject<SchemaEditor<IGenericSchemaType, IGenericField>>;
+
+    constructor(props: RootSchemaEditorProps) {
         super(props);
 
-        this.editorRef = React.createRef<SchemaEditor<IGenericField>>();
+        this.editorRef = React.createRef<SchemaEditor<IGenericSchemaType, IGenericField>>();
 
-        this.state = { type: DataType.Object };
+        if (props.schema) {
+            this.state = { type: props.schema.type };
+        } else {
+            this.state = { type: DataType.Object };
+        }
     }
 
     changeType(type: DataType): void {
@@ -35,8 +42,10 @@ class RootSchemaEditor extends React.Component<EmptyProps, { type: DataType }> {
     render(): JSX.Element {
         return (
             <SchemaEditorFactory
+                key={NextId.next()}
                 ref={this.editorRef}
                 type={this.state.type}
+                schema={this.props.schema}
                 selfId={NextId.next().toString()}
                 depth={0}
                 field={{ name: "root", required: true }}

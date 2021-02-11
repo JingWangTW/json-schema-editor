@@ -9,13 +9,13 @@ import GenericField from "../node_component/GeneralField";
 import HintText from "../node_component/HintText";
 import OptionsButtons from "../node_component/OptionsButtons";
 import SpaceFront from "../node_component/SpaceFront";
-import { DefaultGenericField, IGenericFieldOptions, IOptionsButtonsAttr, OmitGenericField } from "../node_component/type_NodeComponent";
+import { IGenericField, IGenericFieldOptions, IOptionsButtonsAttr, OmitGenericField } from "../node_component/type_NodeComponent";
 import ChildrenSchemaEditor from "./ChildrenSchemaEditor";
 import SchemaEditor from "./SchemaEditor";
 import { IArrayEditorField, ISchemaEditorProps } from "./type_SchemaEditor";
 
-class ArraySchemaEditor extends SchemaEditor<IArrayEditorField> {
-    protected defaultField: DefaultGenericField & Required<OmitGenericField<IArrayEditorField>>;
+class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField> {
+    protected defaultField: Required<IGenericField> & Required<IArrayEditorField>;
 
     protected optionsButtonsAttr: IOptionsButtonsAttr;
     protected genericFieldOptions: IGenericFieldOptions;
@@ -25,7 +25,7 @@ class ArraySchemaEditor extends SchemaEditor<IArrayEditorField> {
     protected genericFieldRef: React.RefObject<GenericField>;
     protected childrenRef: React.RefObject<ChildrenSchemaEditor>;
 
-    constructor(props: ISchemaEditorProps<IArrayEditorField>) {
+    constructor(props: ISchemaEditorProps<IArraySchemaType, IArrayEditorField>) {
         super(props);
 
         // remove field from props
@@ -50,13 +50,7 @@ class ArraySchemaEditor extends SchemaEditor<IArrayEditorField> {
             ...props, // override isRequiredFieldReadonly, isNameFieldReadonly
         };
 
-        this.defaultField = {
-            type: DataType.Array,
-            minItems: 0,
-            maxItems: 0,
-            uniqueItems: false,
-            ...props.field,
-        };
+        this.defaultField = this.schema.extractFieldFromSchema(props.schema, props.field);
 
         this.state = {
             field: this.defaultField,
@@ -66,7 +60,7 @@ class ArraySchemaEditor extends SchemaEditor<IArrayEditorField> {
     }
 
     componentDidMount(): void {
-        this.addChild();
+        if (!this.props.schema || !this.props.schema.items) this.addChild();
     }
 
     addChild(): void {
@@ -89,7 +83,7 @@ class ArraySchemaEditor extends SchemaEditor<IArrayEditorField> {
 
     recordField(fieldName: keyof OmitGenericField<IArrayEditorField>, event: React.ChangeEvent<HTMLInputElement>): void {
         if (fieldName === "minItems" || fieldName === "maxItems") {
-            this.setField(fieldName, event.target.value);
+            this.setField(fieldName, parseInt(event.target.value));
         } else {
             this.setField(fieldName, event.target.checked);
         }
@@ -179,7 +173,7 @@ class ArraySchemaEditor extends SchemaEditor<IArrayEditorField> {
                         </Form>
                     </Col>
                 </Row>
-                <ChildrenSchemaEditor ref={this.childrenRef} depth={this.props.depth} />
+                <ChildrenSchemaEditor ref={this.childrenRef} depth={this.props.depth} schema={this.props.schema} />
             </div>
         );
     }

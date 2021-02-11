@@ -1,12 +1,13 @@
+import { IGenericSchemaType } from "../../model/schema/type_schema";
 import { DataType } from "../../type";
 import { IGenericField, OmitGenericField, type_Hints } from "../node_component/type_NodeComponent";
 import SchemaEditor from "./SchemaEditor";
 
 // Type to represent all schema editor
 // Type cannot check class derived from generic class
-export type ISchemaEditorType = SchemaEditor<IGenericField>;
+export type ISchemaEditorType = SchemaEditor<IGenericSchemaType, IGenericField>;
 
-export interface ISchemaEditorProps<FieldType extends IGenericField> {
+export interface ISchemaEditorProps<SchemaType extends IGenericSchemaType, FieldType extends IGenericField> {
     selfId: string;
     depth: number;
 
@@ -16,6 +17,7 @@ export interface ISchemaEditorProps<FieldType extends IGenericField> {
     isNameFieldReadonly?: boolean;
 
     field?: FieldType;
+    schema?: SchemaType;
 
     changeType(type: DataType): void;
     changeName(keyId: string, name: string): void;

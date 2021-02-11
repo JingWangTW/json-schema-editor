@@ -1,14 +1,9 @@
-import { IGenericField } from "../../component/node_component/type_NodeComponent";
 import { DataType, XOR_Partial } from "../../type";
 
-interface IGenericSchemaType {
+export interface IGenericSchemaType {
     title?: string;
     description?: string;
     $comment?: string;
-}
-
-export interface ISchema {
-    exportSchemaFromField(field: IGenericField): IGenericSchemaType;
 }
 
 export interface IArraySchemaType extends IGenericSchemaType {
@@ -106,6 +101,4 @@ export type ISchemaType =
     | INullSchemaType
     | INumberSchemaType
     | IObjectSchemaType
-    | IStringSchemaType
-    | IChildSchemaType
-    | IChildrenSchemaType;
+    | IStringSchemaType;

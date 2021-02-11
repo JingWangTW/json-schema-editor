@@ -1,27 +1,22 @@
 import React from "react";
 
-import { ISchema, ISchemaType } from "../../model/schema/type_schema";
+import Schema from "../../model/schema/Schema";
+import { IGenericSchemaType, ISchemaType } from "../../model/schema/type_schema";
 import EditorOptionModal from "../node_component/EditorOptionModal";
 import GenericField from "../node_component/GeneralField";
-import {
-    DefaultGenericField,
-    IGenericField,
-    IGenericFieldOptions,
-    IOptionsButtonsAttr,
-    OmitGenericField,
-} from "../node_component/type_NodeComponent";
+import { IGenericField, IGenericFieldOptions, IOptionsButtonsAttr, OmitGenericField } from "../node_component/type_NodeComponent";
 import ChildrenSchemaEditor from "./ChildrenSchemaEditor";
 import { ISchemaEditorProps, ISchemaEditorState } from "./type_SchemaEditor";
 
-abstract class SchemaEditor<FieldType extends IGenericField> extends React.Component<
-    ISchemaEditorProps<FieldType>,
+abstract class SchemaEditor<SchemaType extends IGenericSchemaType, FieldType extends IGenericField> extends React.Component<
+    ISchemaEditorProps<SchemaType, FieldType>,
     ISchemaEditorState<FieldType>
 > {
-    protected abstract defaultField: DefaultGenericField & Required<OmitGenericField<FieldType>>;
+    protected abstract defaultField: Required<FieldType>;
 
     protected abstract optionsButtonsAttr: IOptionsButtonsAttr;
     protected abstract genericFieldOptions: IGenericFieldOptions;
-    protected abstract schema: ISchema;
+    protected abstract schema: Schema;
 
     // may not have options button in the child class
     protected optionModalRef?: React.RefObject<EditorOptionModal>;

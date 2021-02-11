@@ -3,19 +3,18 @@ import { Col, Form, Row } from "react-bootstrap";
 
 import ObjectSchema from "../../model/schema/ObjectSchema";
 import { IObjectSchemaType } from "../../model/schema/type_schema";
-import { DataType } from "../../type";
 import EditorOptionModal from "../node_component/EditorOptionModal";
 import GenericField from "../node_component/GeneralField";
 import HintText from "../node_component/HintText";
 import OptionsButtons from "../node_component/OptionsButtons";
 import SpaceFront from "../node_component/SpaceFront";
-import { DefaultGenericField, IGenericFieldOptions, IOptionsButtonsAttr, OmitGenericField } from "../node_component/type_NodeComponent";
+import { IGenericFieldOptions, IOptionsButtonsAttr, OmitGenericField } from "../node_component/type_NodeComponent";
 import ChildrenSchemaEditor from "./ChildrenSchemaEditor";
 import SchemaEditor from "./SchemaEditor";
 import { IObjectEditorField, ISchemaEditorProps } from "./type_SchemaEditor";
 
-class ObjectSchemaEditor extends SchemaEditor<IObjectEditorField> {
-    protected defaultField: DefaultGenericField & Required<OmitGenericField<IObjectEditorField>>;
+class ObjectSchemaEditor extends SchemaEditor<IObjectSchemaType, IObjectEditorField> {
+    protected defaultField: Required<IObjectEditorField>;
 
     protected optionsButtonsAttr: IOptionsButtonsAttr;
     protected genericFieldOptions: IGenericFieldOptions;
@@ -25,7 +24,7 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectEditorField> {
     protected genericFieldRef: React.RefObject<GenericField>;
     protected childrenRef: React.RefObject<ChildrenSchemaEditor>;
 
-    constructor(props: ISchemaEditorProps<IObjectEditorField>) {
+    constructor(props: ISchemaEditorProps<IObjectSchemaType, IObjectEditorField>) {
         super(props);
 
         // remove field from props
@@ -50,12 +49,7 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectEditorField> {
             ...props, // override isRequiredFieldReadonly, isNameFieldReadonly
         };
 
-        this.defaultField = {
-            type: DataType.Object,
-            maxProperties: 0,
-            minProperties: 0,
-            ...props.field,
-        };
+        this.defaultField = this.schema.extractFieldFromSchema(props.schema, props.field);
 
         this.state = {
             field: this.defaultField,
@@ -65,7 +59,7 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectEditorField> {
     }
 
     recordField(fieldName: keyof OmitGenericField<IObjectEditorField>, event: React.ChangeEvent<HTMLInputElement>): void {
-        this.setField(fieldName, event.target.value);
+        this.setField(fieldName, parseInt(event.target.value));
     }
 
     exportSchema(): IObjectSchemaType {
@@ -141,7 +135,7 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectEditorField> {
                         </Form>
                     </Col>
                 </Row>
-                <ChildrenSchemaEditor depth={this.props.depth + 1} ref={this.childrenRef} />
+                <ChildrenSchemaEditor depth={this.props.depth} ref={this.childrenRef} schema={this.props.schema} />
             </div>
         );
     }

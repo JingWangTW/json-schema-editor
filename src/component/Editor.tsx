@@ -1,20 +1,62 @@
+import Ajv from "ajv";
+import draft_04_meta from "ajv/lib/refs/json-schema-draft-04.json";
+import draft_06_meta from "ajv/lib/refs/json-schema-draft-06.json";
 import React from "react";
-import { Button } from "react-bootstrap";
+import { Button, Toast } from "react-bootstrap";
 
+import { ISchemaType } from "../model/schema/type_schema";
+import { NextId } from "../model/utility";
 import RootSchemaEditor from "./schema_editor/RootSchemaEditor";
+import { EmptyProps } from "./type_component";
 
-class Editor extends React.Component {
+interface IEditorState {
+    error?: string;
+    schema?: ISchemaType;
+}
+
+class Editor extends React.Component<EmptyProps, IEditorState> {
+    private fileUploadRef: React.RefObject<HTMLInputElement>;
     private editorRef: React.RefObject<RootSchemaEditor>;
 
-    constructor(props: never) {
+    constructor(props: EmptyProps) {
         super(props);
 
+        this.fileUploadRef = React.createRef<HTMLInputElement>();
         this.editorRef = React.createRef<RootSchemaEditor>();
 
-        this.state = {
-            showExport: false,
-            exportString: "",
-        };
+        this.state = {};
+    }
+
+    toggleImport(): void {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        this.fileUploadRef.current!.click();
+    }
+
+    async import(event: React.ChangeEvent<HTMLInputElement>): Promise<void> {
+        if (event.target.files) {
+            try {
+                const text = await event.target.files[0].text();
+                const schema = JSON.parse(text);
+
+                const validator = new Ajv({ schemaId: "auto" });
+                validator.addMetaSchema(draft_04_meta);
+                validator.addMetaSchema(draft_06_meta);
+
+                const result = validator.validateSchema(schema);
+
+                if (!result) {
+                    this.setState({
+                        error: "Parsing Schema Error! Please check your schema.",
+                    });
+                } else {
+                    this.setState({ schema });
+                }
+            } catch (error) {
+                this.setState({
+                    error: "Parsing Schema Error! We only support draft-04/06/07",
+                });
+            }
+        }
     }
 
     export(): void {
@@ -36,12 +78,43 @@ class Editor extends React.Component {
     render(): JSX.Element {
         return (
             <div className="my-3 mx-4 ">
-                <input type="file" id="file-uploader" data-target="file-uploader" hidden />
-                <Button variant="outline-primary"> Import from file</Button>{" "}
+                <input
+                    type="file"
+                    id="file-uploader"
+                    data-target="file-uploader"
+                    hidden
+                    ref={this.fileUploadRef}
+                    onChange={this.import.bind(this)}
+                />
+                <Button variant="outline-primary" onClick={this.toggleImport.bind(this)}>
+                    Import from file
+                </Button>{" "}
                 <Button variant="outline-success" onClick={this.export.bind(this)}>
                     Export Schema
                 </Button>
-                <RootSchemaEditor ref={this.editorRef} />
+                <RootSchemaEditor ref={this.editorRef} key={NextId.next()} schema={this.state.schema} />
+                {this.state.error && (
+                    <Toast
+                        show={this.state.error ? true : false}
+                        onClose={(): void => {
+                            this.setState({ error: undefined });
+                        }}
+                        delay={3000}
+                        autohide
+                        style={{
+                            position: "absolute",
+                            bottom: "20px",
+                            right: "20px",
+                            borderColor: "red",
+                            color: "red",
+                        }}
+                    >
+                        <Toast.Header style={{ borderColor: "red", color: "red" }}>
+                            <strong className="mr-auto">Error</strong>
+                        </Toast.Header>
+                        <Toast.Body>{this.state.error}</Toast.Body>
+                    </Toast>
+                )}
             </div>
         );
     }
