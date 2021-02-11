@@ -1,12 +1,12 @@
 import { IGenericField } from "../../component/node_component/type_NodeComponent";
 import { DataType, IntersectionKey } from "../../type";
 import { NextId, getOrDefault } from "../utility";
-import { IGenericSchemaType } from "./type_schema";
+import { IGenericSchemaType, ISchemaType } from "./type_schema";
 
 abstract class Schema {
     protected abstract type: DataType;
-    abstract exportSchemaFromField(field: IGenericField): IGenericSchemaType;
-    abstract extractFieldFromSchema(schema?: IGenericSchemaType, field?: IGenericField): IGenericField;
+    abstract exportSchemaFromField(field: IGenericField): ISchemaType;
+    abstract extractFieldFromSchema(schema?: ISchemaType, field?: IGenericField): IGenericField;
 
     protected getGenericSchemaFromField(field: IGenericField): IGenericSchemaType {
         const schema: IGenericSchemaType = {};
@@ -39,7 +39,7 @@ abstract class Schema {
         };
     }
 
-    protected retrieveDefaultValue<T extends IGenericSchemaType, U extends IGenericField, K extends IntersectionKey<T, U>>(
+    protected retrieveDefaultValue<T extends ISchemaType, U extends IGenericField, K extends IntersectionKey<T, U>>(
         key: K,
         defaultValue: T[K],
         schema?: T,

@@ -1,6 +1,6 @@
 import React from "react";
 
-import { IChildrenSchemaType, IGenericSchemaType, ISchemaType } from "../../model/schema/type_schema";
+import { IChildrenSchemaType, ISchemaType } from "../../model/schema/type_schema";
 import { NextId } from "../../model/utility";
 import { DataType, PartialBy } from "../../type";
 import HintText from "../node_component/HintText";
@@ -144,7 +144,7 @@ class ChildrenSchemaEditor extends React.Component<ChildrenNodesProps, ChildrenN
 
     exportSchema(): IChildrenSchemaType {
         return this.state.children.map(child => {
-            const c: SchemaEditor<IGenericSchemaType, IGenericField> = child.ref.current as SchemaEditor<IGenericSchemaType, IGenericField>;
+            const c: SchemaEditor<ISchemaType, IGenericField> = child.ref.current as SchemaEditor<ISchemaType, IGenericField>;
             return {
                 name: c.getGeneircField().name,
                 value: c.exportSchema(),
