@@ -63,7 +63,7 @@ class Editor extends React.Component<EmptyProps, IEditorState> {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const schema = this.editorRef.current!.exportSchema();
 
-        const fileBlob = new Blob([JSON.stringify(schema)], { type: "application/schema+json" });
+        const fileBlob = new Blob([JSON.stringify(schema, null, 4)], { type: "application/schema+json" });
         const blobURL = window.URL.createObjectURL(fileBlob);
 
         const anchorElement = document.createElement("a");
