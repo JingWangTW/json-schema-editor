@@ -7,48 +7,19 @@ import HintText from "../node_component/HintText";
 import { IGenericField, type_Hints } from "../node_component/type_NodeComponent";
 import SchemaEditor from "./SchemaEditor";
 import SchemaEditorFactory from "./SchemaEditorFactory";
-import { ISchemaEditorType } from "./type_SchemaEditor";
-
-interface NewChildNodeProps {
-    hasSibling?: boolean;
-    isDeleteable?: boolean;
-    isRequiredFieldReadonly?: boolean;
-    isNameFieldReadonly?: boolean;
-
-    field?: IGenericField;
-}
-
-interface ChildNodeProperty {
-    type: DataType;
-    selfId: string;
-
-    hasSibling: boolean;
-    isDeleteable: boolean;
-    isRequiredFieldReadonly: boolean;
-    isNameFieldReadonly: boolean;
-
-    ref: React.RefObject<ISchemaEditorType>;
-
-    field?: IGenericField;
-    schema?: ISchemaType;
-}
-
-interface ChildrenNodesProps {
-    depth: number;
-    schema?: ISchemaType;
-}
+import { IChildNodeProperty, IChildrenNodesProps, INewChildNodeProps, ISchemaEditorType } from "./type_SchemaEditor";
 
 interface ChildrenNodesState {
-    children: Array<ChildNodeProperty>;
+    children: Array<IChildNodeProperty>;
 
     hint?: type_Hints;
 }
 
-class ChildrenSchemaEditor extends React.Component<ChildrenNodesProps, ChildrenNodesState> {
-    constructor(props: ChildrenNodesProps) {
+class ChildrenSchemaEditor extends React.Component<IChildrenNodesProps, ChildrenNodesState> {
+    constructor(props: IChildrenNodesProps) {
         super(props);
 
-        let children: ChildNodeProperty[] = [];
+        let children: IChildNodeProperty[] = [];
 
         if (props.schema) children = this.getChildrenPropertyFromSchema(props.schema);
 
@@ -57,12 +28,20 @@ class ChildrenSchemaEditor extends React.Component<ChildrenNodesProps, ChildrenN
         };
     }
 
+    componentDidMount(): void {
+        if (this.props.childrenDidUpdate) this.props.childrenDidUpdate(this.state.children);
+    }
+
+    componentDidUpdate(): void {
+        if (this.props.childrenDidUpdate) this.props.childrenDidUpdate(this.state.children);
+    }
+
     get length(): number {
         return this.state.children.length;
     }
 
-    getChildrenPropertyFromSchema(schema: ISchemaType): ChildNodeProperty[] {
-        let children: ChildNodeProperty[] = [];
+    getChildrenPropertyFromSchema(schema: ISchemaType): IChildNodeProperty[] {
+        let children: IChildNodeProperty[] = [];
 
         if (schema.type) {
             if (schema.type === DataType.Array && schema.items) {
@@ -153,11 +132,11 @@ class ChildrenSchemaEditor extends React.Component<ChildrenNodesProps, ChildrenN
         });
     }
 
-    add(selfId?: string, props?: NewChildNodeProps): void {
+    add(selfId?: string, props?: INewChildNodeProps): void {
         const originChildren = this.state.children;
         let currentIndex;
 
-        let p: PartialBy<Required<NewChildNodeProps>, "field"> = {
+        let p: PartialBy<Required<INewChildNodeProps>, "field"> = {
             isDeleteable: true,
             hasSibling: true,
             isRequiredFieldReadonly: false,

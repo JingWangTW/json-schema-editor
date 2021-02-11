@@ -25,7 +25,7 @@ export interface ISchemaEditorProps<SchemaType extends ISchemaType, FieldType ex
 }
 
 export interface ISchemaEditorState<FieldType extends IGenericField> {
-    field: OmitGenericField<FieldType>;
+    field: Required<OmitGenericField<FieldType>>;
 
     hint?: type_Hints;
 }
@@ -94,4 +94,34 @@ export interface IStringEditorField extends IGenericField {
         | "relative-json-pointer"
         | "regex";
     pattern?: string;
+}
+
+export interface INewChildNodeProps {
+    hasSibling?: boolean;
+    isDeleteable?: boolean;
+    isRequiredFieldReadonly?: boolean;
+    isNameFieldReadonly?: boolean;
+
+    field?: IGenericField;
+}
+
+export interface IChildNodeProperty {
+    type: DataType;
+    selfId: string;
+
+    hasSibling: boolean;
+    isDeleteable: boolean;
+    isRequiredFieldReadonly: boolean;
+    isNameFieldReadonly: boolean;
+
+    ref: React.RefObject<ISchemaEditorType>;
+
+    field?: IGenericField;
+    schema?: ISchemaType;
+}
+
+export interface IChildrenNodesProps {
+    depth: number;
+    schema?: ISchemaType;
+    childrenDidUpdate?(children: IChildNodeProperty[]): void;
 }

@@ -12,13 +12,10 @@ class HintText extends React.Component<IHintTextProps, EmptyState> {
         for (const key in this.props.hint) {
             switch (key) {
                 case "info":
-                    r.push(<span color="green">{this.props.hint[key]}</span>);
+                    r.push(<span style={{ color: "green" }}>{this.props.hint[key]}</span>);
                     break;
                 case "error":
-                    r.push(<span color="red">{this.props.hint[key]}</span>);
-                    break;
-                case "option":
-                    r.push(<span color="green">{this.props.hint[key]}</span>);
+                    r.push(<span style={{ color: "red" }}>{this.props.hint[key]}</span>);
                     break;
             }
         }

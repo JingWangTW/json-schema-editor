@@ -12,7 +12,7 @@ import SpaceFront from "../node_component/SpaceFront";
 import { IGenericField, IGenericFieldOptions, IOptionsButtonsAttr, OmitGenericField } from "../node_component/type_NodeComponent";
 import ChildrenSchemaEditor from "./ChildrenSchemaEditor";
 import SchemaEditor from "./SchemaEditor";
-import { IArrayEditorField, ISchemaEditorProps } from "./type_SchemaEditor";
+import { IArrayEditorField, IChildNodeProperty, ISchemaEditorProps, ISchemaEditorState } from "./type_SchemaEditor";
 
 class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField> {
     protected defaultField: Required<IGenericField> & Required<IArrayEditorField>;
@@ -24,6 +24,8 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
     protected optionModalRef: React.RefObject<EditorOptionModal>;
     protected genericFieldRef: React.RefObject<GenericField>;
     protected childrenRef: React.RefObject<ChildrenSchemaEditor>;
+
+    private childrenLength: number;
 
     constructor(props: ISchemaEditorProps<IArraySchemaType, IArrayEditorField>) {
         super(props);
@@ -51,6 +53,7 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
         };
 
         this.defaultField = this.schema.extractFieldFromSchema(props.schema, props.field);
+        this.childrenLength = 0;
 
         this.state = {
             field: this.defaultField,
@@ -61,6 +64,29 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
 
     componentDidMount(): void {
         if (!this.props.schema || !this.props.schema.items) this.addChild();
+    }
+
+    componentDidUpdate(
+        prevProps: ISchemaEditorProps<IArraySchemaType, IArrayEditorField>,
+        prevState: ISchemaEditorState<IArrayEditorField>
+    ): void {
+        if (prevState.field.maxItems !== this.state.field.maxItems || prevState.field.minItems !== this.state.field.minItems) {
+            if (this.state.field.maxItems < this.state.field.minItems) {
+                this.setState(prevState => ({
+                    hint: {
+                        ...prevState.hint,
+                        error: "minItems > maxItems",
+                    },
+                }));
+            } else {
+                this.setState(prevState => ({
+                    hint: {
+                        ...prevState.hint,
+                        error: undefined,
+                    },
+                }));
+            }
+        }
     }
 
     addChild(): void {
@@ -86,6 +112,28 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
             this.setField(fieldName, parseInt(event.target.value));
         } else {
             this.setField(fieldName, event.target.checked);
+        }
+    }
+
+    childrenDidUpdate(children: IChildNodeProperty[]): void {
+        if (this.childrenLength !== children.length) {
+            if (children.length > 1) {
+                this.setState(prevState => ({
+                    hint: {
+                        ...prevState.hint,
+                        info: "Ordinal index of each item in Array type is meaningful.",
+                    },
+                }));
+            } else {
+                this.setState(prevState => ({
+                    hint: {
+                        ...prevState.hint,
+                        info: undefined,
+                    },
+                }));
+            }
+
+            this.childrenLength = children.length;
         }
     }
 
@@ -173,7 +221,12 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
                         </Form>
                     </Col>
                 </Row>
-                <ChildrenSchemaEditor ref={this.childrenRef} depth={this.props.depth} schema={this.props.schema} />
+                <ChildrenSchemaEditor
+                    ref={this.childrenRef}
+                    depth={this.props.depth}
+                    schema={this.props.schema}
+                    childrenDidUpdate={this.childrenDidUpdate.bind(this)}
+                />
             </div>
         );
     }

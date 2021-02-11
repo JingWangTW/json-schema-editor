@@ -11,7 +11,7 @@ import SpaceFront from "../node_component/SpaceFront";
 import { IGenericFieldOptions, IOptionsButtonsAttr, OmitGenericField } from "../node_component/type_NodeComponent";
 import ChildrenSchemaEditor from "./ChildrenSchemaEditor";
 import SchemaEditor from "./SchemaEditor";
-import { IObjectEditorField, ISchemaEditorProps } from "./type_SchemaEditor";
+import { IObjectEditorField, ISchemaEditorProps, ISchemaEditorState } from "./type_SchemaEditor";
 
 class ObjectSchemaEditor extends SchemaEditor<IObjectSchemaType, IObjectEditorField> {
     protected defaultField: Required<IObjectEditorField>;
@@ -56,6 +56,32 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectSchemaType, IObjectEditorFi
 
             ...propsRemoveField,
         };
+    }
+
+    componentDidUpdate(
+        prevProps: ISchemaEditorProps<IObjectSchemaType, IObjectEditorField>,
+        prevState: ISchemaEditorState<IObjectEditorField>
+    ): void {
+        if (
+            prevState.field.maxProperties !== this.state.field.maxProperties ||
+            prevState.field.minProperties !== this.state.field.minProperties
+        ) {
+            if (this.state.field.maxProperties < this.state.field.minProperties) {
+                this.setState(prevState => ({
+                    hint: {
+                        ...prevState.hint,
+                        error: "minProperties > maxProperties",
+                    },
+                }));
+            } else {
+                this.setState(prevState => ({
+                    hint: {
+                        ...prevState.hint,
+                        error: undefined,
+                    },
+                }));
+            }
+        }
     }
 
     recordField(fieldName: keyof OmitGenericField<IObjectEditorField>, event: React.ChangeEvent<HTMLInputElement>): void {

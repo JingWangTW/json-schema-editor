@@ -24,4 +24,4 @@ export type IGenericFieldOptions = {
 };
 
 export type OmitGenericField<T> = Omit<T, keyof IGenericField>;
-export type type_Hints = Partial<Record<"error" | "info" | "option", string>>;
+export type type_Hints = Partial<Record<"error" | "info", string>>;
