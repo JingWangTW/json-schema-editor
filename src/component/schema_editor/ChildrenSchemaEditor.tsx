@@ -207,6 +207,7 @@ class ChildrenSchemaEditor extends React.Component<ChildrenNodesProps, ChildrenN
                 if (child.selfId === selfId) {
                     return {
                         ...child,
+                        selfId: NextId.next("child").toString(),
                         type,
                     };
                 } else {
@@ -220,7 +221,7 @@ class ChildrenSchemaEditor extends React.Component<ChildrenNodesProps, ChildrenN
         });
     }
 
-    changeChildName(selfId: string, name: string): void {
+    changeName(selfId: string, name: string): void {
         // let checkNameDuplicate = false;
         // for (const child of this.state.children) {
         //     if (child.selfId !== selfId && child.ref.current!.form.name === name) {
@@ -248,7 +249,7 @@ class ChildrenSchemaEditor extends React.Component<ChildrenNodesProps, ChildrenN
                         delete={this.delete.bind(this, child.selfId)}
                         addSibling={this.add.bind(this, child.selfId)}
                         changeType={this.changeType.bind(this, child.selfId)}
-                        changeName={this.changeChildName.bind(this)}
+                        changeName={this.changeName.bind(this, child.selfId)}
                     />
                 ))}
             </>

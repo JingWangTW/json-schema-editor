@@ -42,11 +42,10 @@ class RootSchemaEditor extends React.Component<RootSchemaEditorProps, { type: Da
     render(): JSX.Element {
         return (
             <SchemaEditorFactory
-                key={NextId.next()}
+                key={NextId.next("Key").toString()}
                 ref={this.editorRef}
                 type={this.state.type}
                 schema={this.props.schema}
-                selfId={NextId.next().toString()}
                 depth={0}
                 field={{ name: "root", required: true }}
                 hasSibling={false}

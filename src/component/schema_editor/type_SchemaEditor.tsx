@@ -8,7 +8,6 @@ import SchemaEditor from "./SchemaEditor";
 export type ISchemaEditorType = SchemaEditor<ISchemaType, IGenericField>;
 
 export interface ISchemaEditorProps<SchemaType extends ISchemaType, FieldType extends IGenericField> {
-    selfId: string;
     depth: number;
 
     hasSibling?: boolean;
@@ -20,7 +19,7 @@ export interface ISchemaEditorProps<SchemaType extends ISchemaType, FieldType ex
     schema?: SchemaType;
 
     changeType(type: DataType): void;
-    changeName(keyId: string, name: string): void;
+    changeName(name: string): void;
     addSibling?(): void;
     delete?(): void;
 }

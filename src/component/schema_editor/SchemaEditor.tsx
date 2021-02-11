@@ -3,7 +3,7 @@ import React from "react";
 import Schema from "../../model/schema/Schema";
 import { ISchemaType } from "../../model/schema/type_schema";
 import EditorOptionModal from "../node_component/EditorOptionModal";
-import GenericField from "../node_component/GeneralField";
+import GenericField from "../node_component/GenericField";
 import { IGenericField, IGenericFieldOptions, IOptionsButtonsAttr, OmitGenericField } from "../node_component/type_NodeComponent";
 import ChildrenSchemaEditor from "./ChildrenSchemaEditor";
 import { ISchemaEditorProps, ISchemaEditorState } from "./type_SchemaEditor";

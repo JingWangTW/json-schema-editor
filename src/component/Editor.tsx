@@ -92,7 +92,7 @@ class Editor extends React.Component<EmptyProps, IEditorState> {
                 <Button variant="outline-success" onClick={this.export.bind(this)}>
                     Export Schema
                 </Button>
-                <RootSchemaEditor ref={this.editorRef} key={NextId.next()} schema={this.state.schema} />
+                <RootSchemaEditor ref={this.editorRef} key={NextId.next("Key").toString()} schema={this.state.schema} />
                 {this.state.error && (
                     <Toast
                         show={this.state.error ? true : false}
