@@ -67,19 +67,9 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectSchemaType, IObjectEditorFi
             prevState.field.minProperties !== this.state.field.minProperties
         ) {
             if (this.state.field.maxProperties < this.state.field.minProperties) {
-                this.setState(prevState => ({
-                    hint: {
-                        ...prevState.hint,
-                        error: "minProperties > maxProperties",
-                    },
-                }));
+                this.updateHint("error", "minProperties > maxProperties");
             } else {
-                this.setState(prevState => ({
-                    hint: {
-                        ...prevState.hint,
-                        error: undefined,
-                    },
-                }));
+                this.updateHint("error");
             }
         }
     }

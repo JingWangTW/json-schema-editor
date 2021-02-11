@@ -4,7 +4,13 @@ import Schema from "../../model/schema/Schema";
 import { ISchemaType } from "../../model/schema/type_schema";
 import EditorOptionModal from "../node_component/EditorOptionModal";
 import GenericField from "../node_component/GenericField";
-import { IGenericField, IGenericFieldOptions, IOptionsButtonsAttr, OmitGenericField } from "../node_component/type_NodeComponent";
+import {
+    IGenericField,
+    IGenericFieldOptions,
+    IOptionsButtonsAttr,
+    OmitGenericField,
+    type_Hints,
+} from "../node_component/type_NodeComponent";
 import ChildrenSchemaEditor from "./ChildrenSchemaEditor";
 import { ISchemaEditorProps, ISchemaEditorState } from "./type_SchemaEditor";
 
@@ -60,6 +66,15 @@ abstract class SchemaEditor<SchemaType extends ISchemaType, FieldType extends IG
             field: {
                 ...prevState.field,
                 [fieldName]: value,
+            },
+        }));
+    }
+
+    updateHint(hintType: keyof type_Hints, value?: string): void {
+        this.setState(prevState => ({
+            hint: {
+                ...prevState.hint,
+                [hintType]: value,
             },
         }));
     }

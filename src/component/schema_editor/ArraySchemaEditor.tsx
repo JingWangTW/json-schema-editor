@@ -118,19 +118,9 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
     childrenDidUpdate(children: IChildNodeProperty[]): void {
         if (this.childrenLength !== children.length) {
             if (children.length > 1) {
-                this.setState(prevState => ({
-                    hint: {
-                        ...prevState.hint,
-                        info: "Ordinal index of each item in Array type is meaningful.",
-                    },
-                }));
+                this.updateHint("info", "Ordinal index of each item in Array type is meaningful.");
             } else {
-                this.setState(prevState => ({
-                    hint: {
-                        ...prevState.hint,
-                        info: undefined,
-                    },
-                }));
+                this.updateHint("info");
             }
 
             this.childrenLength = children.length;
