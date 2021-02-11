@@ -3,15 +3,41 @@ import { DataType } from "../../type";
 import Schema from "./Schema";
 import { IArraySchemaType, IChildrenSchemaType, IGenericSchemaType } from "./type_schema";
 
-class ArraySchema extends Schema {
+class ArraySchema extends Schema<IArrayEditorField> {
     protected type = DataType.Array;
+    protected currentField: Required<IArrayEditorField>;
+    protected defaultField: Required<IArrayEditorField>;
 
-    exportSchemaFromField(field: IArrayEditorField, children?: IChildrenSchemaType): IArraySchemaType {
+    constructor(schema?: IArraySchemaType, field?: IArrayEditorField) {
+        super();
+
+        const genericField = this.getGenericFieldFromSchema(schema, field);
+
+        this.defaultField = {
+            ...genericField,
+
+            minItems: this.retrieveDefaultValue("minItems", 0, schema, field),
+            maxItems: this.retrieveDefaultValue("maxItems", 0, schema, field),
+            uniqueItems: this.retrieveDefaultValue("uniqueItems", false, schema, field),
+        };
+
+        this.currentField = this.defaultField;
+    }
+
+    clearField(): Required<IArrayEditorField> {
+        this.currentField.maxItems = 0;
+        this.currentField.minItems = 0;
+        this.currentField.uniqueItems = false;
+
+        return this.currentField;
+    }
+
+    exportSchema(children?: IChildrenSchemaType): IArraySchemaType {
         const type = DataType.Array;
 
-        const genericSchema: IGenericSchemaType = this.getGenericSchemaFromField(field);
+        const genericSchema: IGenericSchemaType = this.getGenericSchemaFromField(this.currentField);
 
-        const { minItems, maxItems, uniqueItems } = field;
+        const { minItems, maxItems, uniqueItems } = this.currentField;
 
         let itemsRestricted = {};
 
@@ -35,18 +61,6 @@ class ArraySchema extends Schema {
             ...itemsRestricted,
             uniqueItems,
             items,
-        };
-    }
-
-    extractFieldFromSchema(schema?: IArraySchemaType, field?: IArrayEditorField): Required<IArrayEditorField> {
-        const genericField = this.getGenericFieldFromSchema(schema, field);
-
-        return {
-            ...genericField,
-
-            minItems: this.retrieveDefaultValue("minItems", 0, schema, field),
-            maxItems: this.retrieveDefaultValue("maxItems", 0, schema, field),
-            uniqueItems: this.retrieveDefaultValue("uniqueItems", false, schema, field),
         };
     }
 }

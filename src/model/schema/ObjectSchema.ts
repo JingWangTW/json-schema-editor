@@ -3,15 +3,38 @@ import { DataType } from "../../type";
 import Schema from "./Schema";
 import { IChildrenSchemaType, IObjectSchemaType } from "./type_schema";
 
-class ObjectSchema extends Schema {
+class ObjectSchema extends Schema<IObjectEditorField> {
     protected type = DataType.Object;
+    protected currentField: Required<IObjectEditorField>;
+    protected defaultField: Required<IObjectEditorField>;
 
-    exportSchemaFromField(field: IObjectEditorField, children?: IChildrenSchemaType): IObjectSchemaType {
+    constructor(schema?: IObjectSchemaType, field?: IObjectEditorField) {
+        super();
+
+        const genericField = this.getGenericFieldFromSchema(schema, field);
+
+        this.defaultField = {
+            ...genericField,
+            maxProperties: this.retrieveDefaultValue("maxProperties", 0, schema, field),
+            minProperties: this.retrieveDefaultValue("minProperties", 0, schema, field),
+        };
+
+        this.currentField = this.defaultField;
+    }
+
+    clearField(): Required<IObjectEditorField> {
+        this.currentField.maxProperties = 0;
+        this.currentField.minProperties = 0;
+
+        return this.currentField;
+    }
+
+    exportSchema(children?: IChildrenSchemaType): IObjectSchemaType {
         const type = DataType.Object;
 
-        const genericSchema = this.getGenericSchemaFromField(field);
+        const genericSchema = this.getGenericSchemaFromField(this.currentField);
 
-        const { maxProperties, minProperties } = field;
+        const { maxProperties, minProperties } = this.currentField;
         let propertieRestricted = {};
 
         if (maxProperties !== 0 || minProperties !== 0) {
@@ -37,16 +60,6 @@ class ObjectSchema extends Schema {
             ...propertieRestricted,
             required,
             properties,
-        };
-    }
-
-    extractFieldFromSchema(schema?: IObjectSchemaType, field?: IObjectEditorField): Required<IObjectEditorField> {
-        const genericField = this.getGenericFieldFromSchema(schema, field);
-
-        return {
-            ...genericField,
-            maxProperties: this.retrieveDefaultValue("maxProperties", 0, schema, field),
-            minProperties: this.retrieveDefaultValue("minProperties", 0, schema, field),
         };
     }
 }

@@ -9,7 +9,7 @@ import GenericField from "../node_component/GenericField";
 import HintText from "../node_component/HintText";
 import OptionsButtons from "../node_component/OptionsButtons";
 import SpaceFront from "../node_component/SpaceFront";
-import { IGenericField, IGenericFieldOptions, IOptionsButtonsAttr, OmitGenericField } from "../node_component/type_NodeComponent";
+import { IGenericField, IGenericFieldOptions, IOptionsButtonsAttr } from "../node_component/type_NodeComponent";
 import ChildrenSchemaEditor from "./ChildrenSchemaEditor";
 import SchemaEditor from "./SchemaEditor";
 import { IArrayEditorField, IChildNodeProperty, ISchemaEditorProps, ISchemaEditorState } from "./type_SchemaEditor";
@@ -38,7 +38,7 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
         this.genericFieldRef = React.createRef<GenericField>();
         this.childrenRef = React.createRef<ChildrenSchemaEditor>();
 
-        this.schema = new ArraySchema();
+        this.schema = new ArraySchema(props.schema, props.field);
 
         this.optionsButtonsAttr = {
             hasChild: true,
@@ -52,7 +52,7 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
             ...props, // override isRequiredFieldReadonly, isNameFieldReadonly
         };
 
-        this.defaultField = this.schema.extractFieldFromSchema(props.schema, props.field);
+        this.defaultField = this.schema.getDefaultField();
         this.childrenLength = 0;
 
         this.state = {
@@ -107,14 +107,6 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
         });
     }
 
-    recordField(fieldName: keyof OmitGenericField<IArrayEditorField>, event: React.ChangeEvent<HTMLInputElement>): void {
-        if (fieldName === "minItems" || fieldName === "maxItems") {
-            this.setField(fieldName, parseInt(event.target.value));
-        } else {
-            this.setField(fieldName, event.target.checked);
-        }
-    }
-
     childrenDidUpdate(children: IChildNodeProperty[]): void {
         if (this.childrenLength !== children.length) {
             if (children.length > 1) {
@@ -128,9 +120,7 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
     }
 
     exportSchema(): IArraySchemaType {
-        return this.schema.exportSchemaFromField(
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            { ...this.state.field, ...this.getGeneircField() },
+        return this.schema.exportSchema(
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             this.childrenRef.current!.exportSchema()
         );
@@ -153,6 +143,7 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
                                         defaultField={this.defaultField}
                                         options={this.genericFieldOptions}
                                         changeType={this.props.changeType.bind(this)}
+                                        recordField={this.schema.recordField.bind(this.schema)}
                                     />
                                 </Col>
                                 <Col lg={1}>
@@ -177,7 +168,7 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
                                                     id="MinItems"
                                                     value={this.state.field.minItems}
                                                     defaultValue={this.state.field.minItems}
-                                                    onChange={this.recordField.bind(this, "minItems")}
+                                                    onChange={this.schema.recordField.bind(this.schema, "minItems")}
                                                 />
                                             </Col>
                                             <Form.Label column lg="2" htmlFor="MaxItems">
@@ -190,7 +181,7 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
                                                     id="MaxItems"
                                                     value={this.state.field.maxItems}
                                                     defaultValue={this.state.field.maxItems}
-                                                    onChange={this.recordField.bind(this, "maxItems")}
+                                                    onChange={this.schema.recordField.bind(this.schema, "maxItems")}
                                                 />
                                             </Col>
                                         </Form.Group>
@@ -200,7 +191,7 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
                                                     type="checkbox"
                                                     checked={this.state.field.uniqueItems}
                                                     defaultChecked={this.state.field.uniqueItems}
-                                                    onChange={this.recordField.bind(this, "uniqueItems")}
+                                                    onChange={this.schema.recordField.bind(this.schema, "uniqueItems")}
                                                 />
                                                 <Form.Check.Label>Unique Items</Form.Check.Label>
                                             </Form.Check>

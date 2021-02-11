@@ -22,7 +22,7 @@ abstract class SchemaEditor<SchemaType extends ISchemaType, FieldType extends IG
 
     protected abstract optionsButtonsAttr: IOptionsButtonsAttr;
     protected abstract genericFieldOptions: IGenericFieldOptions;
-    protected abstract schema: Schema;
+    protected abstract schema: Schema<FieldType>;
 
     // may not have options button in the child class
     protected optionModalRef?: React.RefObject<EditorOptionModal>;

@@ -14,6 +14,7 @@ interface IGenericFieldProps {
     options: IGenericFieldOptions;
 
     changeType(props: DataType): void;
+    recordField(fieldName: keyof Omit<IGenericField, "type">, event: React.ChangeEvent<HTMLInputElement>): void;
 }
 
 interface IGenericFieldState {
@@ -50,28 +51,12 @@ class GenericField extends React.Component<IGenericFieldProps, IGenericFieldStat
         };
     }
 
-    setField<T>(fieldName: keyof Omit<IGenericField, "type">, value: T): void {
-        this.setState(prevState => ({
-            field: {
-                ...prevState.field,
-                [fieldName]: value,
-            },
-        }));
-    }
-
     getFields(): IGenericField {
         return this.state.field;
     }
 
-    recordGenericField(fieldName: keyof Omit<IGenericField, "type">, changeEvent: React.ChangeEvent<HTMLInputElement>): void {
-        switch (typeof this.state.field[fieldName]) {
-            case "string":
-                this.setField(fieldName, changeEvent.target.value);
-                break;
-            case "boolean":
-                this.setField(fieldName, changeEvent.target.checked);
-                break;
-        }
+    recordField(fieldName: keyof Omit<IGenericField, "type">, changeEvent: React.ChangeEvent<HTMLInputElement>): void {
+        this.props.recordField(fieldName, changeEvent);
     }
 
     changeType(changeEvent: React.ChangeEvent<HTMLSelectElement>): void {
@@ -103,7 +88,7 @@ class GenericField extends React.Component<IGenericFieldProps, IGenericFieldStat
                                             <InputGroup.Checkbox
                                                 defaultChecked={this.state.field.required}
                                                 disabled={this.state.isRequiredFieldReadonly}
-                                                onChange={this.recordGenericField.bind(this, "required")}
+                                                onChange={this.recordField.bind(this, "required")}
                                             />
                                         </InputGroup.Prepend>
                                     </OverlayTrigger>
@@ -113,7 +98,7 @@ class GenericField extends React.Component<IGenericFieldProps, IGenericFieldStat
                                         required
                                         readOnly={this.state.isNameFieldReadonly}
                                         defaultValue={this.state.field.name}
-                                        onChange={this.recordGenericField.bind(this, "name")}
+                                        onChange={this.recordField.bind(this, "name")}
                                     />
                                 </InputGroup>
                             </Col>
@@ -138,7 +123,7 @@ class GenericField extends React.Component<IGenericFieldProps, IGenericFieldStat
                                 <Form.Control
                                     placeholder="Titile"
                                     defaultValue={this.state.field.title}
-                                    onChange={this.recordGenericField.bind(this, "title")}
+                                    onChange={this.recordField.bind(this, "title")}
                                 />
                             </Col>
                             <Col lg={4}>
@@ -149,7 +134,7 @@ class GenericField extends React.Component<IGenericFieldProps, IGenericFieldStat
                                         placeholder="Description"
                                         defaultValue={this.state.field.description}
                                         value={this.state.field.description}
-                                        onChange={this.recordGenericField.bind(this, "description")}
+                                        onChange={this.recordField.bind(this, "description")}
                                     />
                                     <OverlayTrigger trigger={["hover", "focus"]} overlay={<Tooltip id="add-tooltip"> Edit </Tooltip>}>
                                         <InputGroup.Append>
@@ -177,7 +162,7 @@ class GenericField extends React.Component<IGenericFieldProps, IGenericFieldStat
                                                 rows={3}
                                                 defaultValue={this.state.field.description}
                                                 value={this.state.field.description}
-                                                onChange={this.recordGenericField.bind(this, "description")}
+                                                onChange={this.recordField.bind(this, "description")}
                                             />
                                         </Form.Group>
                                     </Modal.Body>
@@ -188,7 +173,7 @@ class GenericField extends React.Component<IGenericFieldProps, IGenericFieldStat
                                     <Form.Control
                                         placeholder="$comment"
                                         defaultValue={this.state.field.$comment}
-                                        onChange={this.recordGenericField.bind(this, "$comment")}
+                                        onChange={this.recordField.bind(this, "$comment")}
                                     />
                                 </Accordion.Collapse>
                             </Col>

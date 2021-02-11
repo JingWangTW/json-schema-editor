@@ -8,7 +8,7 @@ import GenericField from "../node_component/GenericField";
 import HintText from "../node_component/HintText";
 import OptionsButtons from "../node_component/OptionsButtons";
 import SpaceFront from "../node_component/SpaceFront";
-import { IGenericFieldOptions, IOptionsButtonsAttr, OmitGenericField } from "../node_component/type_NodeComponent";
+import { IGenericFieldOptions, IOptionsButtonsAttr } from "../node_component/type_NodeComponent";
 import ChildrenSchemaEditor from "./ChildrenSchemaEditor";
 import SchemaEditor from "./SchemaEditor";
 import { IObjectEditorField, ISchemaEditorProps, ISchemaEditorState } from "./type_SchemaEditor";
@@ -35,7 +35,7 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectSchemaType, IObjectEditorFi
         this.genericFieldRef = React.createRef<GenericField>();
         this.childrenRef = React.createRef<ChildrenSchemaEditor>();
 
-        this.schema = new ObjectSchema();
+        this.schema = new ObjectSchema(props.schema, props.field);
 
         this.optionsButtonsAttr = {
             hasChild: true,
@@ -49,7 +49,7 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectSchemaType, IObjectEditorFi
             ...props, // override isRequiredFieldReadonly, isNameFieldReadonly
         };
 
-        this.defaultField = this.schema.extractFieldFromSchema(props.schema, props.field);
+        this.defaultField = this.schema.getDefaultField();
 
         this.state = {
             field: this.defaultField,
@@ -74,14 +74,8 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectSchemaType, IObjectEditorFi
         }
     }
 
-    recordField(fieldName: keyof OmitGenericField<IObjectEditorField>, event: React.ChangeEvent<HTMLInputElement>): void {
-        this.setField(fieldName, parseInt(event.target.value));
-    }
-
     exportSchema(): IObjectSchemaType {
-        return this.schema.exportSchemaFromField(
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            { ...this.state.field, ...this.getGeneircField() },
+        return this.schema.exportSchema(
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             this.childrenRef.current!.exportSchema()
         );
@@ -104,6 +98,7 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectSchemaType, IObjectEditorFi
                                         defaultField={this.defaultField}
                                         options={this.genericFieldOptions}
                                         changeType={this.props.changeType.bind(this)}
+                                        recordField={this.schema.recordField.bind(this.schema)}
                                     />
                                 </Col>
                                 <Col lg={1}>
@@ -126,9 +121,8 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectSchemaType, IObjectEditorFi
                                                     type="number"
                                                     min="0"
                                                     id="MinProperties"
-                                                    value={this.state.field.minProperties}
                                                     defaultValue={this.defaultField.minProperties}
-                                                    onChange={this.recordField.bind(this, "minProperties")}
+                                                    onChange={this.schema.recordField.bind(this.schema, "minProperties")}
                                                 />
                                             </Col>
                                             <Form.Label column lg="auto" htmlFor="MaxProperties">
@@ -139,9 +133,8 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectSchemaType, IObjectEditorFi
                                                     type="number"
                                                     min="0"
                                                     id="MaxProperties"
-                                                    value={this.state.field.maxProperties}
-                                                    defaultValue={this.defaultField.minProperties}
-                                                    onChange={this.recordField.bind(this, "maxProperties")}
+                                                    defaultValue={this.defaultField.maxProperties}
+                                                    onChange={this.schema.recordField.bind(this.schema, "maxProperties")}
                                                 />
                                             </Col>
                                         </Form.Group>

@@ -3,10 +3,31 @@ import { DataType, IntersectionKey } from "../../type";
 import { NextId, getOrDefault } from "../utility";
 import { IGenericSchemaType, ISchemaType } from "./type_schema";
 
-abstract class Schema {
+abstract class Schema<T extends IGenericField> {
     protected abstract type: DataType;
-    abstract exportSchemaFromField(field: IGenericField): ISchemaType;
-    abstract extractFieldFromSchema(schema?: ISchemaType, field?: IGenericField): IGenericField;
+    protected abstract currentField: Required<T>;
+    protected abstract defaultField: Required<T>;
+
+    abstract clearField(): Required<T>;
+    abstract exportSchema(): ISchemaType;
+
+    public recordField(fieldName: keyof T, changeEvent: React.ChangeEvent<HTMLInputElement>): void {
+        switch (typeof this.currentField[fieldName]) {
+            case "string":
+                this.currentField[fieldName] = (changeEvent.target.value.toString() as unknown) as T[keyof T];
+                break;
+            case "boolean":
+                this.currentField[fieldName] = (changeEvent.target.checked as unknown) as T[keyof T];
+                break;
+            case "number":
+                this.currentField[fieldName] = (parseInt(changeEvent.target.value) as unknown) as T[keyof T];
+                break;
+        }
+    }
+
+    public getDefaultField(): Required<T> {
+        return this.defaultField;
+    }
 
     protected getGenericSchemaFromField(field: IGenericField): IGenericSchemaType {
         const schema: IGenericSchemaType = {};
