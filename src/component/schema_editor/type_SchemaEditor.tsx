@@ -96,7 +96,7 @@ export interface IStringEditorField extends IGenericField {
     pattern?: string;
 }
 
-export interface INewChildNodeProps {
+export interface INewChildEditorProps {
     hasSibling?: boolean;
     isDeleteable?: boolean;
     isRequiredFieldReadonly?: boolean;
@@ -105,7 +105,7 @@ export interface INewChildNodeProps {
     field?: IGenericField;
 }
 
-export interface IChildNodeProperty {
+export interface IChildProperty {
     type: DataType;
     selfId: string;
 
@@ -120,10 +120,10 @@ export interface IChildNodeProperty {
     schema?: ISchemaType;
 }
 
-export interface IChildrenNodesProps {
+export interface IChildrenEditorProps {
     depth: number;
 
-    childrenProperty?: Array<IChildNodeProperty>;
+    childrenProperty?: Array<IChildProperty>;
 
-    childrenDidUpdate?(children: IChildNodeProperty[]): void;
+    childrenDidUpdate?(children: IChildProperty[]): void;
 }

@@ -1,6 +1,6 @@
 import React from "react";
 
-import { IChildNodeProperty, IObjectEditorField, ISchemaEditorType } from "../../component/schema_editor/type_SchemaEditor";
+import { IChildProperty, IObjectEditorField, ISchemaEditorType } from "../../component/schema_editor/type_SchemaEditor";
 import { DataType } from "../../type";
 import Schema from "./Schema";
 import { IChildrenSchemaType, IObjectSchemaType } from "./type_schema";
@@ -9,7 +9,7 @@ class ObjectSchema extends Schema<IObjectEditorField> {
     protected type = DataType.Object;
     protected currentField: Required<IObjectEditorField>;
     protected defaultField: Required<IObjectEditorField>;
-    public readonly childrenProperty?: IChildNodeProperty[];
+    public readonly childrenProperty?: IChildProperty[];
 
     constructor(schema?: IObjectSchemaType, field?: IObjectEditorField) {
         super();
@@ -27,7 +27,7 @@ class ObjectSchema extends Schema<IObjectEditorField> {
         if (schema) this.childrenProperty = this.generateChildrenPropertyFromSchema(schema);
     }
 
-    generateChildrenPropertyFromSchema(schema: IObjectSchemaType): IChildNodeProperty[] {
+    generateChildrenPropertyFromSchema(schema: IObjectSchemaType): IChildProperty[] {
         return Object.keys(schema.properties).map((field, i) => {
             return {
                 type: schema.properties[field].type,

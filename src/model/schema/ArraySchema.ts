@@ -1,6 +1,6 @@
 import React from "react";
 
-import { IArrayEditorField, IChildNodeProperty, ISchemaEditorType } from "../../component/schema_editor/type_SchemaEditor";
+import { IArrayEditorField, IChildProperty, ISchemaEditorType } from "../../component/schema_editor/type_SchemaEditor";
 import { DataType } from "../../type";
 import Schema from "./Schema";
 import { IArraySchemaType, IChildrenSchemaType, IGenericSchemaType } from "./type_schema";
@@ -9,7 +9,7 @@ class ArraySchema extends Schema<IArrayEditorField> {
     protected type = DataType.Array;
     protected currentField: Required<IArrayEditorField>;
     protected defaultField: Required<IArrayEditorField>;
-    public readonly childrenProperty?: IChildNodeProperty[];
+    public readonly childrenProperty?: IChildProperty[];
 
     constructor(schema?: IArraySchemaType, field?: IArrayEditorField) {
         super();
@@ -29,7 +29,7 @@ class ArraySchema extends Schema<IArrayEditorField> {
         if (schema) this.childrenProperty = this.generateChildrenPropertyFromSchema(schema);
     }
 
-    generateChildrenPropertyFromSchema(schema: IArraySchemaType): IChildNodeProperty[] {
+    generateChildrenPropertyFromSchema(schema: IArraySchemaType): IChildProperty[] {
         if (schema.items) {
             if (schema.items instanceof Array) {
                 return schema.items.map((s, i) => {

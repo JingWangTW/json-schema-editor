@@ -7,19 +7,19 @@ import HintText from "../node_component/HintText";
 import { IGenericField, type_Hints } from "../node_component/type_NodeComponent";
 import SchemaEditor from "./SchemaEditor";
 import SchemaEditorFactory from "./SchemaEditorFactory";
-import { IChildNodeProperty, IChildrenNodesProps, INewChildNodeProps, ISchemaEditorType } from "./type_SchemaEditor";
+import { IChildProperty, IChildrenEditorProps, INewChildEditorProps, ISchemaEditorType } from "./type_SchemaEditor";
 
 interface ChildrenNodesState {
-    children: Array<IChildNodeProperty>;
+    children: Array<IChildProperty>;
 
     hint?: type_Hints;
 }
 
-class ChildrenSchemaEditor extends React.Component<IChildrenNodesProps, ChildrenNodesState> {
-    constructor(props: IChildrenNodesProps) {
+class ChildrenSchemaEditor extends React.Component<IChildrenEditorProps, ChildrenNodesState> {
+    constructor(props: IChildrenEditorProps) {
         super(props);
 
-        const children: IChildNodeProperty[] = getOrDefault(props.childrenProperty, []);
+        const children: IChildProperty[] = getOrDefault(props.childrenProperty, []);
 
         this.state = {
             children,
@@ -49,11 +49,11 @@ class ChildrenSchemaEditor extends React.Component<IChildrenNodesProps, Children
         });
     }
 
-    add(selfId?: string, props?: INewChildNodeProps): void {
+    add(selfId?: string, props?: INewChildEditorProps): void {
         const originChildren = this.state.children;
         let currentIndex;
 
-        let p: PartialBy<Required<INewChildNodeProps>, "field"> = {
+        let p: PartialBy<Required<INewChildEditorProps>, "field"> = {
             isDeleteable: true,
             hasSibling: true,
             isRequiredFieldReadonly: false,

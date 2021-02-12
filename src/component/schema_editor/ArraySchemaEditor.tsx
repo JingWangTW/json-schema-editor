@@ -12,7 +12,7 @@ import SpaceFront from "../node_component/SpaceFront";
 import { IGenericFieldOptions, IOptionsButtonsAttr } from "../node_component/type_NodeComponent";
 import ChildrenSchemaEditor from "./ChildrenSchemaEditor";
 import SchemaEditor from "./SchemaEditor";
-import { IArrayEditorField, IChildNodeProperty, ISchemaEditorProps, ISchemaEditorState } from "./type_SchemaEditor";
+import { IArrayEditorField, IChildProperty, ISchemaEditorProps, ISchemaEditorState } from "./type_SchemaEditor";
 
 class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField> {
     protected optionsButtonsAttr: IOptionsButtonsAttr;
@@ -76,7 +76,7 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
         }
     }
 
-    childrenDidUpdate(children: IChildNodeProperty[]): void {
+    childrenDidUpdate(children: IChildProperty[]): void {
         if (this.childrenLength !== children.length) {
             if (children.length > 1) {
                 this.updateHint("info", "Ordinal index of each item in Array type is meaningful.");
