@@ -13,9 +13,11 @@ class HintText extends React.Component<IHintTextProps, EmptyState> {
             switch (key) {
                 case "info":
                     r.push(<span style={{ color: "green" }}>{this.props.hint[key]}</span>);
+                    r.push(<br />);
                     break;
                 case "error":
                     r.push(<span style={{ color: "red" }}>{this.props.hint[key]}</span>);
+                    r.push(<br />);
                     break;
             }
         }

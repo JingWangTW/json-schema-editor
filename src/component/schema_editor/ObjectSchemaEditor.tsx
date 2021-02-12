@@ -48,11 +48,10 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectSchemaType, IObjectEditorFi
         };
     }
 
-    exportSchema(): IObjectSchemaType {
-        return this.schema.exportSchema(
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            this.childrenRef.current!.exportSchema()
-        );
+    componentDidMount(): void {
+        if (this.state.currentField.maxProperties < this.state.currentField.minProperties) {
+            this.updateHint("error", "minProperties > maxProperties");
+        }
     }
 
     componentDidUpdate(
@@ -69,6 +68,13 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectSchemaType, IObjectEditorFi
                 this.updateHint("error");
             }
         }
+    }
+
+    exportSchema(): IObjectSchemaType {
+        return this.schema.exportSchema(
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            this.childrenRef.current!.exportSchema()
+        );
     }
 
     render(): JSX.Element {

@@ -53,6 +53,41 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
         };
     }
 
+    componentDidMount(): void {
+        if (!this.props.schema || !this.props.schema.items) this.addChild();
+        if (this.state.currentField.maxItems < this.state.currentField.minItems) {
+            this.updateHint("error", "minItems > maxItems");
+        }
+    }
+
+    componentDidUpdate(
+        prevProps: ISchemaEditorProps<IArraySchemaType, IArrayEditorField>,
+        prevState: ISchemaEditorState<IArrayEditorField>
+    ): void {
+        if (
+            prevState.currentField.maxItems !== this.state.currentField.maxItems ||
+            prevState.currentField.minItems !== this.state.currentField.minItems
+        ) {
+            if (this.state.currentField.maxItems < this.state.currentField.minItems) {
+                this.updateHint("error", "minItems > maxItems");
+            } else {
+                this.updateHint("error", undefined);
+            }
+        }
+    }
+
+    childrenDidUpdate(children: IChildNodeProperty[]): void {
+        if (this.childrenLength !== children.length) {
+            if (children.length > 1) {
+                this.updateHint("info", "Ordinal index of each item in Array type is meaningful.");
+            } else {
+                this.updateHint("info");
+            }
+
+            this.childrenLength = children.length;
+        }
+    }
+
     addChild(): void {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         this.childrenRef.current!.add("", {
@@ -76,48 +111,6 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             this.childrenRef.current!.exportSchema()
         );
-    }
-
-    componentDidMount(): void {
-        if (!this.props.schema || !this.props.schema.items) this.addChild();
-    }
-
-    componentDidUpdate(
-        prevProps: ISchemaEditorProps<IArraySchemaType, IArrayEditorField>,
-        prevState: ISchemaEditorState<IArrayEditorField>
-    ): void {
-        if (
-            prevState.currentField.maxItems !== this.state.currentField.maxItems ||
-            prevState.currentField.minItems !== this.state.currentField.minItems
-        ) {
-            if (this.state.currentField.maxItems < this.state.currentField.minItems) {
-                this.setState(prevState => ({
-                    hint: {
-                        ...prevState.hint,
-                        error: "minItems > maxItems",
-                    },
-                }));
-            } else {
-                this.setState(prevState => ({
-                    hint: {
-                        ...prevState.hint,
-                        error: undefined,
-                    },
-                }));
-            }
-        }
-    }
-
-    childrenDidUpdate(children: IChildNodeProperty[]): void {
-        if (this.childrenLength !== children.length) {
-            if (children.length > 1) {
-                this.updateHint("info", "Ordinal index of each item in Array type is meaningful.");
-            } else {
-                this.updateHint("info");
-            }
-
-            this.childrenLength = children.length;
-        }
     }
 
     render(): JSX.Element {
