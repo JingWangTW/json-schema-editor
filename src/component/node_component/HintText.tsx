@@ -9,19 +9,28 @@ class HintText extends React.Component<IHintTextProps, EmptyState> {
     renderHint(): JSX.Element[] {
         const r: JSX.Element[] = [];
 
-        for (const key in this.props.hint) {
-            switch (key) {
-                case "info":
-                    r.push(<span style={{ color: "green" }}>{this.props.hint[key]}</span>);
-                    r.push(<br />);
-                    break;
-                case "error":
-                    r.push(<span style={{ color: "red" }}>{this.props.hint[key]}</span>);
-                    r.push(<br />);
-                    break;
+        if (this.props.hint) {
+            let key: keyof type_Hints;
+
+            for (key in this.props.hint) {
+                if (this.props.hint[key] !== undefined) {
+                    switch (key) {
+                        case "info":
+                            r.push(<span style={{ color: "green" }}>{this.props.hint[key]}</span>);
+                            r.push(<br />);
+                            break;
+                        case "error":
+                            r.push(<span style={{ color: "red" }}>{this.props.hint[key]}</span>);
+                            r.push(<br />);
+                            break;
+                        case "warn":
+                            r.push(<span style={{ color: "orange" }}>{this.props.hint[key]}</span>);
+                            r.push(<br />);
+                            break;
+                    }
+                }
             }
         }
-
         return r;
     }
 

@@ -56,7 +56,7 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
     componentDidMount(): void {
         if (!this.props.schema) this.addChild();
         if (this.state.currentField.maxItems < this.state.currentField.minItems) {
-            this.updateHint("error", "minItems > maxItems");
+            this.updateHint("warn", "minItems > maxItems");
         }
     }
 
@@ -69,9 +69,9 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
             prevState.currentField.minItems !== this.state.currentField.minItems
         ) {
             if (this.state.currentField.maxItems < this.state.currentField.minItems) {
-                this.updateHint("error", "minItems > maxItems");
+                this.updateHint("warn", "minItems > maxItems");
             } else {
-                this.updateHint("error", undefined);
+                this.updateHint("warn", undefined);
             }
         }
     }

@@ -50,7 +50,7 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectSchemaType, IObjectEditorFi
 
     componentDidMount(): void {
         if (this.state.currentField.maxProperties < this.state.currentField.minProperties) {
-            this.updateHint("error", "minProperties > maxProperties");
+            this.updateHint("warn", "minProperties > maxProperties");
         }
     }
 
@@ -63,9 +63,9 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectSchemaType, IObjectEditorFi
             prevState.currentField.minProperties !== this.state.currentField.minProperties
         ) {
             if (this.state.currentField.maxProperties < this.state.currentField.minProperties) {
-                this.updateHint("error", "minProperties > maxProperties");
+                this.updateHint("warn", "minProperties > maxProperties");
             } else {
-                this.updateHint("error");
+                this.updateHint("warn");
             }
         }
     }
