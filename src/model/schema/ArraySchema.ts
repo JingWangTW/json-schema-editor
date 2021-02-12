@@ -7,6 +7,7 @@ class ArraySchema extends Schema<IArrayEditorField> {
     protected type = DataType.Array;
     protected currentField: Required<IArrayEditorField>;
     protected defaultField: Required<IArrayEditorField>;
+    public readonly childrenSchema?: IChildrenSchemaType;
 
     constructor(schema?: IArraySchemaType, field?: IArrayEditorField) {
         super();
@@ -22,6 +23,32 @@ class ArraySchema extends Schema<IArrayEditorField> {
         };
 
         this.currentField = this.defaultField;
+
+        if (schema) this.childrenSchema = this.generateChildrenSchemaFromSchema(schema);
+    }
+
+    generateChildrenSchemaFromSchema(schema: IArraySchemaType): IChildrenSchemaType {
+        if (schema.items) {
+            if (schema.items instanceof Array) {
+                return schema.items.map(s => {
+                    return {
+                        name: "items",
+                        value: s,
+                        required: true,
+                    };
+                });
+            } else {
+                return [
+                    {
+                        name: "items",
+                        value: schema.items,
+                        required: true,
+                    },
+                ];
+            }
+        } else {
+            return [];
+        }
     }
 
     clearOptionField(): Required<IArrayEditorField> {

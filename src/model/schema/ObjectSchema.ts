@@ -7,6 +7,7 @@ class ObjectSchema extends Schema<IObjectEditorField> {
     protected type = DataType.Object;
     protected currentField: Required<IObjectEditorField>;
     protected defaultField: Required<IObjectEditorField>;
+    public readonly childrenSchema?: IChildrenSchemaType;
 
     constructor(schema?: IObjectSchemaType, field?: IObjectEditorField) {
         super();
@@ -20,6 +21,18 @@ class ObjectSchema extends Schema<IObjectEditorField> {
         };
 
         this.currentField = this.defaultField;
+
+        if (schema) this.childrenSchema = this.generateChildrenSchemaFromSchema(schema);
+    }
+
+    generateChildrenSchemaFromSchema(schema: IObjectSchemaType): IChildrenSchemaType {
+        return Object.keys(schema.properties).map(s => {
+            return {
+                name: s,
+                value: schema.properties[s],
+                required: schema.required.find(r => r === s) === undefined ? false : true,
+            };
+        });
     }
 
     clearOptionField(): Required<IObjectEditorField> {

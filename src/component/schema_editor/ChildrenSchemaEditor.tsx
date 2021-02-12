@@ -40,85 +40,29 @@ class ChildrenSchemaEditor extends React.Component<IChildrenNodesProps, Children
         return this.state.children.length;
     }
 
-    getChildrenPropertyFromSchema(schema: ISchemaType): IChildNodeProperty[] {
-        let children: IChildNodeProperty[] = [];
+    getChildrenPropertyFromSchema(schema: IChildrenSchemaType): IChildNodeProperty[] {
+        return schema.map(s => {
+            return {
+                type: s.value.type,
+                selfId: NextId.next("child").toString(),
 
-        if (schema.type) {
-            if (schema.type === DataType.Array && schema.items) {
-                if (schema.items instanceof Array) {
-                    children = schema.items.map((s, i) => {
-                        return {
-                            type: s.type,
-                            selfId: i.toString(),
+                hasSibling: true,
+                isDeleteable: true,
+                isRequiredFieldReadonly: s.value.type === DataType.Array ? true : false,
+                isNameFieldReadonly: s.value.type === DataType.Array ? true : false,
 
-                            hasSibling: true,
-                            isDeleteable: i === 0 ? false : true,
-                            isRequiredFieldReadonly: true,
-                            isNameFieldReadonly: true,
+                ref: React.createRef<ISchemaEditorType>(),
 
-                            ref: React.createRef<ISchemaEditorType>(),
+                field: {
+                    type: s.value.type,
+                    name: s.name,
 
-                            field: {
-                                type: s.type,
-                                name: "items",
+                    required: s.required,
+                },
 
-                                required: true,
-                            },
-
-                            schema: s,
-                        };
-                    });
-                } else {
-                    children = [
-                        {
-                            type: schema.type,
-                            selfId: "0",
-
-                            hasSibling: true,
-                            isDeleteable: false,
-                            isRequiredFieldReadonly: true,
-                            isNameFieldReadonly: true,
-
-                            ref: React.createRef<ISchemaEditorType>(),
-
-                            field: {
-                                type: schema.type,
-                                name: "items",
-
-                                required: true,
-                            },
-
-                            schema,
-                        },
-                    ];
-                }
-            } else if (schema.type === DataType.Object) {
-                children = Object.keys(schema.properties).map((field, i) => {
-                    return {
-                        type: schema.properties[field].type,
-                        selfId: i.toString(),
-
-                        hasSibling: true,
-                        isDeleteable: true,
-                        isRequiredFieldReadonly: false,
-                        isNameFieldReadonly: false,
-
-                        ref: React.createRef<ISchemaEditorType>(),
-
-                        field: {
-                            type: schema.properties[field].type,
-                            name: field,
-
-                            required: schema.required.find(r => r === field) === undefined ? false : true,
-                        },
-
-                        schema: schema.properties[field],
-                    };
-                });
-            }
-        }
-
-        return children;
+                schema: s.value,
+            };
+        });
     }
 
     exportSchema(): IChildrenSchemaType {

@@ -188,7 +188,7 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
                 <ChildrenSchemaEditor
                     ref={this.childrenRef}
                     depth={this.props.depth}
-                    schema={this.props.schema}
+                    schema={this.schema.childrenSchema}
                     childrenDidUpdate={this.childrenDidUpdate.bind(this)}
                 />
             </div>
