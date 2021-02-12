@@ -54,7 +54,7 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
     }
 
     componentDidMount(): void {
-        if (!this.props.schema || !this.props.schema.items) this.addChild();
+        if (!this.props.schema) this.addChild();
         if (this.state.currentField.maxItems < this.state.currentField.minItems) {
             this.updateHint("error", "minItems > maxItems");
         }
@@ -92,7 +92,7 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         this.childrenRef.current!.add("", {
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            isDeleteable: this.childrenRef.current!.length >= 1 ? true : false,
+            isDeleteable: true,
             hasSibling: true,
             isRequiredFieldReadonly: true,
             isNameFieldReadonly: true,
@@ -188,7 +188,7 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
                 <ChildrenSchemaEditor
                     ref={this.childrenRef}
                     depth={this.props.depth}
-                    schema={this.schema.childrenSchema}
+                    childrenProperty={this.schema.childrenProperty}
                     childrenDidUpdate={this.childrenDidUpdate.bind(this)}
                 />
             </div>

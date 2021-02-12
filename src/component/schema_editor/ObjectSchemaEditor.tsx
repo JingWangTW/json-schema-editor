@@ -139,7 +139,7 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectSchemaType, IObjectEditorFi
                         </Form>
                     </Col>
                 </Row>
-                <ChildrenSchemaEditor depth={this.props.depth} ref={this.childrenRef} schema={this.schema.childrenSchema} />
+                <ChildrenSchemaEditor depth={this.props.depth} ref={this.childrenRef} childrenProperty={this.schema.childrenProperty} />
             </div>
         );
     }

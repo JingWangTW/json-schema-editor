@@ -1,4 +1,4 @@
-import { IChildrenSchemaType, ISchemaType } from "../../model/schema/type_schema";
+import { ISchemaType } from "../../model/schema/type_schema";
 import { DataType } from "../../type";
 import { IGenericField, type_Hints } from "../node_component/type_NodeComponent";
 import SchemaEditor from "./SchemaEditor";
@@ -122,6 +122,8 @@ export interface IChildNodeProperty {
 
 export interface IChildrenNodesProps {
     depth: number;
-    schema?: IChildrenSchemaType;
+
+    childrenProperty?: Array<IChildNodeProperty>;
+
     childrenDidUpdate?(children: IChildNodeProperty[]): void;
 }

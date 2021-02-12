@@ -1,7 +1,7 @@
 import React from "react";
 
 import { IChildrenSchemaType, ISchemaType } from "../../model/schema/type_schema";
-import { NextId } from "../../model/utility";
+import { NextId, getOrDefault } from "../../model/utility";
 import { DataType, PartialBy } from "../../type";
 import HintText from "../node_component/HintText";
 import { IGenericField, type_Hints } from "../node_component/type_NodeComponent";
@@ -19,9 +19,7 @@ class ChildrenSchemaEditor extends React.Component<IChildrenNodesProps, Children
     constructor(props: IChildrenNodesProps) {
         super(props);
 
-        let children: IChildNodeProperty[] = [];
-
-        if (props.schema) children = this.getChildrenPropertyFromSchema(props.schema);
+        const children: IChildNodeProperty[] = getOrDefault(props.childrenProperty, []);
 
         this.state = {
             children,
@@ -38,31 +36,6 @@ class ChildrenSchemaEditor extends React.Component<IChildrenNodesProps, Children
 
     get length(): number {
         return this.state.children.length;
-    }
-
-    getChildrenPropertyFromSchema(schema: IChildrenSchemaType): IChildNodeProperty[] {
-        return schema.map(s => {
-            return {
-                type: s.value.type,
-                selfId: NextId.next("child").toString(),
-
-                hasSibling: true,
-                isDeleteable: true,
-                isRequiredFieldReadonly: s.value.type === DataType.Array ? true : false,
-                isNameFieldReadonly: s.value.type === DataType.Array ? true : false,
-
-                ref: React.createRef<ISchemaEditorType>(),
-
-                field: {
-                    type: s.value.type,
-                    name: s.name,
-
-                    required: s.required,
-                },
-
-                schema: s.value,
-            };
-        });
     }
 
     exportSchema(): IChildrenSchemaType {

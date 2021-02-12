@@ -1,4 +1,6 @@
-import { IArrayEditorField } from "../../component/schema_editor/type_SchemaEditor";
+import React from "react";
+
+import { IArrayEditorField, IChildNodeProperty, ISchemaEditorType } from "../../component/schema_editor/type_SchemaEditor";
 import { DataType } from "../../type";
 import Schema from "./Schema";
 import { IArraySchemaType, IChildrenSchemaType, IGenericSchemaType } from "./type_schema";
@@ -7,7 +9,7 @@ class ArraySchema extends Schema<IArrayEditorField> {
     protected type = DataType.Array;
     protected currentField: Required<IArrayEditorField>;
     protected defaultField: Required<IArrayEditorField>;
-    public readonly childrenSchema?: IChildrenSchemaType;
+    public readonly childrenProperty?: IChildNodeProperty[];
 
     constructor(schema?: IArraySchemaType, field?: IArrayEditorField) {
         super();
@@ -24,25 +26,55 @@ class ArraySchema extends Schema<IArrayEditorField> {
 
         this.currentField = this.defaultField;
 
-        if (schema) this.childrenSchema = this.generateChildrenSchemaFromSchema(schema);
+        if (schema) this.childrenProperty = this.generateChildrenPropertyFromSchema(schema);
     }
 
-    generateChildrenSchemaFromSchema(schema: IArraySchemaType): IChildrenSchemaType {
+    generateChildrenPropertyFromSchema(schema: IArraySchemaType): IChildNodeProperty[] {
         if (schema.items) {
             if (schema.items instanceof Array) {
-                return schema.items.map(s => {
+                return schema.items.map((s, i) => {
                     return {
-                        name: "items",
-                        value: s,
-                        required: true,
+                        type: s.type,
+                        selfId: i.toString(),
+
+                        hasSibling: true,
+                        isDeleteable: i === 0 ? false : true,
+                        isRequiredFieldReadonly: true,
+                        isNameFieldReadonly: true,
+
+                        ref: React.createRef<ISchemaEditorType>(),
+
+                        field: {
+                            type: s.type,
+                            name: "items",
+
+                            required: true,
+                        },
+
+                        schema: s,
                     };
                 });
             } else {
                 return [
                     {
-                        name: "items",
-                        value: schema.items,
-                        required: true,
+                        type: schema.type,
+                        selfId: "0",
+
+                        hasSibling: true,
+                        isDeleteable: false,
+                        isRequiredFieldReadonly: true,
+                        isNameFieldReadonly: true,
+
+                        ref: React.createRef<ISchemaEditorType>(),
+
+                        field: {
+                            type: schema.type,
+                            name: "items",
+
+                            required: true,
+                        },
+
+                        schema,
                     },
                 ];
             }
@@ -72,12 +104,12 @@ class ArraySchema extends Schema<IArrayEditorField> {
             itemsRestricted = { minItems, maxItems };
         }
 
-        let items: IArraySchemaType["items"] = [];
+        let items: IArraySchemaType["items"];
 
         if (children) {
             if (children.length === 1) {
                 items = children[0].value;
-            } else {
+            } else if (children.length > 1) {
                 items = children.map(child => child.value);
             }
         }

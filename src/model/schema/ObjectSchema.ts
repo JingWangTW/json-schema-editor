@@ -1,4 +1,6 @@
-import { IObjectEditorField } from "../../component/schema_editor/type_SchemaEditor";
+import React from "react";
+
+import { IChildNodeProperty, IObjectEditorField, ISchemaEditorType } from "../../component/schema_editor/type_SchemaEditor";
 import { DataType } from "../../type";
 import Schema from "./Schema";
 import { IChildrenSchemaType, IObjectSchemaType } from "./type_schema";
@@ -7,7 +9,7 @@ class ObjectSchema extends Schema<IObjectEditorField> {
     protected type = DataType.Object;
     protected currentField: Required<IObjectEditorField>;
     protected defaultField: Required<IObjectEditorField>;
-    public readonly childrenSchema?: IChildrenSchemaType;
+    public readonly childrenProperty?: IChildNodeProperty[];
 
     constructor(schema?: IObjectSchemaType, field?: IObjectEditorField) {
         super();
@@ -22,15 +24,30 @@ class ObjectSchema extends Schema<IObjectEditorField> {
 
         this.currentField = this.defaultField;
 
-        if (schema) this.childrenSchema = this.generateChildrenSchemaFromSchema(schema);
+        if (schema) this.childrenProperty = this.generateChildrenPropertyFromSchema(schema);
     }
 
-    generateChildrenSchemaFromSchema(schema: IObjectSchemaType): IChildrenSchemaType {
-        return Object.keys(schema.properties).map(s => {
+    generateChildrenPropertyFromSchema(schema: IObjectSchemaType): IChildNodeProperty[] {
+        return Object.keys(schema.properties).map((field, i) => {
             return {
-                name: s,
-                value: schema.properties[s],
-                required: schema.required.find(r => r === s) === undefined ? false : true,
+                type: schema.properties[field].type,
+                selfId: i.toString(),
+
+                hasSibling: true,
+                isDeleteable: true,
+                isRequiredFieldReadonly: false,
+                isNameFieldReadonly: false,
+
+                ref: React.createRef<ISchemaEditorType>(),
+
+                field: {
+                    type: schema.properties[field].type,
+                    name: field,
+
+                    required: schema.required.find(r => r === field) === undefined ? false : true,
+                },
+
+                schema: schema.properties[field],
             };
         });
     }
