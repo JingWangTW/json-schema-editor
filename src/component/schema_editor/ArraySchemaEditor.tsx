@@ -9,14 +9,12 @@ import GenericField from "../node_component/GenericField";
 import HintText from "../node_component/HintText";
 import OptionsButtons from "../node_component/OptionsButtons";
 import SpaceFront from "../node_component/SpaceFront";
-import { IGenericField, IGenericFieldOptions, IOptionsButtonsAttr } from "../node_component/type_NodeComponent";
+import { IGenericFieldOptions, IOptionsButtonsAttr } from "../node_component/type_NodeComponent";
 import ChildrenSchemaEditor from "./ChildrenSchemaEditor";
 import SchemaEditor from "./SchemaEditor";
 import { IArrayEditorField, IChildNodeProperty, ISchemaEditorProps, ISchemaEditorState } from "./type_SchemaEditor";
 
 class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField> {
-    protected defaultField: Required<IGenericField> & Required<IArrayEditorField>;
-
     protected optionsButtonsAttr: IOptionsButtonsAttr;
     protected genericFieldOptions: IGenericFieldOptions;
     protected schema: ArraySchema;
@@ -29,10 +27,6 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
 
     constructor(props: ISchemaEditorProps<IArraySchemaType, IArrayEditorField>) {
         super(props);
-
-        // remove field from props
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { field: temp, ...propsRemoveField } = props;
 
         this.optionModalRef = React.createRef<EditorOptionModal>();
         this.genericFieldRef = React.createRef<GenericField>();
@@ -52,41 +46,11 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
             ...props, // override isRequiredFieldReadonly, isNameFieldReadonly
         };
 
-        this.defaultField = this.schema.getDefaultField();
         this.childrenLength = 0;
 
         this.state = {
-            field: this.defaultField,
-
-            ...propsRemoveField,
+            currentField: this.schema.getDefaultField(),
         };
-    }
-
-    componentDidMount(): void {
-        if (!this.props.schema || !this.props.schema.items) this.addChild();
-    }
-
-    componentDidUpdate(
-        prevProps: ISchemaEditorProps<IArraySchemaType, IArrayEditorField>,
-        prevState: ISchemaEditorState<IArrayEditorField>
-    ): void {
-        if (prevState.field.maxItems !== this.state.field.maxItems || prevState.field.minItems !== this.state.field.minItems) {
-            if (this.state.field.maxItems < this.state.field.minItems) {
-                this.setState(prevState => ({
-                    hint: {
-                        ...prevState.hint,
-                        error: "minItems > maxItems",
-                    },
-                }));
-            } else {
-                this.setState(prevState => ({
-                    hint: {
-                        ...prevState.hint,
-                        error: undefined,
-                    },
-                }));
-            }
-        }
     }
 
     addChild(): void {
@@ -107,6 +71,43 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
         });
     }
 
+    exportSchema(): IArraySchemaType {
+        return this.schema.exportSchema(
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            this.childrenRef.current!.exportSchema()
+        );
+    }
+
+    componentDidMount(): void {
+        if (!this.props.schema || !this.props.schema.items) this.addChild();
+    }
+
+    componentDidUpdate(
+        prevProps: ISchemaEditorProps<IArraySchemaType, IArrayEditorField>,
+        prevState: ISchemaEditorState<IArrayEditorField>
+    ): void {
+        if (
+            prevState.currentField.maxItems !== this.state.currentField.maxItems ||
+            prevState.currentField.minItems !== this.state.currentField.minItems
+        ) {
+            if (this.state.currentField.maxItems < this.state.currentField.minItems) {
+                this.setState(prevState => ({
+                    hint: {
+                        ...prevState.hint,
+                        error: "minItems > maxItems",
+                    },
+                }));
+            } else {
+                this.setState(prevState => ({
+                    hint: {
+                        ...prevState.hint,
+                        error: undefined,
+                    },
+                }));
+            }
+        }
+    }
+
     childrenDidUpdate(children: IChildNodeProperty[]): void {
         if (this.childrenLength !== children.length) {
             if (children.length > 1) {
@@ -117,13 +118,6 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
 
             this.childrenLength = children.length;
         }
-    }
-
-    exportSchema(): IArraySchemaType {
-        return this.schema.exportSchema(
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            this.childrenRef.current!.exportSchema()
-        );
     }
 
     render(): JSX.Element {
@@ -140,10 +134,9 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
                                 <Col lg={11}>
                                     <GenericField
                                         ref={this.genericFieldRef}
-                                        defaultField={this.defaultField}
+                                        schemaType={this.schema}
                                         options={this.genericFieldOptions}
                                         changeType={this.props.changeType.bind(this)}
-                                        recordField={this.schema.recordField.bind(this.schema)}
                                     />
                                 </Col>
                                 <Col lg={1}>
@@ -166,9 +159,8 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
                                                     type="number"
                                                     min="0"
                                                     id="MinItems"
-                                                    value={this.state.field.minItems}
-                                                    defaultValue={this.state.field.minItems}
-                                                    onChange={this.schema.recordField.bind(this.schema, "minItems")}
+                                                    value={this.state.currentField.minItems}
+                                                    onChange={this.recordField.bind(this, "minItems")}
                                                 />
                                             </Col>
                                             <Form.Label column lg="2" htmlFor="MaxItems">
@@ -179,9 +171,8 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
                                                     type="number"
                                                     min="0"
                                                     id="MaxItems"
-                                                    value={this.state.field.maxItems}
-                                                    defaultValue={this.state.field.maxItems}
-                                                    onChange={this.schema.recordField.bind(this.schema, "maxItems")}
+                                                    value={this.state.currentField.maxItems}
+                                                    onChange={this.recordField.bind(this, "maxItems")}
                                                 />
                                             </Col>
                                         </Form.Group>
@@ -189,9 +180,8 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
                                             <Form.Check type="checkbox" id="uniqueCheckbox">
                                                 <Form.Check.Input
                                                     type="checkbox"
-                                                    checked={this.state.field.uniqueItems}
-                                                    defaultChecked={this.state.field.uniqueItems}
-                                                    onChange={this.schema.recordField.bind(this.schema, "uniqueItems")}
+                                                    checked={this.state.currentField.uniqueItems}
+                                                    onChange={this.recordField.bind(this, "uniqueItems")}
                                                 />
                                                 <Form.Check.Label>Unique Items</Form.Check.Label>
                                             </Form.Check>

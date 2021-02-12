@@ -22,7 +22,7 @@ class ObjectSchema extends Schema<IObjectEditorField> {
         this.currentField = this.defaultField;
     }
 
-    clearField(): Required<IObjectEditorField> {
+    clearOptionField(): Required<IObjectEditorField> {
         this.currentField.maxProperties = 0;
         this.currentField.minProperties = 0;
 

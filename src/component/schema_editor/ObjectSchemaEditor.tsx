@@ -14,8 +14,6 @@ import SchemaEditor from "./SchemaEditor";
 import { IObjectEditorField, ISchemaEditorProps, ISchemaEditorState } from "./type_SchemaEditor";
 
 class ObjectSchemaEditor extends SchemaEditor<IObjectSchemaType, IObjectEditorField> {
-    protected defaultField: Required<IObjectEditorField>;
-
     protected optionsButtonsAttr: IOptionsButtonsAttr;
     protected genericFieldOptions: IGenericFieldOptions;
     protected schema: ObjectSchema;
@@ -26,10 +24,6 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectSchemaType, IObjectEditorFi
 
     constructor(props: ISchemaEditorProps<IObjectSchemaType, IObjectEditorField>) {
         super(props);
-
-        // remove field from props
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { field: temp, ...propsRemoveField } = props;
 
         this.optionModalRef = React.createRef<EditorOptionModal>();
         this.genericFieldRef = React.createRef<GenericField>();
@@ -49,29 +43,9 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectSchemaType, IObjectEditorFi
             ...props, // override isRequiredFieldReadonly, isNameFieldReadonly
         };
 
-        this.defaultField = this.schema.getDefaultField();
-
         this.state = {
-            field: this.defaultField,
-
-            ...propsRemoveField,
+            currentField: this.schema.getDefaultField(),
         };
-    }
-
-    componentDidUpdate(
-        prevProps: ISchemaEditorProps<IObjectSchemaType, IObjectEditorField>,
-        prevState: ISchemaEditorState<IObjectEditorField>
-    ): void {
-        if (
-            prevState.field.maxProperties !== this.state.field.maxProperties ||
-            prevState.field.minProperties !== this.state.field.minProperties
-        ) {
-            if (this.state.field.maxProperties < this.state.field.minProperties) {
-                this.updateHint("error", "minProperties > maxProperties");
-            } else {
-                this.updateHint("error");
-            }
-        }
     }
 
     exportSchema(): IObjectSchemaType {
@@ -79,6 +53,22 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectSchemaType, IObjectEditorFi
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             this.childrenRef.current!.exportSchema()
         );
+    }
+
+    componentDidUpdate(
+        prevProps: ISchemaEditorProps<IObjectSchemaType, IObjectEditorField>,
+        prevState: ISchemaEditorState<IObjectEditorField>
+    ): void {
+        if (
+            prevState.currentField.maxProperties !== this.state.currentField.maxProperties ||
+            prevState.currentField.minProperties !== this.state.currentField.minProperties
+        ) {
+            if (this.state.currentField.maxProperties < this.state.currentField.minProperties) {
+                this.updateHint("error", "minProperties > maxProperties");
+            } else {
+                this.updateHint("error");
+            }
+        }
     }
 
     render(): JSX.Element {
@@ -95,10 +85,9 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectSchemaType, IObjectEditorFi
                                 <Col lg={11}>
                                     <GenericField
                                         ref={this.genericFieldRef}
-                                        defaultField={this.defaultField}
+                                        schemaType={this.schema}
                                         options={this.genericFieldOptions}
                                         changeType={this.props.changeType.bind(this)}
-                                        recordField={this.schema.recordField.bind(this.schema)}
                                     />
                                 </Col>
                                 <Col lg={1}>
@@ -121,8 +110,8 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectSchemaType, IObjectEditorFi
                                                     type="number"
                                                     min="0"
                                                     id="MinProperties"
-                                                    defaultValue={this.defaultField.minProperties}
-                                                    onChange={this.schema.recordField.bind(this.schema, "minProperties")}
+                                                    value={this.state.currentField.minProperties}
+                                                    onChange={this.recordField.bind(this, "minProperties")}
                                                 />
                                             </Col>
                                             <Form.Label column lg="auto" htmlFor="MaxProperties">
@@ -133,8 +122,8 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectSchemaType, IObjectEditorFi
                                                     type="number"
                                                     min="0"
                                                     id="MaxProperties"
-                                                    defaultValue={this.defaultField.maxProperties}
-                                                    onChange={this.schema.recordField.bind(this.schema, "maxProperties")}
+                                                    value={this.state.currentField.maxProperties}
+                                                    onChange={this.recordField.bind(this, "maxProperties")}
                                                 />
                                             </Col>
                                         </Form.Group>

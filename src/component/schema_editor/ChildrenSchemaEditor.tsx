@@ -125,9 +125,9 @@ class ChildrenSchemaEditor extends React.Component<IChildrenNodesProps, Children
         return this.state.children.map(child => {
             const c: SchemaEditor<ISchemaType, IGenericField> = child.ref.current as SchemaEditor<ISchemaType, IGenericField>;
             return {
-                name: c.getGeneircField().name,
+                name: c.getField().name,
                 value: c.exportSchema(),
-                required: c.getGeneircField().required,
+                required: c.getField().required,
             };
         });
     }

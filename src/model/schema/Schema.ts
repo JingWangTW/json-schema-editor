@@ -1,6 +1,6 @@
 import { IGenericField } from "../../component/node_component/type_NodeComponent";
 import { DataType, IntersectionKey } from "../../type";
-import { NextId, getOrDefault } from "../utility";
+import { CloneReturnValue, NextId, getOrDefault } from "../utility";
 import { IGenericSchemaType, ISchemaType } from "./type_schema";
 
 abstract class Schema<T extends IGenericField> {
@@ -8,10 +8,11 @@ abstract class Schema<T extends IGenericField> {
     protected abstract currentField: Required<T>;
     protected abstract defaultField: Required<T>;
 
-    abstract clearField(): Required<T>;
+    abstract clearOptionField(): Required<T>;
     abstract exportSchema(): ISchemaType;
 
-    public recordField(fieldName: keyof T, changeEvent: React.ChangeEvent<HTMLInputElement>): void {
+    @CloneReturnValue
+    public recordField(fieldName: keyof T, changeEvent: React.ChangeEvent<HTMLInputElement>): Required<T> {
         switch (typeof this.currentField[fieldName]) {
             case "string":
                 this.currentField[fieldName] = (changeEvent.target.value.toString() as unknown) as T[keyof T];
@@ -23,10 +24,18 @@ abstract class Schema<T extends IGenericField> {
                 this.currentField[fieldName] = (parseInt(changeEvent.target.value) as unknown) as T[keyof T];
                 break;
         }
+
+        return this.currentField;
     }
 
+    @CloneReturnValue
     public getDefaultField(): Required<T> {
         return this.defaultField;
+    }
+
+    @CloneReturnValue
+    public getCurrentField(): Required<T> {
+        return this.currentField;
     }
 
     protected getGenericSchemaFromField(field: IGenericField): IGenericSchemaType {

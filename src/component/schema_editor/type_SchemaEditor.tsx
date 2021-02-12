@@ -1,6 +1,6 @@
 import { ISchemaType } from "../../model/schema/type_schema";
 import { DataType } from "../../type";
-import { IGenericField, OmitGenericField, type_Hints } from "../node_component/type_NodeComponent";
+import { IGenericField, type_Hints } from "../node_component/type_NodeComponent";
 import SchemaEditor from "./SchemaEditor";
 
 // Type to represent all schema editor
@@ -25,7 +25,7 @@ export interface ISchemaEditorProps<SchemaType extends ISchemaType, FieldType ex
 }
 
 export interface ISchemaEditorState<FieldType extends IGenericField> {
-    field: Required<OmitGenericField<FieldType>>;
+    currentField: Required<FieldType>;
 
     hint?: type_Hints;
 }

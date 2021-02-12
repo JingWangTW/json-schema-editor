@@ -24,7 +24,7 @@ class ArraySchema extends Schema<IArrayEditorField> {
         this.currentField = this.defaultField;
     }
 
-    clearField(): Required<IArrayEditorField> {
+    clearOptionField(): Required<IArrayEditorField> {
         this.currentField.maxItems = 0;
         this.currentField.minItems = 0;
         this.currentField.uniqueItems = false;

@@ -18,8 +18,6 @@ abstract class SchemaEditor<SchemaType extends ISchemaType, FieldType extends IG
     ISchemaEditorProps<SchemaType, FieldType>,
     ISchemaEditorState<FieldType>
 > {
-    protected abstract defaultField: Required<FieldType>;
-
     protected abstract optionsButtonsAttr: IOptionsButtonsAttr;
     protected abstract genericFieldOptions: IGenericFieldOptions;
     protected abstract schema: Schema<FieldType>;
@@ -34,15 +32,6 @@ abstract class SchemaEditor<SchemaType extends ISchemaType, FieldType extends IG
 
     abstract exportSchema(): ISchemaType;
 
-    getGeneircField(): IGenericField {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        return this.genericFieldRef.current!.getFields();
-    }
-
-    showOptionModal(): void {
-        if (this.optionModalRef && this.optionModalRef.current) this.optionModalRef.current.setDisplayOptionModal(true);
-    }
-
     addChild(): void {
         if (this.childrenRef && this.childrenRef.current) this.childrenRef.current.add();
     }
@@ -55,19 +44,23 @@ abstract class SchemaEditor<SchemaType extends ISchemaType, FieldType extends IG
         if (this.props.delete) this.props.delete();
     }
 
-    resetOptionField(): void {
-        this.setState({
-            field: this.defaultField,
-        });
+    getField(): Required<FieldType> {
+        return this.schema.getCurrentField();
     }
 
-    setField<T>(fieldName: keyof OmitGenericField<FieldType>, value: T): void {
-        this.setState(prevState => ({
-            field: {
-                ...prevState.field,
-                [fieldName]: value,
-            },
-        }));
+    recordField(fieldName: keyof OmitGenericField<FieldType>, changeEvent: React.ChangeEvent<HTMLInputElement>): void {
+        const currentField = this.schema.recordField(fieldName, changeEvent);
+
+        this.setState({ currentField });
+    }
+
+    showOptionModal(): void {
+        if (this.optionModalRef && this.optionModalRef.current) this.optionModalRef.current.setDisplayOptionModal(true);
+    }
+
+    resetOptionField(): void {
+        const currentField = this.schema.clearOptionField();
+        this.setState({ currentField });
     }
 
     updateHint(hintType: keyof type_Hints, value?: string): void {
