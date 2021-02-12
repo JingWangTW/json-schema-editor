@@ -59,7 +59,7 @@ abstract class SchemaEditor<SchemaType extends ISchemaType, FieldType extends IG
     }
 
     resetOptionField(): void {
-        const currentField = this.schema.clearOptionField();
+        const currentField = this.schema.resetOptionField();
         this.setState({ currentField });
     }
 

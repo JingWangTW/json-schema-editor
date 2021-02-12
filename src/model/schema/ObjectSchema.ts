@@ -2,6 +2,7 @@ import React from "react";
 
 import { IChildProperty, IObjectEditorField, ISchemaEditorType } from "../../component/schema_editor/type_SchemaEditor";
 import { DataType } from "../../type";
+import { CloneReturnValue } from "../utility";
 import Schema from "./Schema";
 import { IChildrenSchemaType, IObjectSchemaType } from "./type_schema";
 
@@ -22,7 +23,7 @@ class ObjectSchema extends Schema<IObjectEditorField> {
             minProperties: this.retrieveDefaultValue("minProperties", NaN, schema, field),
         };
 
-        this.currentField = this.defaultField;
+        this.currentField = { ...this.defaultField };
 
         if (schema) this.childrenProperty = this.generateChildrenPropertyFromSchema(schema);
     }
@@ -52,6 +53,15 @@ class ObjectSchema extends Schema<IObjectEditorField> {
         });
     }
 
+    @CloneReturnValue
+    resetOptionField(): Required<IObjectEditorField> {
+        this.currentField.maxProperties = this.defaultField.maxProperties;
+        this.currentField.minProperties = this.defaultField.minProperties;
+
+        return this.currentField;
+    }
+
+    @CloneReturnValue
     clearOptionField(): Required<IObjectEditorField> {
         this.currentField.maxProperties = NaN;
         this.currentField.minProperties = NaN;

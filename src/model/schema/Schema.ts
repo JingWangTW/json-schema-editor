@@ -8,6 +8,7 @@ abstract class Schema<T extends IGenericField> {
     protected abstract currentField: Required<T>;
     protected abstract defaultField: Required<T>;
 
+    abstract resetOptionField(): Required<T>;
     abstract clearOptionField(): Required<T>;
     abstract exportSchema(): ISchemaType;
 

@@ -2,6 +2,7 @@ import React from "react";
 
 import { IArrayEditorField, IChildProperty, ISchemaEditorType } from "../../component/schema_editor/type_SchemaEditor";
 import { DataType } from "../../type";
+import { CloneReturnValue } from "../utility";
 import Schema from "./Schema";
 import { IArraySchemaType, IChildrenSchemaType, IGenericSchemaType } from "./type_schema";
 
@@ -24,7 +25,7 @@ class ArraySchema extends Schema<IArrayEditorField> {
             uniqueItems: this.retrieveDefaultValue("uniqueItems", false, schema, field),
         };
 
-        this.currentField = this.defaultField;
+        this.currentField = { ...this.defaultField };
 
         if (schema) this.childrenProperty = this.generateChildrenPropertyFromSchema(schema);
     }
@@ -83,6 +84,16 @@ class ArraySchema extends Schema<IArrayEditorField> {
         }
     }
 
+    @CloneReturnValue
+    resetOptionField(): Required<IArrayEditorField> {
+        this.currentField.maxItems = this.defaultField.maxItems;
+        this.currentField.minItems = this.defaultField.minItems;
+        this.currentField.uniqueItems = this.defaultField.uniqueItems;
+
+        return this.currentField;
+    }
+
+    @CloneReturnValue
     clearOptionField(): Required<IArrayEditorField> {
         this.currentField.maxItems = NaN;
         this.currentField.minItems = NaN;

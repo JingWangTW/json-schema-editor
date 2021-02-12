@@ -66,7 +66,6 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
         prevProps: ISchemaEditorProps<IArraySchemaType, IArrayEditorField>,
         prevState: ISchemaEditorState<IArrayEditorField>
     ): void {
-        console.log(prevState, this.state);
         if (
             // NaN === NaN (get false)
             // NaN !== NaN (get true)
