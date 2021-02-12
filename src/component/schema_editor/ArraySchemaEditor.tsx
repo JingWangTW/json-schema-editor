@@ -1,3 +1,5 @@
+// I think there is some bugs  in either eslint or react to use forwardref
+// eslint-disable-next-line @typescript-eslint/no-use-before-define
 import React from "react";
 import { Col, Form, Row } from "react-bootstrap";
 
@@ -64,9 +66,14 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
         prevProps: ISchemaEditorProps<IArraySchemaType, IArrayEditorField>,
         prevState: ISchemaEditorState<IArrayEditorField>
     ): void {
+        console.log(prevState, this.state);
         if (
-            prevState.currentField.maxItems !== this.state.currentField.maxItems ||
-            prevState.currentField.minItems !== this.state.currentField.minItems
+            // NaN === NaN (get false)
+            // NaN !== NaN (get true)
+            (prevState.currentField.maxItems !== this.state.currentField.maxItems &&
+                !(isNaN(prevState.currentField.maxItems) && isNaN(this.state.currentField.maxItems))) ||
+            (prevState.currentField.minItems !== this.state.currentField.minItems &&
+                !(isNaN(prevState.currentField.minItems) && isNaN(this.state.currentField.minItems)))
         ) {
             if (this.state.currentField.maxItems < this.state.currentField.minItems) {
                 this.updateHint("warn", "minItems > maxItems");

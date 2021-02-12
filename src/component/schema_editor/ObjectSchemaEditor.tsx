@@ -59,8 +59,12 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectSchemaType, IObjectEditorFi
         prevState: ISchemaEditorState<IObjectEditorField>
     ): void {
         if (
-            prevState.currentField.maxProperties !== this.state.currentField.maxProperties ||
-            prevState.currentField.minProperties !== this.state.currentField.minProperties
+            // NaN === NaN (get false)
+            // NaN !== NaN (get true)
+            (prevState.currentField.maxProperties !== this.state.currentField.maxProperties &&
+                !(isNaN(prevState.currentField.maxProperties) && isNaN(this.state.currentField.maxProperties))) ||
+            (prevState.currentField.minProperties !== this.state.currentField.minProperties &&
+                !(isNaN(prevState.currentField.minProperties) && isNaN(this.state.currentField.minProperties)))
         ) {
             if (this.state.currentField.maxProperties < this.state.currentField.minProperties) {
                 this.updateHint("warn", "minProperties > maxProperties");

@@ -19,8 +19,8 @@ class ArraySchema extends Schema<IArrayEditorField> {
         this.defaultField = {
             ...genericField,
 
-            minItems: this.retrieveDefaultValue("minItems", 0, schema, field),
-            maxItems: this.retrieveDefaultValue("maxItems", 0, schema, field),
+            minItems: this.retrieveDefaultValue("minItems", NaN, schema, field),
+            maxItems: this.retrieveDefaultValue("maxItems", NaN, schema, field),
             uniqueItems: this.retrieveDefaultValue("uniqueItems", false, schema, field),
         };
 
@@ -61,7 +61,7 @@ class ArraySchema extends Schema<IArrayEditorField> {
                         selfId: "0",
 
                         hasSibling: true,
-                        isDeleteable: false,
+                        isDeleteable: true,
                         isRequiredFieldReadonly: true,
                         isNameFieldReadonly: true,
 
@@ -74,7 +74,7 @@ class ArraySchema extends Schema<IArrayEditorField> {
                             required: true,
                         },
 
-                        schema,
+                        schema: schema.items,
                     },
                 ];
             }
@@ -84,8 +84,8 @@ class ArraySchema extends Schema<IArrayEditorField> {
     }
 
     clearOptionField(): Required<IArrayEditorField> {
-        this.currentField.maxItems = 0;
-        this.currentField.minItems = 0;
+        this.currentField.maxItems = NaN;
+        this.currentField.minItems = NaN;
         this.currentField.uniqueItems = false;
 
         return this.currentField;
@@ -98,11 +98,10 @@ class ArraySchema extends Schema<IArrayEditorField> {
 
         const { minItems, maxItems, uniqueItems } = this.currentField;
 
-        let itemsRestricted = {};
+        const itemsRestricted: Partial<Record<"minItems" | "maxItems", number>> = {};
 
-        if (minItems !== 0 || maxItems !== 0) {
-            itemsRestricted = { minItems, maxItems };
-        }
+        if (!isNaN(minItems)) itemsRestricted.minItems = minItems;
+        if (!isNaN(maxItems)) itemsRestricted.maxItems = maxItems;
 
         let items: IArraySchemaType["items"];
 

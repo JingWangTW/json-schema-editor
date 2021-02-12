@@ -18,8 +18,8 @@ class ObjectSchema extends Schema<IObjectEditorField> {
 
         this.defaultField = {
             ...genericField,
-            maxProperties: this.retrieveDefaultValue("maxProperties", 0, schema, field),
-            minProperties: this.retrieveDefaultValue("minProperties", 0, schema, field),
+            maxProperties: this.retrieveDefaultValue("maxProperties", NaN, schema, field),
+            minProperties: this.retrieveDefaultValue("minProperties", NaN, schema, field),
         };
 
         this.currentField = this.defaultField;
@@ -53,8 +53,8 @@ class ObjectSchema extends Schema<IObjectEditorField> {
     }
 
     clearOptionField(): Required<IObjectEditorField> {
-        this.currentField.maxProperties = 0;
-        this.currentField.minProperties = 0;
+        this.currentField.maxProperties = NaN;
+        this.currentField.minProperties = NaN;
 
         return this.currentField;
     }
@@ -65,11 +65,10 @@ class ObjectSchema extends Schema<IObjectEditorField> {
         const genericSchema = this.getGenericSchemaFromField(this.currentField);
 
         const { maxProperties, minProperties } = this.currentField;
-        let propertieRestricted = {};
+        const propertieRestricted: Partial<Record<"maxProperties" | "minProperties", number>> = {};
 
-        if (maxProperties !== 0 || minProperties !== 0) {
-            propertieRestricted = { maxProperties, minProperties };
-        }
+        if (!isNaN(maxProperties)) propertieRestricted.maxProperties = maxProperties;
+        if (!isNaN(minProperties)) propertieRestricted.minProperties = minProperties;
 
         const required: IObjectSchemaType["required"] = [];
         const properties: IObjectSchemaType["properties"] = {};
