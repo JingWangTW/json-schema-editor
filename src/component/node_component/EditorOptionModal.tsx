@@ -1,7 +1,10 @@
+// I think there is some bugs  in either eslint or react to use forwardref
+// eslint-disable-next-line @typescript-eslint/no-use-before-define
 import React, { PropsWithChildren } from "react";
 import { Button, Modal } from "react-bootstrap";
 
 interface EditorOptionModalProps {
+    clearOptionFieldForm(): void;
     resetOptionFiledForm(): void;
 }
 
@@ -36,7 +39,10 @@ class EditorOptionModal extends React.Component<PropsWithChildren<EditorOptionMo
                 </Modal.Header>
                 <Modal.Body>{this.props.children}</Modal.Body>
                 <Modal.Footer>
-                    <Button variant="outline-secondary" onClick={this.props.resetOptionFiledForm}>
+                    <Button variant="outline-secondary" onClick={this.props.clearOptionFieldForm}>
+                        Clear
+                    </Button>
+                    <Button variant="outline-primary" onClick={this.props.resetOptionFiledForm}>
                         Reset
                     </Button>
                     <Button variant="outline-success" onClick={this.setDisplayOptionModal.bind(this, false)}>

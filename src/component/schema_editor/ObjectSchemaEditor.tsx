@@ -1,3 +1,5 @@
+// I think there is some bugs  in either eslint or react to use forwardref
+// eslint-disable-next-line @typescript-eslint/no-use-before-define
 import React from "react";
 import { Col, Form, Row } from "react-bootstrap";
 
@@ -109,7 +111,11 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectSchemaType, IObjectEditorFi
                                         showOptionModal={this.showOptionModal.bind(this, true)}
                                     />
                                 </Col>
-                                <EditorOptionModal resetOptionFiledForm={this.resetOptionField.bind(this)} ref={this.optionModalRef}>
+                                <EditorOptionModal
+                                    clearOptionFieldForm={this.clearOptionField.bind(this)}
+                                    resetOptionFiledForm={this.resetOptionField.bind(this)}
+                                    ref={this.optionModalRef}
+                                >
                                     <Form>
                                         <Form.Group as={Row}>
                                             <Form.Label column lg="auto" htmlFor="MinProperties">

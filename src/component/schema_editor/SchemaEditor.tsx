@@ -58,6 +58,11 @@ abstract class SchemaEditor<SchemaType extends ISchemaType, FieldType extends IG
         if (this.optionModalRef && this.optionModalRef.current) this.optionModalRef.current.setDisplayOptionModal(true);
     }
 
+    clearOptionField(): void {
+        const currentField = this.schema.clearOptionField();
+        this.setState({ currentField });
+    }
+
     resetOptionField(): void {
         const currentField = this.schema.resetOptionField();
         this.setState({ currentField });

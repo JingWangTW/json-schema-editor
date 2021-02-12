@@ -147,7 +147,11 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
                                         showOptionModal={this.showOptionModal.bind(this, true)}
                                     />
                                 </Col>
-                                <EditorOptionModal resetOptionFiledForm={this.resetOptionField.bind(this)} ref={this.optionModalRef}>
+                                <EditorOptionModal
+                                    clearOptionFieldForm={this.clearOptionField.bind(this)}
+                                    resetOptionFiledForm={this.resetOptionField.bind(this)}
+                                    ref={this.optionModalRef}
+                                >
                                     <Form>
                                         <Form.Group as={Row}>
                                             <Form.Label column lg="2" htmlFor="MinItems">
