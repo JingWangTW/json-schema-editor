@@ -105,7 +105,7 @@ class ChildrenSchemaEditor extends React.Component<IChildrenEditorProps, Childre
         const findDuplicate = this.findNameDuplicate();
 
         if (findDuplicate) {
-            this.updateHint("error", "Find duplicated field name in this layer.");
+            this.updateHint("error", "Find duplicated field name.");
         } else {
             this.updateHint("error");
         }
