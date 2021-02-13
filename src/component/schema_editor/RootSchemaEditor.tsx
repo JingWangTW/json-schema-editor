@@ -3,7 +3,6 @@
 import React from "react";
 
 import { ISchemaType } from "../../model/schema/type_schema";
-import { NextId } from "../../model/utility";
 import { DataType } from "../../type";
 import { IGenericField } from "../node_component/type_NodeComponent";
 import SchemaEditor from "./SchemaEditor";
@@ -44,7 +43,6 @@ class RootSchemaEditor extends React.Component<RootSchemaEditorProps, { type: Da
     render(): JSX.Element {
         return (
             <SchemaEditorFactory
-                key={NextId.next("Key").toString()}
                 ref={this.editorRef}
                 type={this.state.type}
                 schema={this.props.schema}

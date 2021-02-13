@@ -17,12 +17,15 @@ interface IEditorState {
 class Editor extends React.Component<EmptyProps, IEditorState> {
     private fileUploadRef: React.RefObject<HTMLInputElement>;
     private editorRef: React.RefObject<RootSchemaEditor>;
+    private rootSchemaEditorKey: string;
 
     constructor(props: EmptyProps) {
         super(props);
 
         this.fileUploadRef = React.createRef<HTMLInputElement>();
         this.editorRef = React.createRef<RootSchemaEditor>();
+
+        this.rootSchemaEditorKey = NextId.next("key").toString();
 
         this.state = {};
     }
@@ -46,33 +49,38 @@ class Editor extends React.Component<EmptyProps, IEditorState> {
 
                 if (!result) {
                     this.setState({
-                        error: "Parsing Schema Error! Please check your schema.",
+                        error: "Parsing Schema Error! We only support draft-04/06/07",
                     });
                 } else {
+                    this.rootSchemaEditorKey = NextId.next("key").toString();
                     this.setState({ schema });
                 }
             } catch (error) {
                 this.setState({
-                    error: "Parsing Schema Error! We only support draft-04/06/07",
+                    error: "Parsing Schema Error! Please check your schema.",
                 });
             }
         }
     }
 
     export(): void {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        const schema = this.editorRef.current!.exportSchema();
+        try {
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            const schema = this.editorRef.current!.exportSchema();
 
-        const fileBlob = new Blob([JSON.stringify(schema, null, 4)], { type: "application/schema+json" });
-        const blobURL = window.URL.createObjectURL(fileBlob);
+            const fileBlob = new Blob([JSON.stringify(schema, null, 4)], { type: "application/schema+json" });
+            const blobURL = window.URL.createObjectURL(fileBlob);
 
-        const anchorElement = document.createElement("a");
-        anchorElement.href = blobURL;
-        anchorElement.setAttribute("download", "Schema.json");
-        document.body.appendChild(anchorElement);
-        anchorElement.click();
+            const anchorElement = document.createElement("a");
+            anchorElement.href = blobURL;
+            anchorElement.setAttribute("download", "Schema.json");
+            document.body.appendChild(anchorElement);
+            anchorElement.click();
 
-        document.body.removeChild(anchorElement);
+            document.body.removeChild(anchorElement);
+        } catch (e) {
+            this.setState({ error: `Find Error: ${e.message} Please check and export again.` });
+        }
     }
 
     render(): JSX.Element {
@@ -92,7 +100,7 @@ class Editor extends React.Component<EmptyProps, IEditorState> {
                 <Button variant="outline-success" onClick={this.export.bind(this)}>
                     Export Schema
                 </Button>
-                <RootSchemaEditor ref={this.editorRef} key={NextId.next("Key").toString()} schema={this.state.schema} />
+                <RootSchemaEditor ref={this.editorRef} key={this.rootSchemaEditorKey} schema={this.state.schema} />
                 {this.state.error && (
                     <Toast
                         show={this.state.error ? true : false}

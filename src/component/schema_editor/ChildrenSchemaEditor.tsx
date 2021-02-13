@@ -43,6 +43,8 @@ class ChildrenSchemaEditor extends React.Component<IChildrenEditorProps, Childre
     }
 
     exportSchema(): IChildrenSchemaType {
+        if (this.state.hint?.error) throw new Error(this.state.hint.error);
+
         return this.state.children.map(child => {
             const c: SchemaEditor<ISchemaType, IGenericField> = child.ref.current as SchemaEditor<ISchemaType, IGenericField>;
             return {
