@@ -39,7 +39,7 @@ class ArraySchema extends Schema<IArrayEditorField> {
                         selfId: i.toString(),
 
                         hasSibling: true,
-                        isDeleteable: i === 0 ? false : true,
+                        isDeleteable: true,
                         isRequiredFieldReadonly: true,
                         isNameFieldReadonly: true,
 
