@@ -1,3 +1,5 @@
+// I think there is some bugs  in either eslint or react to use forwardref
+// eslint-disable-next-line @typescript-eslint/no-use-before-define
 import React from "react";
 
 import { ISchemaType } from "../../model/schema/type_schema";
@@ -30,8 +32,8 @@ class RootSchemaEditor extends React.Component<RootSchemaEditorProps, { type: Da
         this.setState({ type });
     }
 
-    changeName(name: string): void {
-        console.log(`[Root Node] Change Name!! ${name}`);
+    changeName(): void {
+        console.log(`[Root Node] Change Name!!`);
     }
 
     exportSchema(): ISchemaType {

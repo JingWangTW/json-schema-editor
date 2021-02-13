@@ -19,7 +19,7 @@ import { IArrayEditorField, IChildProperty, ISchemaEditorProps, ISchemaEditorSta
 class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField> {
     protected optionsButtonsAttr: IOptionsButtonsAttr;
     protected genericFieldOptions: IGenericFieldOptions;
-    protected schema: ArraySchema;
+    public schema: ArraySchema;
 
     protected optionModalRef: React.RefObject<EditorOptionModal>;
     protected genericFieldRef: React.RefObject<GenericField>;
@@ -135,7 +135,7 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
                                         ref={this.genericFieldRef}
                                         schemaType={this.schema}
                                         options={this.genericFieldOptions}
-                                        changeType={this.props.changeType.bind(this)}
+                                        changeType={this.props.changeType}
                                     />
                                 </Col>
                                 <Col lg={1}>
@@ -198,6 +198,7 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
                 <ChildrenSchemaEditor
                     ref={this.childrenRef}
                     depth={this.props.depth}
+                    isNameUnique={false}
                     childrenProperty={this.schema.childrenProperty}
                     childrenDidUpdate={this.childrenDidUpdate.bind(this)}
                 />

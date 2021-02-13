@@ -1,3 +1,5 @@
+// I think there is some bugs  in either eslint or react to use forwardref
+// eslint-disable-next-line @typescript-eslint/no-use-before-define
 import React from "react";
 
 import { IChildrenSchemaType, ISchemaType } from "../../model/schema/type_schema";
@@ -28,10 +30,12 @@ class ChildrenSchemaEditor extends React.Component<IChildrenEditorProps, Childre
 
     componentDidMount(): void {
         if (this.props.childrenDidUpdate) this.props.childrenDidUpdate(this.state.children);
+        this.checkDuplicateChildrenName();
     }
 
     componentDidUpdate(): void {
         if (this.props.childrenDidUpdate) this.props.childrenDidUpdate(this.state.children);
+        this.checkDuplicateChildrenName();
     }
 
     get length(): number {
@@ -79,7 +83,7 @@ class ChildrenSchemaEditor extends React.Component<IChildrenEditorProps, Childre
             type: DataType.Object,
             selfId: NextId.next("child").toString(),
 
-            // hasSibling, isDeletable, isRequiredFieldReadonly, isNameFieldReadonly
+            // hasSibling, isDeletable, isRequiredFieldReadonly, isNameFieldReadonly, field
             ...p,
 
             ref: React.createRef<ISchemaEditorType>(),
@@ -95,6 +99,16 @@ class ChildrenSchemaEditor extends React.Component<IChildrenEditorProps, Childre
         originChildren.splice(currentIndex, 1);
 
         this.setState({ children: originChildren });
+    }
+
+    checkDuplicateChildrenName(): void {
+        const findDuplicate = this.findNameDuplicate();
+
+        if (findDuplicate) {
+            this.updateHint("error", "Find duplicated field name in this layer.");
+        } else {
+            this.updateHint("error");
+        }
     }
 
     changeType(selfId: string, type: DataType): void {
@@ -117,20 +131,40 @@ class ChildrenSchemaEditor extends React.Component<IChildrenEditorProps, Childre
         });
     }
 
-    changeName(selfId: string, name: string): void {
-        // let checkNameDuplicate = false;
-        // for (const child of this.state.children) {
-        //     if (child.selfId !== selfId && child.ref.current!.form.name === name) {
-        //         checkNameDuplicate = true;
-        //         break;
-        //     }
-        // }
-        // if (checkNameDuplicate) {
-        //     this.setState({ error: "Find duplicated field name in this layer." });
-        // } else {
-        //     this.setState({ error: undefined });
-        // }
-        console.log(selfId, name);
+    findNameDuplicate(): boolean {
+        if (this.props.isNameUnique) {
+            // Since state may not updated alreday, use schema instead.
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            const nameList = this.state.children.map(child => child.ref.current!.schema.getCurrentField().name);
+
+            return new Set(nameList).size !== nameList.length;
+        } else {
+            return false;
+        }
+    }
+
+    updateHint(hintType: keyof type_Hints, value?: string): void {
+        // clear value
+        if (value === undefined) {
+            if (this.state.hint && this.state.hint[hintType]) {
+                this.setState(prevState => ({
+                    hint: {
+                        ...prevState.hint,
+                        [hintType]: value,
+                    },
+                }));
+            }
+        } else {
+            // set value
+            if (!this.state.hint || !this.state.hint[hintType]) {
+                this.setState(prevState => ({
+                    hint: {
+                        ...prevState.hint,
+                        [hintType]: value,
+                    },
+                }));
+            }
+        }
     }
 
     render(): JSX.Element {
@@ -145,7 +179,7 @@ class ChildrenSchemaEditor extends React.Component<IChildrenEditorProps, Childre
                         delete={this.delete.bind(this, child.selfId)}
                         addSibling={this.add.bind(this, child.selfId)}
                         changeType={this.changeType.bind(this, child.selfId)}
-                        changeName={this.changeName.bind(this, child.selfId)}
+                        changeName={this.checkDuplicateChildrenName.bind(this)}
                     />
                 ))}
             </>

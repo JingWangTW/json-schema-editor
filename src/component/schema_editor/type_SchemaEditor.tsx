@@ -19,7 +19,7 @@ export interface ISchemaEditorProps<SchemaType extends ISchemaType, FieldType ex
     schema?: SchemaType;
 
     changeType(type: DataType): void;
-    changeName(name: string): void;
+    changeName(): void;
     addSibling?(): void;
     delete?(): void;
 }
@@ -122,6 +122,7 @@ export interface IChildProperty {
 
 export interface IChildrenEditorProps {
     depth: number;
+    isNameUnique: boolean;
 
     childrenProperty?: Array<IChildProperty>;
 

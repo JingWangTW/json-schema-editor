@@ -1,5 +1,7 @@
 import "../../index.css";
 
+// I think there is some bugs  in either eslint or react to use forwardref
+// eslint-disable-next-line @typescript-eslint/no-use-before-define
 import React from "react";
 import { Accordion, Button, Col, Form, FormControl, InputGroup, Modal, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { AiOutlineDown } from "react-icons/ai";
@@ -15,6 +17,7 @@ interface IGenericFieldProps<T extends IGenericField> {
     schemaType: Schema<T>;
 
     changeType(props: DataType): void;
+    changeName?(): void;
 }
 
 interface IGenericFieldState {
@@ -57,6 +60,11 @@ class GenericField extends React.Component<IGenericFieldProps<IGenericField>, IG
         }
     }
 
+    changeName(changeEvent: React.ChangeEvent<HTMLInputElement>): void {
+        this.recordField("name", changeEvent);
+        if (this.props.changeName) this.props.changeName();
+    }
+
     setDisplayDescriptionModal(show: boolean): void {
         this.setState({
             isDescriptionModalShow: show,
@@ -74,7 +82,7 @@ class GenericField extends React.Component<IGenericFieldProps<IGenericField>, IG
                                     <OverlayTrigger trigger={["hover", "focus"]} overlay={<Tooltip id="add-tooltip"> Required </Tooltip>}>
                                         <InputGroup.Prepend>
                                             <InputGroup.Checkbox
-                                                defaultChecked={this.state.currentField.required}
+                                                checked={this.state.currentField.required}
                                                 disabled={this.state.isRequiredFieldReadonly}
                                                 onChange={this.recordField.bind(this, "required")}
                                             />
@@ -83,10 +91,9 @@ class GenericField extends React.Component<IGenericFieldProps<IGenericField>, IG
 
                                     <Form.Control
                                         placeholder="items"
-                                        required
                                         readOnly={this.state.isNameFieldReadonly}
-                                        defaultValue={this.state.currentField.name}
-                                        onChange={this.recordField.bind(this, "name")}
+                                        value={this.state.currentField.name}
+                                        onChange={this.changeName.bind(this)}
                                     />
                                 </InputGroup>
                             </Col>
@@ -96,7 +103,7 @@ class GenericField extends React.Component<IGenericFieldProps<IGenericField>, IG
                                     custom
                                     placeholder="DataType"
                                     onChange={this.changeType.bind(this)}
-                                    defaultValue={this.state.currentField.type}
+                                    value={this.state.currentField.type}
                                 >
                                     <option value={DataType.Object}>Object</option>
                                     <option value={DataType.Array}>Array</option>
@@ -110,7 +117,7 @@ class GenericField extends React.Component<IGenericFieldProps<IGenericField>, IG
                             <Col lg={4}>
                                 <Form.Control
                                     placeholder="Titile"
-                                    defaultValue={this.state.currentField.title}
+                                    value={this.state.currentField.title}
                                     onChange={this.recordField.bind(this, "title")}
                                 />
                             </Col>
@@ -120,7 +127,6 @@ class GenericField extends React.Component<IGenericFieldProps<IGenericField>, IG
                                         type="text"
                                         id="Description"
                                         placeholder="Description"
-                                        defaultValue={this.state.currentField.description}
                                         value={this.state.currentField.description}
                                         onChange={this.recordField.bind(this, "description")}
                                     />
@@ -148,7 +154,6 @@ class GenericField extends React.Component<IGenericFieldProps<IGenericField>, IG
                                             <Form.Control
                                                 as="textarea"
                                                 rows={3}
-                                                defaultValue={this.state.currentField.description}
                                                 value={this.state.currentField.description}
                                                 onChange={this.recordField.bind(this, "description")}
                                             />
@@ -160,7 +165,7 @@ class GenericField extends React.Component<IGenericFieldProps<IGenericField>, IG
                                 <Accordion.Collapse eventKey="0">
                                     <Form.Control
                                         placeholder="$comment"
-                                        defaultValue={this.state.currentField.$comment}
+                                        value={this.state.currentField.$comment}
                                         onChange={this.recordField.bind(this, "$comment")}
                                     />
                                 </Accordion.Collapse>

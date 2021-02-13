@@ -18,7 +18,7 @@ import { IObjectEditorField, ISchemaEditorProps, ISchemaEditorState } from "./ty
 class ObjectSchemaEditor extends SchemaEditor<IObjectSchemaType, IObjectEditorField> {
     protected optionsButtonsAttr: IOptionsButtonsAttr;
     protected genericFieldOptions: IGenericFieldOptions;
-    protected schema: ObjectSchema;
+    public schema: ObjectSchema;
 
     protected optionModalRef: React.RefObject<EditorOptionModal>;
     protected genericFieldRef: React.RefObject<GenericField>;
@@ -99,7 +99,8 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectSchemaType, IObjectEditorFi
                                         ref={this.genericFieldRef}
                                         schemaType={this.schema}
                                         options={this.genericFieldOptions}
-                                        changeType={this.props.changeType.bind(this)}
+                                        changeType={this.props.changeType}
+                                        changeName={this.props.changeName}
                                     />
                                 </Col>
                                 <Col lg={1}>
@@ -149,7 +150,12 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectSchemaType, IObjectEditorFi
                         </Form>
                     </Col>
                 </Row>
-                <ChildrenSchemaEditor depth={this.props.depth} ref={this.childrenRef} childrenProperty={this.schema.childrenProperty} />
+                <ChildrenSchemaEditor
+                    ref={this.childrenRef}
+                    depth={this.props.depth}
+                    isNameUnique={true}
+                    childrenProperty={this.schema.childrenProperty}
+                />
             </div>
         );
     }
