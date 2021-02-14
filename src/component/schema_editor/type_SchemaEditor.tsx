@@ -62,7 +62,7 @@ export interface INumberEditorField extends IGenericField {
     multipleOf?: number;
 }
 
-export type IEditorNullField = IGenericField;
+export type INullEditorField = IGenericField;
 
 export interface IObjectEditorField extends IGenericField {
     maxProperties?: number;

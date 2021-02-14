@@ -24,8 +24,8 @@ import StringSchemaEditor from "./StringSchemaEditor";
 import {
     IArrayEditorField,
     IBooleanEditorField,
-    IEditorNullField,
     IIntegerEditorField,
+    INullEditorField,
     INumberEditorField,
     IObjectEditorField,
     ISchemaEditorProps,
@@ -73,7 +73,7 @@ const SchemaEditorFactory = React.forwardRef<ISchemaEditorType, FactoryProps>((p
         case DataType.Null:
             return (
                 <NullSchemaEditor
-                    {...{ ...props, field: props.field as IEditorNullField, schema: props.schema as INullSchemaType }}
+                    {...{ ...props, field: props.field as INullEditorField, schema: props.schema as INullSchemaType }}
                     ref={ref as React.RefObject<NullSchemaEditor>}
                 />
             );
