@@ -94,6 +94,12 @@ export interface IChildSchemaType {
 
 export type IChildrenSchemaType = IChildSchemaType[];
 
+export interface ISchemaTypeEnummable {
+    addEnum(): void;
+    updateEnum(index: number, changeEvent: React.ChangeEvent<HTMLInputElement>): void;
+    deleteEnum(index: number): void;
+}
+
 export type ISchemaType =
     | IArraySchemaType
     | IBooleanSchemaType

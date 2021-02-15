@@ -82,6 +82,26 @@ abstract class Schema<SchemaType extends ISchemaType, FieldType extends ISchemaE
             return defaultValue;
         }
     }
+
+    protected exportSchemaWithoutUndefined<K extends keyof (SchemaType | FieldType)>(
+        key: K,
+        emptyValue: Required<FieldType>[K]
+    ): Partial<Record<K, FieldType[K]>> {
+        const temp: Partial<Record<K, FieldType[K]>> = {};
+
+        // NaN === Nan get false
+        if (typeof emptyValue === "number" && isNaN(emptyValue)) {
+            if (!isNaN((this.currentField[key] as unknown) as number)) {
+                temp[key] = this.currentField[key];
+            }
+        } else {
+            if (this.currentField[key] !== emptyValue) {
+                temp[key] = this.currentField[key];
+            }
+        }
+
+        return temp;
+    }
 }
 
 export default Schema;
