@@ -2,7 +2,7 @@ import React from "react";
 
 import { IChildProperty, IObjectEditorField, ISchemaEditorType } from "../../component/schema_editor/type_SchemaEditor";
 import { DataType } from "../../type";
-import { CloneReturnValue } from "../utility";
+import { CloneReturnValue, NextId } from "../utility";
 import Schema from "./Schema";
 import { IChildrenSchemaType, IObjectSchemaType } from "./type_schema";
 
@@ -29,10 +29,10 @@ class ObjectSchema extends Schema<IObjectSchemaType, IObjectEditorField> {
     }
 
     generateChildrenPropertyFromSchema(schema: IObjectSchemaType): IChildProperty[] {
-        return Object.keys(schema.properties).map((field, i) => {
+        return Object.keys(schema.properties).map(field => {
             return {
                 type: schema.properties[field].type,
-                selfId: i.toString(),
+                selfId: NextId.next("child").toString(),
 
                 hasSibling: true,
                 isDeleteable: true,

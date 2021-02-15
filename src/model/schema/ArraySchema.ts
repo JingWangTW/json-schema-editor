@@ -2,7 +2,7 @@ import React from "react";
 
 import { IArrayEditorField, IChildProperty, ISchemaEditorType } from "../../component/schema_editor/type_SchemaEditor";
 import { DataType } from "../../type";
-import { CloneReturnValue } from "../utility";
+import { CloneReturnValue, NextId } from "../utility";
 import Schema from "./Schema";
 import { IArraySchemaType, IChildrenSchemaType, IGenericSchemaType } from "./type_schema";
 
@@ -33,10 +33,10 @@ class ArraySchema extends Schema<IArraySchemaType, IArrayEditorField> {
     generateChildrenPropertyFromSchema(schema: IArraySchemaType): IChildProperty[] {
         if (schema.items) {
             if (schema.items instanceof Array) {
-                return schema.items.map((s, i) => {
+                return schema.items.map(s => {
                     return {
                         type: s.type,
-                        selfId: i.toString(),
+                        selfId: NextId.next("child").toString(),
 
                         hasSibling: true,
                         isDeleteable: true,
@@ -59,7 +59,7 @@ class ArraySchema extends Schema<IArraySchemaType, IArrayEditorField> {
                 return [
                     {
                         type: schema.type,
-                        selfId: "0",
+                        selfId: NextId.next("child").toString(),
 
                         hasSibling: true,
                         isDeleteable: true,
