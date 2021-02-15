@@ -6,7 +6,7 @@ import { CloneReturnValue } from "../utility";
 import Schema from "./Schema";
 import { IChildrenSchemaType, IObjectSchemaType } from "./type_schema";
 
-class ObjectSchema extends Schema<IObjectEditorField> {
+class ObjectSchema extends Schema<IObjectSchemaType, IObjectEditorField> {
     protected type = DataType.Object;
     protected currentField: Required<IObjectEditorField>;
     protected defaultField: Required<IObjectEditorField>;
@@ -19,8 +19,8 @@ class ObjectSchema extends Schema<IObjectEditorField> {
 
         this.defaultField = {
             ...genericField,
-            maxProperties: this.retrieveDefaultValue("maxProperties", NaN, schema, field),
-            minProperties: this.retrieveDefaultValue("minProperties", NaN, schema, field),
+            maxProperties: this.retrieveDefaultOptionValue("maxProperties", NaN, schema),
+            minProperties: this.retrieveDefaultOptionValue("minProperties", NaN, schema),
         };
 
         this.currentField = { ...this.defaultField };

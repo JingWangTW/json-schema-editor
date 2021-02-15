@@ -4,21 +4,20 @@ import React from "react";
 
 import { ISchemaType } from "../../model/schema/type_schema";
 import { DataType } from "../../type";
-import { IGenericField } from "../node_component/type_NodeComponent";
-import SchemaEditor from "./SchemaEditor";
 import SchemaEditorFactory from "./SchemaEditorFactory";
+import { ISchemaEditorType } from "./type_SchemaEditor";
 
 interface RootSchemaEditorProps {
     schema?: ISchemaType;
 }
 
 class RootSchemaEditor extends React.Component<RootSchemaEditorProps, { type: DataType }> {
-    private editorRef: React.RefObject<SchemaEditor<ISchemaType, IGenericField>>;
+    private editorRef: React.RefObject<ISchemaEditorType>;
 
     constructor(props: RootSchemaEditorProps) {
         super(props);
 
-        this.editorRef = React.createRef<SchemaEditor<ISchemaType, IGenericField>>();
+        this.editorRef = React.createRef<ISchemaEditorType>();
 
         if (props.schema) {
             this.state = { type: props.schema.type };

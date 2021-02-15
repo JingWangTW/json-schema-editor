@@ -4,23 +4,17 @@ import Schema from "../../model/schema/Schema";
 import { ISchemaType } from "../../model/schema/type_schema";
 import EditorOptionModal from "../node_component/EditorOptionModal";
 import GenericField from "../node_component/GenericField";
-import {
-    IGenericField,
-    IGenericFieldOptions,
-    IOptionsButtonsAttr,
-    OmitGenericField,
-    type_Hints,
-} from "../node_component/type_NodeComponent";
+import { IGenericFieldOptions, IOptionsButtonsAttr, OmitGenericField, type_Hints } from "../node_component/type_NodeComponent";
 import ChildrenSchemaEditor from "./ChildrenSchemaEditor";
-import { ISchemaEditorProps, ISchemaEditorState } from "./type_SchemaEditor";
+import { ISchemaEditorField, ISchemaEditorProps, ISchemaEditorState } from "./type_SchemaEditor";
 
-abstract class SchemaEditor<SchemaType extends ISchemaType, FieldType extends IGenericField> extends React.Component<
-    ISchemaEditorProps<SchemaType, FieldType>,
+abstract class SchemaEditor<SchemaType extends ISchemaType, FieldType extends ISchemaEditorField> extends React.Component<
+    ISchemaEditorProps<SchemaType>,
     ISchemaEditorState<FieldType>
 > {
     protected abstract optionsButtonsAttr: IOptionsButtonsAttr;
     protected abstract genericFieldOptions: IGenericFieldOptions;
-    public abstract schema: Schema<FieldType>;
+    public abstract schema: Schema<SchemaType, FieldType>;
 
     // may not have options button in the child class
     protected optionModalRef?: React.RefObject<EditorOptionModal>;
@@ -60,11 +54,13 @@ abstract class SchemaEditor<SchemaType extends ISchemaType, FieldType extends IG
 
     clearOptionField(): void {
         const currentField = this.schema.clearOptionField();
+
         this.setState({ currentField });
     }
 
     resetOptionField(): void {
         const currentField = this.schema.resetOptionField();
+
         this.setState({ currentField });
     }
 

@@ -24,7 +24,7 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectSchemaType, IObjectEditorFi
     protected genericFieldRef: React.RefObject<GenericField>;
     protected childrenRef: React.RefObject<ChildrenSchemaEditor>;
 
-    constructor(props: ISchemaEditorProps<IObjectSchemaType, IObjectEditorField>) {
+    constructor(props: ISchemaEditorProps<IObjectSchemaType>) {
         super(props);
 
         this.optionModalRef = React.createRef<EditorOptionModal>();
@@ -56,10 +56,7 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectSchemaType, IObjectEditorFi
         }
     }
 
-    componentDidUpdate(
-        prevProps: ISchemaEditorProps<IObjectSchemaType, IObjectEditorField>,
-        prevState: ISchemaEditorState<IObjectEditorField>
-    ): void {
+    componentDidUpdate(prevProps: ISchemaEditorProps<IObjectSchemaType>, prevState: ISchemaEditorState<IObjectEditorField>): void {
         if (
             // NaN === NaN (get false)
             // NaN !== NaN (get true)

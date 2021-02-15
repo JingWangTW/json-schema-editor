@@ -13,7 +13,6 @@ import {
     IStringSchemaType,
 } from "../../model/schema/type_schema";
 import { DataType, PartialBy } from "../../type";
-import { IGenericField } from "../node_component/type_NodeComponent";
 import ArraySchemaEditor from "./ArraySchemaEditor";
 import BooleanSchemaEditor from "./BooleanSchemaEditor";
 import IntegerSchemaEditor from "./IntegerSchemaEditor";
@@ -28,14 +27,15 @@ import {
     INullEditorField,
     INumberEditorField,
     IObjectEditorField,
+    ISchemaEditorField,
     ISchemaEditorProps,
     ISchemaEditorType,
     IStringEditorField,
 } from "./type_SchemaEditor";
 
-type FactoryProps = Omit<ISchemaEditorProps<ISchemaType, IGenericField>, "field"> & {
+type FactoryProps = Omit<ISchemaEditorProps<ISchemaType>, "field"> & {
     type: DataType;
-    field?: PartialBy<IGenericField, "type">;
+    field?: PartialBy<ISchemaEditorField, "type">;
 };
 
 const SchemaEditorFactory = React.forwardRef<ISchemaEditorType, FactoryProps>((props, ref) => {

@@ -27,7 +27,7 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
 
     private childrenLength: number;
 
-    constructor(props: ISchemaEditorProps<IArraySchemaType, IArrayEditorField>) {
+    constructor(props: ISchemaEditorProps<IArraySchemaType>) {
         super(props);
 
         this.optionModalRef = React.createRef<EditorOptionModal>();
@@ -62,10 +62,7 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
         }
     }
 
-    componentDidUpdate(
-        prevProps: ISchemaEditorProps<IArraySchemaType, IArrayEditorField>,
-        prevState: ISchemaEditorState<IArrayEditorField>
-    ): void {
+    componentDidUpdate(prevProps: ISchemaEditorProps<IArraySchemaType>, prevState: ISchemaEditorState<IArrayEditorField>): void {
         if (
             // NaN === NaN (get false)
             // NaN !== NaN (get true)
@@ -85,7 +82,7 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
     childrenDidUpdate(children: IChildProperty[]): void {
         if (this.childrenLength !== children.length) {
             if (children.length > 1) {
-                this.updateHint("info", "Ordinal index of each item in Array type is meaningful.");
+                this.updateHint("info", "Ordinal index of each item under Array type is meaningful.");
             } else {
                 this.updateHint("info");
             }
@@ -97,7 +94,6 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
     addChild(): void {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         this.childrenRef.current!.add("", {
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             isDeleteable: true,
             hasSibling: true,
             isRequiredFieldReadonly: true,

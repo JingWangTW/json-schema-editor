@@ -6,7 +6,7 @@ import { CloneReturnValue } from "../utility";
 import Schema from "./Schema";
 import { IArraySchemaType, IChildrenSchemaType, IGenericSchemaType } from "./type_schema";
 
-class ArraySchema extends Schema<IArrayEditorField> {
+class ArraySchema extends Schema<IArraySchemaType, IArrayEditorField> {
     protected type = DataType.Array;
     protected currentField: Required<IArrayEditorField>;
     protected defaultField: Required<IArrayEditorField>;
@@ -20,9 +20,9 @@ class ArraySchema extends Schema<IArrayEditorField> {
         this.defaultField = {
             ...genericField,
 
-            minItems: this.retrieveDefaultValue("minItems", NaN, schema, field),
-            maxItems: this.retrieveDefaultValue("maxItems", NaN, schema, field),
-            uniqueItems: this.retrieveDefaultValue("uniqueItems", false, schema, field),
+            minItems: this.retrieveDefaultOptionValue("minItems", NaN, schema),
+            maxItems: this.retrieveDefaultOptionValue("maxItems", NaN, schema),
+            uniqueItems: this.retrieveDefaultOptionValue("uniqueItems", false, schema),
         };
 
         this.currentField = { ...this.defaultField };

@@ -5,9 +5,9 @@ import SchemaEditor from "./SchemaEditor";
 
 // Type to represent all schema editor
 // Type cannot check class derived from generic class
-export type ISchemaEditorType = SchemaEditor<ISchemaType, IGenericField>;
+export type ISchemaEditorType = SchemaEditor<ISchemaType, ISchemaEditorField>;
 
-export interface ISchemaEditorProps<SchemaType extends ISchemaType, FieldType extends IGenericField> {
+export interface ISchemaEditorProps<SchemaType extends ISchemaType> {
     depth: number;
 
     hasSibling?: boolean;
@@ -15,7 +15,7 @@ export interface ISchemaEditorProps<SchemaType extends ISchemaType, FieldType ex
     isRequiredFieldReadonly?: boolean;
     isNameFieldReadonly?: boolean;
 
-    field?: FieldType;
+    field?: IGenericField;
     schema?: SchemaType;
 
     changeType(type: DataType): void;
@@ -24,7 +24,7 @@ export interface ISchemaEditorProps<SchemaType extends ISchemaType, FieldType ex
     delete?(): void;
 }
 
-export interface ISchemaEditorState<FieldType extends IGenericField> {
+export interface ISchemaEditorState<FieldType extends ISchemaEditorField> {
     currentField: Required<FieldType>;
 
     hint?: type_Hints;
@@ -128,3 +128,12 @@ export interface IChildrenEditorProps {
 
     childrenDidUpdate?(children: IChildProperty[]): void;
 }
+
+export type ISchemaEditorField =
+    | IArrayEditorField
+    | IBooleanEditorField
+    | IIntegerEditorField
+    | INumberEditorField
+    | INullEditorField
+    | IObjectEditorField
+    | IStringEditorField;

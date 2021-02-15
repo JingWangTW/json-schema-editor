@@ -4,7 +4,7 @@ import { CloneReturnValue } from "../utility";
 import Schema from "./Schema";
 import { IBooleanSchemaType, IGenericSchemaType } from "./type_schema";
 
-class BooleanSchema extends Schema<IBooleanEditorField> {
+class BooleanSchema extends Schema<IBooleanSchemaType, IBooleanEditorField> {
     protected type = DataType.Boolean;
     protected currentField: Required<IBooleanEditorField>;
     protected defaultField: Required<IBooleanEditorField>;
@@ -17,7 +17,7 @@ class BooleanSchema extends Schema<IBooleanEditorField> {
         this.defaultField = {
             ...genericField,
 
-            default: this.retrieveDefaultValue("default", undefined, schema, field),
+            default: this.retrieveDefaultOptionValue("default", undefined, schema),
         };
 
         this.currentField = { ...this.defaultField };

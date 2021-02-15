@@ -20,7 +20,7 @@ class NullSchemaEditor extends SchemaEditor<INullSchemaType, INullEditorField> {
 
     protected genericFieldRef: React.RefObject<GenericField>;
 
-    constructor(props: ISchemaEditorProps<INullSchemaType, INullEditorField>) {
+    constructor(props: ISchemaEditorProps<INullSchemaType>) {
         super(props);
 
         this.genericFieldRef = React.createRef<GenericField>();

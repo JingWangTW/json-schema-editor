@@ -1,3 +1,4 @@
+import { IGenericSchemaType } from "../../model/schema/type_schema";
 import { DataType } from "../../type";
 
 export interface IGenericField {
@@ -23,5 +24,5 @@ export type IGenericFieldOptions = {
     isNameFieldReadonly?: boolean;
 };
 
-export type OmitGenericField<T> = Omit<T, keyof IGenericField>;
+export type OmitGenericField<T extends IGenericSchemaType> = Omit<T, keyof IGenericField>;
 export type type_Hints = Partial<{ [K in "error" | "info" | "warn"]: string }>;

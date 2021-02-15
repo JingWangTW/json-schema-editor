@@ -8,13 +8,15 @@ import { AiOutlineDown } from "react-icons/ai";
 import { TiPencil } from "react-icons/ti";
 
 import Schema from "../../model/schema/Schema";
+import { ISchemaType } from "../../model/schema/type_schema";
 import { getOrDefault } from "../../model/utility";
 import { DataType } from "../../type";
+import { ISchemaEditorField } from "../schema_editor/type_SchemaEditor";
 import { IGenericField, IGenericFieldOptions } from "./type_NodeComponent";
 
-interface IGenericFieldProps<T extends IGenericField> {
+interface IGenericFieldProps<T extends ISchemaType, U extends ISchemaEditorField> {
     options: IGenericFieldOptions;
-    schemaType: Schema<T>;
+    schemaType: Schema<T, U>;
 
     changeType(props: DataType): void;
     changeName?(): void;
@@ -29,8 +31,8 @@ interface IGenericFieldState {
     isCommentFieldShow: boolean;
 }
 
-class GenericField extends React.Component<IGenericFieldProps<IGenericField>, IGenericFieldState> {
-    constructor(props: IGenericFieldProps<IGenericField>) {
+class GenericField extends React.Component<IGenericFieldProps<ISchemaType, IGenericField>, IGenericFieldState> {
+    constructor(props: IGenericFieldProps<ISchemaType, IGenericField>) {
         super(props);
 
         const currentField: Required<IGenericField> = props.schemaType.getDefaultField();

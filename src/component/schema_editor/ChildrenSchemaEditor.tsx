@@ -2,12 +2,11 @@
 // eslint-disable-next-line @typescript-eslint/no-use-before-define
 import React from "react";
 
-import { IChildrenSchemaType, ISchemaType } from "../../model/schema/type_schema";
+import { IChildrenSchemaType } from "../../model/schema/type_schema";
 import { NextId, getOrDefault } from "../../model/utility";
 import { DataType, PartialBy } from "../../type";
 import HintText from "../node_component/HintText";
-import { IGenericField, type_Hints } from "../node_component/type_NodeComponent";
-import SchemaEditor from "./SchemaEditor";
+import { type_Hints } from "../node_component/type_NodeComponent";
 import SchemaEditorFactory from "./SchemaEditorFactory";
 import { IChildProperty, IChildrenEditorProps, INewChildEditorProps, ISchemaEditorType } from "./type_SchemaEditor";
 
@@ -46,7 +45,7 @@ class ChildrenSchemaEditor extends React.Component<IChildrenEditorProps, Childre
         if (this.state.hint?.error) throw new Error(this.state.hint.error);
 
         return this.state.children.map(child => {
-            const c: SchemaEditor<ISchemaType, IGenericField> = child.ref.current as SchemaEditor<ISchemaType, IGenericField>;
+            const c: ISchemaEditorType = child.ref.current as ISchemaEditorType;
             return {
                 name: c.getField().name,
                 value: c.exportSchema(),

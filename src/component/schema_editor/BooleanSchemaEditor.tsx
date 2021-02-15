@@ -22,7 +22,7 @@ class BooleanSchemaEditor extends SchemaEditor<IBooleanSchemaType, IBooleanEdito
     protected optionModalRef: React.RefObject<EditorOptionModal>;
     protected genericFieldRef: React.RefObject<GenericField>;
 
-    constructor(props: ISchemaEditorProps<IBooleanSchemaType, IBooleanEditorField>) {
+    constructor(props: ISchemaEditorProps<IBooleanSchemaType>) {
         super(props);
 
         this.optionModalRef = React.createRef<EditorOptionModal>();

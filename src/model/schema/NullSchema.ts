@@ -4,7 +4,7 @@ import { CloneReturnValue } from "../utility";
 import Schema from "./Schema";
 import { IGenericSchemaType, INullSchemaType } from "./type_schema";
 
-class NullSchema extends Schema<INullEditorField> {
+class NullSchema extends Schema<INullSchemaType, INullEditorField> {
     protected type = DataType.Null;
     protected currentField: Required<INullEditorField>;
     protected defaultField: Required<INullEditorField>;
