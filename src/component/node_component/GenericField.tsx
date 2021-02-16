@@ -19,7 +19,7 @@ interface IGenericFieldProps<T extends ISchemaType, U extends ISchemaEditorField
     schemaType: Schema<T, U>;
 
     changeType(props: DataType): void;
-    changeName?(): void;
+    changeName(): void;
 }
 
 interface IGenericFieldState {
@@ -49,6 +49,7 @@ class GenericField extends React.Component<IGenericFieldProps<ISchemaType, IGene
 
     recordField(fieldName: keyof Omit<IGenericField, "type">, changeEvent: React.ChangeEvent<HTMLInputElement>): void {
         const currentField = this.props.schemaType.recordField(fieldName, changeEvent);
+
         this.setState({ currentField });
     }
 

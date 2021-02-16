@@ -131,6 +131,7 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
                                         schemaType={this.schema}
                                         options={this.genericFieldOptions}
                                         changeType={this.props.changeType}
+                                        changeName={this.props.changeName}
                                     />
                                 </Col>
                                 <Col lg={1}>
