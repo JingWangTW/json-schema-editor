@@ -1,10 +1,10 @@
-import React from 'react';
-import { Navbar } from 'react-bootstrap';
-import SchemaEditor from './layout/SchemaEditor';
+import React from "react";
+import { Navbar } from "react-bootstrap";
+
+import Editor from "./Editor";
 
 class App extends React.Component {
-
-    render() {
+    render(): JSX.Element {
         return (
             <>
                 <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
@@ -18,9 +18,9 @@ class App extends React.Component {
                     </Navbar.Collapse>
                 </Navbar>
 
-                <SchemaEditor />
+                <Editor />
             </>
-        )
+        );
     }
 }
 

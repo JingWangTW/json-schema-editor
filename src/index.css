@@ -1,3 +1,10 @@
+/*dropdown button for comment block*/
+span.node-option-block {
+    display: inline-flex;
+    height: 100%;
+    align-items: center;
+}
+
 div.node-option-block {
     display: flex;
     height: 90%;
