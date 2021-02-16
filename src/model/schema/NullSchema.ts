@@ -1,4 +1,4 @@
-import { INullEditorField } from "../../component/schema_editor/type_SchemaEditor";
+import { FieldWithoutType, INullEditorField } from "../../component/schema_editor/type_SchemaEditor";
 import { DataType } from "../../type";
 import { CloneReturnValue } from "../utility";
 import Schema from "./Schema";
@@ -9,7 +9,7 @@ class NullSchema extends Schema<INullSchemaType, INullEditorField> {
     protected currentField: Required<INullEditorField>;
     protected defaultField: Required<INullEditorField>;
 
-    constructor(schema?: INullSchemaType, field?: INullEditorField) {
+    constructor(schema?: INullSchemaType, field?: FieldWithoutType<INullEditorField>) {
         super();
 
         const genericField = this.getGenericFieldFromSchema(schema, field);

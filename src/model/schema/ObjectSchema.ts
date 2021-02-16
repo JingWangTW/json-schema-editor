@@ -1,6 +1,6 @@
 import React from "react";
 
-import { IChildProperty, IObjectEditorField, ISchemaEditorType } from "../../component/schema_editor/type_SchemaEditor";
+import { FieldWithoutType, IChildProperty, IObjectEditorField, ISchemaEditorType } from "../../component/schema_editor/type_SchemaEditor";
 import { DataType } from "../../type";
 import { CloneReturnValue, NextId } from "../utility";
 import Schema from "./Schema";
@@ -12,7 +12,7 @@ class ObjectSchema extends Schema<IObjectSchemaType, IObjectEditorField> {
     protected defaultField: Required<IObjectEditorField>;
     public readonly childrenProperty?: IChildProperty[];
 
-    constructor(schema?: IObjectSchemaType, field?: IObjectEditorField) {
+    constructor(schema?: IObjectSchemaType, field?: FieldWithoutType<IObjectEditorField>) {
         super();
 
         const genericField = this.getGenericFieldFromSchema(schema, field);
@@ -42,9 +42,7 @@ class ObjectSchema extends Schema<IObjectSchemaType, IObjectEditorField> {
                 ref: React.createRef<ISchemaEditorType>(),
 
                 field: {
-                    type: schema.properties[field].type,
                     name: field,
-
                     required: schema.required.find(r => r === field) === undefined ? false : true,
                 },
 

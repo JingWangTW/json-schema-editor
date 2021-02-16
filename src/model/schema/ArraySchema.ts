@@ -1,6 +1,6 @@
 import React from "react";
 
-import { IArrayEditorField, IChildProperty, ISchemaEditorType } from "../../component/schema_editor/type_SchemaEditor";
+import { FieldWithoutType, IArrayEditorField, IChildProperty, ISchemaEditorType } from "../../component/schema_editor/type_SchemaEditor";
 import { DataType } from "../../type";
 import { CloneReturnValue, NextId } from "../utility";
 import Schema from "./Schema";
@@ -12,7 +12,7 @@ class ArraySchema extends Schema<IArraySchemaType, IArrayEditorField> {
     protected defaultField: Required<IArrayEditorField>;
     public readonly childrenProperty?: IChildProperty[];
 
-    constructor(schema?: IArraySchemaType, field?: IArrayEditorField) {
+    constructor(schema?: IArraySchemaType, field?: FieldWithoutType<IArrayEditorField>) {
         super();
 
         const genericField = this.getGenericFieldFromSchema(schema, field);
@@ -46,9 +46,7 @@ class ArraySchema extends Schema<IArraySchemaType, IArrayEditorField> {
                         ref: React.createRef<ISchemaEditorType>(),
 
                         field: {
-                            type: s.type,
                             name: "items",
-
                             required: true,
                         },
 
@@ -69,9 +67,7 @@ class ArraySchema extends Schema<IArraySchemaType, IArrayEditorField> {
                         ref: React.createRef<ISchemaEditorType>(),
 
                         field: {
-                            type: schema.type,
                             name: "items",
-
                             required: true,
                         },
 

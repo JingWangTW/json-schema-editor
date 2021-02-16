@@ -1,4 +1,4 @@
-import { IBooleanEditorField } from "../../component/schema_editor/type_SchemaEditor";
+import { FieldWithoutType, IBooleanEditorField } from "../../component/schema_editor/type_SchemaEditor";
 import { DataType } from "../../type";
 import { CloneReturnValue } from "../utility";
 import Schema from "./Schema";
@@ -9,7 +9,7 @@ class BooleanSchema extends Schema<IBooleanSchemaType, IBooleanEditorField> {
     protected currentField: Required<IBooleanEditorField>;
     protected defaultField: Required<IBooleanEditorField>;
 
-    constructor(schema?: IBooleanSchemaType, field?: IBooleanEditorField) {
+    constructor(schema?: IBooleanSchemaType, field?: FieldWithoutType<IBooleanEditorField>) {
         super();
 
         const genericField = this.getGenericFieldFromSchema(schema, field);

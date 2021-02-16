@@ -59,6 +59,7 @@ class ChildrenSchemaEditor extends React.Component<IChildrenEditorProps, Childre
         let currentIndex;
 
         let p: PartialBy<Required<INewChildEditorProps>, "field"> = {
+            type: DataType.Object,
             isDeleteable: true,
             hasSibling: true,
             isRequiredFieldReadonly: false,
@@ -81,7 +82,6 @@ class ChildrenSchemaEditor extends React.Component<IChildrenEditorProps, Childre
         }
 
         originChildren.splice(currentIndex + 1, 0, {
-            type: DataType.Object,
             selfId: NextId.next("child").toString(),
 
             // hasSibling, isDeletable, isRequiredFieldReadonly, isNameFieldReadonly, field

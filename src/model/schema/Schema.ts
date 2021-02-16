@@ -1,5 +1,5 @@
 import { IGenericField } from "../../component/node_component/type_NodeComponent";
-import { ISchemaEditorField } from "../../component/schema_editor/type_SchemaEditor";
+import { FieldWithoutType, ISchemaEditorField } from "../../component/schema_editor/type_SchemaEditor";
 import { DataType } from "../../type";
 import { CloneReturnValue, NextId, getOrDefault } from "../utility";
 import { IGenericSchemaType, ISchemaType } from "./type_schema";
@@ -50,24 +50,28 @@ abstract class Schema<SchemaType extends ISchemaType, FieldType extends ISchemaE
         return schema;
     }
 
-    protected getGenericFieldFromSchema(schema?: IGenericSchemaType, field?: IGenericField): Required<IGenericField> {
+    protected getGenericFieldFromSchema(schema?: IGenericSchemaType, field?: FieldWithoutType<IGenericField>): Required<IGenericField> {
+        let f: IGenericField;
+
         if (schema === undefined) schema = {};
         if (field === undefined) {
-            field = {
+            f = {
                 type: this.type,
                 required: true,
                 name: `Field_${NextId.next("Field")}`,
             };
+        } else {
+            f = { type: this.type, ...field };
         }
 
         return {
             type: this.type,
-            required: field.required,
-            name: field.name,
+            required: f.required,
+            name: f.name,
 
-            title: getOrDefault(schema.title, getOrDefault(field.title, "")),
-            description: getOrDefault(schema.description, getOrDefault(field.description, "")),
-            $comment: getOrDefault(schema.$comment, getOrDefault(field.$comment, "")),
+            title: getOrDefault(schema.title, getOrDefault(f.title, "")),
+            description: getOrDefault(schema.description, getOrDefault(f.description, "")),
+            $comment: getOrDefault(schema.$comment, getOrDefault(f.$comment, "")),
         };
     }
 

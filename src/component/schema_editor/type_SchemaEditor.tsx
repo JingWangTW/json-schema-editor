@@ -1,11 +1,13 @@
 import { ISchemaType } from "../../model/schema/type_schema";
-import { DataType } from "../../type";
+import { DataType, PartialBy } from "../../type";
 import { IGenericField, type_Hints } from "../node_component/type_NodeComponent";
 import SchemaEditor from "./SchemaEditor";
 
 // Type to represent all schema editor
 // Type cannot check class derived from generic class
 export type ISchemaEditorType = SchemaEditor<ISchemaType, ISchemaEditorField>;
+
+export type FieldWithoutType<T extends ISchemaEditorField> = Omit<T, "type">;
 
 export interface ISchemaEditorProps<SchemaType extends ISchemaType> {
     depth: number;
@@ -15,7 +17,7 @@ export interface ISchemaEditorProps<SchemaType extends ISchemaType> {
     isRequiredFieldReadonly?: boolean;
     isNameFieldReadonly?: boolean;
 
-    field?: IGenericField;
+    field?: PartialBy<IGenericField, "type">;
     schema?: SchemaType;
 
     changeType(type: DataType): void;
@@ -97,12 +99,13 @@ export interface IStringEditorField extends IGenericField {
 }
 
 export interface INewChildEditorProps {
+    type: DataType;
     hasSibling?: boolean;
     isDeleteable?: boolean;
     isRequiredFieldReadonly?: boolean;
     isNameFieldReadonly?: boolean;
 
-    field?: IGenericField;
+    field?: Omit<IGenericField, "type">;
 }
 
 export interface IChildProperty {
@@ -116,7 +119,7 @@ export interface IChildProperty {
 
     ref: React.RefObject<ISchemaEditorType>;
 
-    field?: IGenericField;
+    field?: Omit<IGenericField, "type">;
     schema?: ISchemaType;
 }
 

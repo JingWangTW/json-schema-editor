@@ -1,4 +1,4 @@
-import { IIntegerEditorField } from "../../component/schema_editor/type_SchemaEditor";
+import { FieldWithoutType, IIntegerEditorField } from "../../component/schema_editor/type_SchemaEditor";
 import { DataType, XOR_Partial } from "../../type";
 import { CloneReturnValue } from "../utility";
 import Schema from "./Schema";
@@ -9,7 +9,7 @@ class IntegerSchema extends Schema<IIntegerSchemaType, IIntegerEditorField> impl
     protected currentField: Required<IIntegerEditorField>;
     protected defaultField: Required<IIntegerEditorField>;
 
-    constructor(schema?: IIntegerSchemaType, field?: IIntegerEditorField) {
+    constructor(schema?: IIntegerSchemaType, field?: FieldWithoutType<IIntegerEditorField>) {
         super();
 
         const genericField = this.getGenericFieldFromSchema(schema, field);

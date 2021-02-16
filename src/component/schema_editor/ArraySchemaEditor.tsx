@@ -94,15 +94,14 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
     addChild(): void {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         this.childrenRef.current!.add("", {
+            type: DataType.Object,
             isDeleteable: true,
             hasSibling: true,
             isRequiredFieldReadonly: true,
             isNameFieldReadonly: true,
 
             field: {
-                type: DataType.Object,
                 name: "items",
-
                 required: true,
             },
         });
