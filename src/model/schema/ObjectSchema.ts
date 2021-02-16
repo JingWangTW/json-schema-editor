@@ -72,11 +72,8 @@ class ObjectSchema extends Schema<IObjectSchemaType, IObjectEditorField> {
 
         const genericSchema = this.getGenericSchemaFromField(this.currentField);
 
-        const { maxProperties, minProperties } = this.currentField;
-        const propertieRestricted: Partial<Record<"maxProperties" | "minProperties", number>> = {};
-
-        if (!isNaN(maxProperties)) propertieRestricted.maxProperties = maxProperties;
-        if (!isNaN(minProperties)) propertieRestricted.minProperties = minProperties;
+        const maxProperties = this.exportSchemaWithoutUndefined("maxProperties", NaN);
+        const minProperties = this.exportSchemaWithoutUndefined("minProperties", NaN);
 
         const required: IObjectSchemaType["required"] = [];
         const properties: IObjectSchemaType["properties"] = {};
@@ -94,7 +91,8 @@ class ObjectSchema extends Schema<IObjectSchemaType, IObjectEditorField> {
         return {
             type,
             ...genericSchema,
-            ...propertieRestricted,
+            ...minProperties,
+            ...maxProperties,
             required,
             properties,
         };

@@ -103,12 +103,10 @@ class ArraySchema extends Schema<IArraySchemaType, IArrayEditorField> {
 
         const genericSchema: IGenericSchemaType = this.getGenericSchemaFromField(this.currentField);
 
-        const { minItems, maxItems, uniqueItems } = this.currentField;
+        const { uniqueItems } = this.currentField;
 
-        const itemsRestricted: Partial<Record<"minItems" | "maxItems", number>> = {};
-
-        if (!isNaN(minItems)) itemsRestricted.minItems = minItems;
-        if (!isNaN(maxItems)) itemsRestricted.maxItems = maxItems;
+        const minItems = this.exportSchemaWithoutUndefined("minItems", NaN);
+        const maxItems = this.exportSchemaWithoutUndefined("maxItems", NaN);
 
         let items: IArraySchemaType["items"];
 
@@ -123,7 +121,8 @@ class ArraySchema extends Schema<IArraySchemaType, IArrayEditorField> {
         return {
             type,
             ...genericSchema,
-            ...itemsRestricted,
+            ...minItems,
+            ...maxItems,
             uniqueItems,
             items,
         };

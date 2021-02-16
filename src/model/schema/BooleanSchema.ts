@@ -63,9 +63,7 @@ class BooleanSchema extends Schema<IBooleanSchemaType, IBooleanEditorField> {
 
         const genericSchema: IGenericSchemaType = this.getGenericSchemaFromField(this.currentField);
 
-        const defaultValue: Partial<Record<"default", boolean>> = {};
-
-        if (this.currentField.default !== undefined) defaultValue.default = this.currentField.default;
+        const defaultValue = this.exportSchemaWithoutUndefined("default", (undefined as unknown) as boolean);
 
         return {
             type,
