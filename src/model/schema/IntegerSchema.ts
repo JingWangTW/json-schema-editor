@@ -58,7 +58,7 @@ class IntegerSchema extends Schema<IIntegerSchemaType, IIntegerEditorField> impl
             exclusiveMaximum: ex_max,
         };
 
-        this.currentField = { ...this.defaultField };
+        this.currentField = { ...this.defaultField, enum: [...this.defaultField.enum] };
     }
 
     addEnum(): void {
@@ -77,7 +77,7 @@ class IntegerSchema extends Schema<IIntegerSchemaType, IIntegerEditorField> impl
     resetOptionField(): Required<IIntegerEditorField> {
         this.currentField.default = this.defaultField.default;
         this.currentField.const = this.defaultField.const;
-        this.currentField.enum = this.defaultField.enum;
+        this.currentField.enum = [...this.defaultField.enum];
         this.currentField.minimum = this.defaultField.minimum;
         this.currentField.maximum = this.defaultField.maximum;
         this.currentField.exclusiveMinimum = this.defaultField.exclusiveMinimum;

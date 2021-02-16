@@ -58,7 +58,7 @@ class NumberSchema extends Schema<INumberSchemaType, INumberEditorField> impleme
             exclusiveMaximum: ex_max,
         };
 
-        this.currentField = { ...this.defaultField };
+        this.currentField = { ...this.defaultField, enum: [...this.defaultField.enum] };
     }
 
     @CloneReturnValue
