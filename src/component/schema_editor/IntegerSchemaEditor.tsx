@@ -74,7 +74,6 @@ class IntegerSchemaEditor extends SchemaEditor<IIntegerSchemaType, IIntegerEdito
     }
 
     updateEnum(index?: number, changeEvent?: React.ChangeEvent<HTMLInputElement>): void {
-        console.log(index, changeEvent);
         if (index === undefined && changeEvent === undefined) this.schema.addEnum();
         else if (index !== undefined && changeEvent === undefined) this.schema.deleteEnum(index);
         else if (index !== undefined && changeEvent !== undefined) this.schema.updateEnum(index, changeEvent);

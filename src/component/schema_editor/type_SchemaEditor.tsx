@@ -53,18 +53,18 @@ export interface IIntegerEditorField extends IGenericField {
     multipleOf?: number;
 }
 
+export type INullEditorField = IGenericField;
+
 export interface INumberEditorField extends IGenericField {
     default?: number;
     const?: number;
     enum?: number[];
     minimum?: number;
     maximum?: number;
-    exclusiveMinimum?: number;
-    exclusiveMaximum?: number;
+    exclusiveMinimum?: boolean;
+    exclusiveMaximum?: boolean;
     multipleOf?: number;
 }
-
-export type INullEditorField = IGenericField;
 
 export interface IObjectEditorField extends IGenericField {
     maxProperties?: number;
