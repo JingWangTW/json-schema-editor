@@ -205,6 +205,7 @@ class NumberSchemaEditor extends SchemaEditor<INumberSchemaType, INumberEditorFi
                                         </Form.Group>
 
                                         <EnumField
+                                            type="number"
                                             width={4}
                                             value={this.state.currentField.enum}
                                             add={(): void => this.updateEnum()}

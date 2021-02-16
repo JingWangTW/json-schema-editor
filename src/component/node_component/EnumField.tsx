@@ -7,6 +7,8 @@ import { FaMinus, FaPlus } from "react-icons/fa";
 import { EmptyState } from "../type_component";
 
 interface EnumFieldProps<T> {
+    type: "number" | "text";
+
     value: T[];
     width: number;
     add(): void;
@@ -28,7 +30,7 @@ class EnumField<T extends string | number> extends React.Component<EnumFieldProp
                                 {index === this.props.value.length - 1 ? (
                                     <InputGroup>
                                         <FormControl
-                                            type="number"
+                                            type={this.props.type}
                                             id={index.toString()}
                                             onChange={this.props.update.bind(this, index)}
                                             value={enumeration}
@@ -47,7 +49,7 @@ class EnumField<T extends string | number> extends React.Component<EnumFieldProp
                                 ) : (
                                     <InputGroup>
                                         <FormControl
-                                            type="number"
+                                            type={this.props.type}
                                             id={index.toString()}
                                             onChange={this.props.update.bind(this, index)}
                                             value={enumeration}

@@ -206,6 +206,7 @@ class IntegerSchemaEditor extends SchemaEditor<IIntegerSchemaType, IIntegerEdito
 
                                         <EnumField
                                             width={4}
+                                            type="number"
                                             value={this.state.currentField.enum}
                                             add={(): void => this.updateEnum()}
                                             update={this.updateEnum.bind(this)}
