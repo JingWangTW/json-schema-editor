@@ -53,7 +53,6 @@ class StringSchemaEditor extends SchemaEditor<IStringSchemaType, IStringEditorFi
     }
 
     componentDidUpdate(prevProps: ISchemaEditorProps<IStringSchemaType>, prevState: ISchemaEditorState<IStringEditorField>): void {
-        console.log(prevState, this.state);
         if (
             // NaN === NaN (get false)
             // NaN !== NaN (get true)

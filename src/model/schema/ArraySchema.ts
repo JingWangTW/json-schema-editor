@@ -20,6 +20,8 @@ class ArraySchema extends Schema<IArraySchemaType, IArrayEditorField> {
         this.defaultField = {
             ...genericField,
 
+            const: schema && schema.const ? JSON.stringify(schema.const, null, 4) : "[]",
+
             minItems: this.retrieveDefaultOptionValue("minItems", NaN, schema),
             maxItems: this.retrieveDefaultOptionValue("maxItems", NaN, schema),
             uniqueItems: this.retrieveDefaultOptionValue("uniqueItems", false, schema),
@@ -28,6 +30,13 @@ class ArraySchema extends Schema<IArraySchemaType, IArrayEditorField> {
         this.currentField = { ...this.defaultField };
 
         if (schema) this.childrenProperty = this.generateChildrenPropertyFromSchema(schema);
+    }
+
+    @CloneReturnValue
+    recordCode(field: "const", value: string): Required<IArrayEditorField> {
+        this.currentField.const = value;
+
+        return this.currentField;
     }
 
     generateChildrenPropertyFromSchema(schema: IArraySchemaType): IChildProperty[] {
@@ -82,6 +91,8 @@ class ArraySchema extends Schema<IArraySchemaType, IArrayEditorField> {
 
     @CloneReturnValue
     resetOptionField(): Required<IArrayEditorField> {
+        this.currentField.const = this.defaultField.const;
+
         this.currentField.maxItems = this.defaultField.maxItems;
         this.currentField.minItems = this.defaultField.minItems;
         this.currentField.uniqueItems = this.defaultField.uniqueItems;
@@ -91,6 +102,8 @@ class ArraySchema extends Schema<IArraySchemaType, IArrayEditorField> {
 
     @CloneReturnValue
     clearOptionField(): Required<IArrayEditorField> {
+        this.currentField.const = "[]";
+
         this.currentField.maxItems = NaN;
         this.currentField.minItems = NaN;
         this.currentField.uniqueItems = false;
@@ -107,6 +120,10 @@ class ArraySchema extends Schema<IArraySchemaType, IArrayEditorField> {
 
         const minItems = this.exportSchemaWithoutUndefined("minItems", NaN);
         const maxItems = this.exportSchemaWithoutUndefined("maxItems", NaN);
+
+        const constant: { const?: [] } = {};
+
+        constant.const = JSON.parse(this.currentField.const.replace(/\s/g, "")) as [];
 
         let items: IArraySchemaType["items"];
 
@@ -125,6 +142,7 @@ class ArraySchema extends Schema<IArraySchemaType, IArrayEditorField> {
             ...maxItems,
             uniqueItems,
             items,
+            ...constant,
         };
     }
 }

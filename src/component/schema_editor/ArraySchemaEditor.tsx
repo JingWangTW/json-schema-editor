@@ -1,11 +1,12 @@
 // I think there is some bugs  in either eslint or react to use forwardref
 // eslint-disable-next-line @typescript-eslint/no-use-before-define
 import React from "react";
-import { Col, Form, Row } from "react-bootstrap";
+import { Col, Form, InputGroup, Row } from "react-bootstrap";
 
 import ArraySchema from "../../model/schema/ArraySchema";
 import { IArraySchemaType } from "../../model/schema/type_schema";
 import { DataType } from "../../type";
+import CodeField from "../node_component/CodeField";
 import EditorOptionModal from "../node_component/EditorOptionModal";
 import GenericField from "../node_component/GenericField";
 import HintText from "../node_component/HintText";
@@ -114,6 +115,12 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
         );
     }
 
+    recordCode(field: "const", value: string): void {
+        const currentField = this.schema.recordCode(field, value);
+
+        this.setState({ currentField });
+    }
+
     render(): JSX.Element {
         return (
             <div className="my-1">
@@ -173,6 +180,20 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
                                                     value={this.state.currentField.maxItems}
                                                     onChange={this.recordField.bind(this, "maxItems")}
                                                 />
+                                            </Col>
+                                        </Form.Group>
+                                        <Form.Group as={Row}>
+                                            <Form.Label column lg="2" htmlFor="Constant">
+                                                Constant
+                                            </Form.Label>
+                                            <Col lg="10">
+                                                <InputGroup>
+                                                    <CodeField
+                                                        title="Array constant"
+                                                        value={this.state.currentField.const}
+                                                        update={this.recordCode.bind(this, "const")}
+                                                    />
+                                                </InputGroup>
                                             </Col>
                                         </Form.Group>
                                         <Form.Group>

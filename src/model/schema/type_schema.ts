@@ -9,6 +9,8 @@ export interface IGenericSchemaType {
 export interface IArraySchemaType extends IGenericSchemaType {
     type: DataType.Array;
 
+    const?: [];
+
     minItems?: number;
     maxItems?: number;
     uniqueItems?: boolean;
