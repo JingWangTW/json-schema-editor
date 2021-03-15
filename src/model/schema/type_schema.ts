@@ -9,6 +9,8 @@ export interface IGenericSchemaType {
 export interface IArraySchemaType extends IGenericSchemaType {
     type: DataType.Array;
 
+    const?: [];
+
     minItems?: number;
     maxItems?: number;
     uniqueItems?: boolean;
@@ -19,6 +21,7 @@ export interface IBooleanSchemaType extends IGenericSchemaType {
     type: DataType.Boolean;
 
     default?: boolean;
+    const?: boolean;
 }
 
 export type IIntegerSchemaType = IGenericSchemaType & {
@@ -49,6 +52,8 @@ export type INumberSchemaType = IGenericSchemaType & {
 
 export interface IObjectSchemaType extends IGenericSchemaType {
     type: DataType.Object;
+
+    const?: Record<string, unknown>;
 
     properties: Record<string, ISchemaType>;
     required: string[];

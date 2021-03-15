@@ -3,6 +3,7 @@
 import React from "react";
 import { Col, Form, Row } from "react-bootstrap";
 
+import Hint from "../../model/Hint";
 import BooleanSchema from "../../model/schema/BooleanSchema";
 import { IBooleanSchemaType } from "../../model/schema/type_schema";
 import EditorOptionModal from "../node_component/EditorOptionModal";
@@ -44,6 +45,7 @@ class BooleanSchemaEditor extends SchemaEditor<IBooleanSchemaType, IBooleanEdito
 
         this.state = {
             currentField: this.schema.getDefaultField(),
+            hint: new Hint(),
         };
     }
 
@@ -87,7 +89,7 @@ class BooleanSchemaEditor extends SchemaEditor<IBooleanSchemaType, IBooleanEdito
                                 >
                                     <Form>
                                         <Form.Group as={Row}>
-                                            <Form.Label column lg="auto" htmlFor="default">
+                                            <Form.Label column lg="2" htmlFor="default">
                                                 Default
                                             </Form.Label>
                                             <Col lg={4}>
@@ -105,6 +107,32 @@ class BooleanSchemaEditor extends SchemaEditor<IBooleanSchemaType, IBooleanEdito
                                                         disabled
                                                         hidden
                                                         selected={this.state.currentField.default === undefined ? true : false}
+                                                        value="undefined"
+                                                    >
+                                                        {" "}
+                                                    </option>
+                                                    <option value={"true"}>True</option>
+                                                    <option value={"false"}>False</option>
+                                                </Form.Control>
+                                            </Col>
+                                            <Form.Label column lg="2" htmlFor="const">
+                                                Constant
+                                            </Form.Label>
+                                            <Col lg={4}>
+                                                <Form.Control
+                                                    as="select"
+                                                    custom
+                                                    onChange={this.recordField.bind(this, "const")}
+                                                    value={
+                                                        this.state.currentField.const === undefined
+                                                            ? "undefined"
+                                                            : this.state.currentField.const.toString()
+                                                    }
+                                                >
+                                                    <option
+                                                        disabled
+                                                        hidden
+                                                        selected={this.state.currentField.const === undefined ? true : false}
                                                         value="undefined"
                                                     >
                                                         {" "}

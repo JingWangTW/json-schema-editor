@@ -1,6 +1,7 @@
+import Hint from "../../model/Hint";
 import { ISchemaType } from "../../model/schema/type_schema";
 import { DataType, PartialBy } from "../../type";
-import { IGenericField, type_Hints } from "../node_component/type_NodeComponent";
+import { IGenericField } from "../node_component/type_NodeComponent";
 import SchemaEditor from "./SchemaEditor";
 
 // Type to represent all schema editor
@@ -29,10 +30,12 @@ export interface ISchemaEditorProps<SchemaType extends ISchemaType> {
 export interface ISchemaEditorState<FieldType extends ISchemaEditorField> {
     currentField: Required<FieldType>;
 
-    hint?: type_Hints;
+    hint: Hint;
 }
 
 export interface IArrayEditorField extends IGenericField {
+    const?: string;
+
     minItems?: number;
     maxItems?: number;
     uniqueItems?: boolean;
@@ -40,6 +43,7 @@ export interface IArrayEditorField extends IGenericField {
 
 export interface IBooleanEditorField extends IGenericField {
     default?: boolean;
+    const?: boolean;
 }
 
 export interface IIntegerEditorField extends IGenericField {
@@ -67,6 +71,8 @@ export interface INumberEditorField extends IGenericField {
 }
 
 export interface IObjectEditorField extends IGenericField {
+    const?: string;
+
     maxProperties?: number;
     minProperties?: number;
 }

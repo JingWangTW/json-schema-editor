@@ -1,11 +1,13 @@
 // I think there is some bugs  in either eslint or react to use forwardref
 // eslint-disable-next-line @typescript-eslint/no-use-before-define
 import React from "react";
-import { Col, Form, Row } from "react-bootstrap";
+import { Col, Form, InputGroup, Row } from "react-bootstrap";
 
+import Hint, * as HintTextType from "../../model/Hint";
 import ArraySchema from "../../model/schema/ArraySchema";
 import { IArraySchemaType } from "../../model/schema/type_schema";
 import { DataType } from "../../type";
+import CodeField from "../node_component/CodeField";
 import EditorOptionModal from "../node_component/EditorOptionModal";
 import GenericField from "../node_component/GenericField";
 import HintText from "../node_component/HintText";
@@ -52,13 +54,14 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
 
         this.state = {
             currentField: this.schema.getDefaultField(),
+            hint: new Hint(),
         };
     }
 
     componentDidMount(): void {
         if (!this.props.schema) this.addChild();
         if (this.state.currentField.maxItems < this.state.currentField.minItems) {
-            this.updateHint("warn", "minItems > maxItems");
+            this.addHint(HintTextType.Warn.MIN_GT_MAX_ITEMS);
         }
     }
 
@@ -72,9 +75,9 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
                 !(isNaN(prevState.currentField.minItems) && isNaN(this.state.currentField.minItems)))
         ) {
             if (this.state.currentField.maxItems < this.state.currentField.minItems) {
-                this.updateHint("warn", "minItems > maxItems");
+                this.addHint(HintTextType.Warn.MIN_GT_MAX_ITEMS);
             } else {
-                this.updateHint("warn", undefined);
+                this.removeHint(HintTextType.Warn.MIN_GT_MAX_ITEMS);
             }
         }
     }
@@ -82,9 +85,9 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
     childrenDidUpdate(children: IChildProperty[]): void {
         if (this.childrenLength !== children.length) {
             if (children.length > 1) {
-                this.updateHint("info", "Ordinal index of each item under Array type is meaningful.");
+                this.addHint(HintTextType.Info.ARRAY_ITEM_INDEX_MATTER);
             } else {
-                this.updateHint("info");
+                this.removeHint(HintTextType.Info.ARRAY_ITEM_INDEX_MATTER);
             }
 
             this.childrenLength = children.length;
@@ -112,6 +115,19 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             this.childrenRef.current!.exportSchema()
         );
+    }
+
+    recordCode(field: "const", value: string): void {
+        const currentField = this.schema.recordCode(field, value);
+
+        this.setState({ currentField });
+
+        try {
+            JSON.parse(value);
+            this.removeHint(HintTextType.Error.CANT_PARSE_JSON_CONST);
+        } catch (error) {
+            this.addHint(HintTextType.Error.CANT_PARSE_JSON_CONST);
+        }
     }
 
     render(): JSX.Element {
@@ -173,6 +189,20 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
                                                     value={this.state.currentField.maxItems}
                                                     onChange={this.recordField.bind(this, "maxItems")}
                                                 />
+                                            </Col>
+                                        </Form.Group>
+                                        <Form.Group as={Row}>
+                                            <Form.Label column lg="2" htmlFor="Constant">
+                                                Constant
+                                            </Form.Label>
+                                            <Col lg="10">
+                                                <InputGroup>
+                                                    <CodeField
+                                                        title="Array constant"
+                                                        value={this.state.currentField.const}
+                                                        update={this.recordCode.bind(this, "const")}
+                                                    />
+                                                </InputGroup>
                                             </Col>
                                         </Form.Group>
                                         <Form.Group>

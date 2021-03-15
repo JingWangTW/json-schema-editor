@@ -19,6 +19,9 @@ class ObjectSchema extends Schema<IObjectSchemaType, IObjectEditorField> {
 
         this.defaultField = {
             ...genericField,
+
+            const: schema && schema.const ? JSON.stringify(schema.const, null, 4) : "{}",
+
             maxProperties: this.retrieveDefaultOptionValue("maxProperties", NaN, schema),
             minProperties: this.retrieveDefaultOptionValue("minProperties", NaN, schema),
         };
@@ -26,6 +29,13 @@ class ObjectSchema extends Schema<IObjectSchemaType, IObjectEditorField> {
         this.currentField = { ...this.defaultField };
 
         if (schema) this.childrenProperty = this.generateChildrenPropertyFromSchema(schema);
+    }
+
+    @CloneReturnValue
+    recordCode(field: "const", value: string): Required<IObjectEditorField> {
+        this.currentField.const = value;
+
+        return this.currentField;
     }
 
     generateChildrenPropertyFromSchema(schema: IObjectSchemaType): IChildProperty[] {
@@ -75,6 +85,10 @@ class ObjectSchema extends Schema<IObjectSchemaType, IObjectEditorField> {
         const maxProperties = this.exportSchemaWithoutUndefined("maxProperties", NaN);
         const minProperties = this.exportSchemaWithoutUndefined("minProperties", NaN);
 
+        const constant: { const?: Record<string, unknown> } = {};
+
+        constant.const = JSON.parse(this.currentField.const.replace(/\s/g, "")) as Record<string, unknown>;
+
         const required: IObjectSchemaType["required"] = [];
         const properties: IObjectSchemaType["properties"] = {};
 
@@ -95,6 +109,7 @@ class ObjectSchema extends Schema<IObjectSchemaType, IObjectEditorField> {
             ...maxProperties,
             required,
             properties,
+            ...constant,
         };
     }
 }

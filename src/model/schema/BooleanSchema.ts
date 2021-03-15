@@ -18,6 +18,7 @@ class BooleanSchema extends Schema<IBooleanSchemaType, IBooleanEditorField> {
             ...genericField,
 
             default: this.retrieveDefaultOptionValue("default", undefined, schema),
+            const: this.retrieveDefaultOptionValue("const", undefined, schema),
         };
 
         this.currentField = { ...this.defaultField };
@@ -35,7 +36,7 @@ class BooleanSchema extends Schema<IBooleanSchemaType, IBooleanEditorField> {
         fieldName: keyof IBooleanEditorField,
         changeEvent: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>
     ): Required<IBooleanEditorField> {
-        if (this.isSelectElement(changeEvent) && fieldName === "default") {
+        if (this.isSelectElement(changeEvent) && (fieldName === "default" || fieldName === "const")) {
             this.currentField[fieldName] = changeEvent.target.value.toLowerCase() === "true" ? true : false;
         } else if (!this.isSelectElement(changeEvent)) {
             Schema.prototype.recordField.call(this, fieldName, changeEvent);
@@ -64,11 +65,13 @@ class BooleanSchema extends Schema<IBooleanSchemaType, IBooleanEditorField> {
         const genericSchema: IGenericSchemaType = this.getGenericSchemaFromField(this.currentField);
 
         const defaultValue = this.exportSchemaWithoutUndefined("default", (undefined as unknown) as boolean);
+        const constValue = this.exportSchemaWithoutUndefined("const", (undefined as unknown) as boolean);
 
         return {
             type,
             ...genericSchema,
             ...defaultValue,
+            ...constValue,
         };
     }
 }
