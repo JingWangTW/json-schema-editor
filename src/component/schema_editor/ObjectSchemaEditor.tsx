@@ -1,11 +1,12 @@
 // I think there is some bugs  in either eslint or react to use forwardref
 // eslint-disable-next-line @typescript-eslint/no-use-before-define
 import React from "react";
-import { Col, Form, Row } from "react-bootstrap";
+import { Col, Form, InputGroup, Row } from "react-bootstrap";
 
 import Hint, * as HintTextType from "../../model/Hint";
 import ObjectSchema from "../../model/schema/ObjectSchema";
 import { IObjectSchemaType } from "../../model/schema/type_schema";
+import CodeField from "../node_component/CodeField";
 import EditorOptionModal from "../node_component/EditorOptionModal";
 import GenericField from "../node_component/GenericField";
 import HintText from "../node_component/HintText";
@@ -82,6 +83,19 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectSchemaType, IObjectEditorFi
         );
     }
 
+    recordCode(field: "const", value: string): void {
+        const currentField = this.schema.recordCode(field, value);
+
+        this.setState({ currentField });
+
+        try {
+            JSON.parse(value);
+            this.removeHint(HintTextType.Error.CANT_PARSE_JSON_CONST);
+        } catch (error) {
+            this.addHint(HintTextType.Error.CANT_PARSE_JSON_CONST);
+        }
+    }
+
     render(): JSX.Element {
         return (
             <div className="my-1">
@@ -141,6 +155,20 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectSchemaType, IObjectEditorFi
                                                     value={this.state.currentField.maxProperties}
                                                     onChange={this.recordField.bind(this, "maxProperties")}
                                                 />
+                                            </Col>
+                                        </Form.Group>
+                                        <Form.Group as={Row}>
+                                            <Form.Label column lg="2" htmlFor="Constant">
+                                                Constant
+                                            </Form.Label>
+                                            <Col lg="10">
+                                                <InputGroup>
+                                                    <CodeField
+                                                        title="Object constant"
+                                                        value={this.state.currentField.const}
+                                                        update={this.recordCode.bind(this, "const")}
+                                                    />
+                                                </InputGroup>
                                             </Col>
                                         </Form.Group>
                                     </Form>

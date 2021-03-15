@@ -52,6 +52,8 @@ export type INumberSchemaType = IGenericSchemaType & {
 export interface IObjectSchemaType extends IGenericSchemaType {
     type: DataType.Object;
 
+    const?: Record<string, unknown>;
+
     properties: Record<string, ISchemaType>;
     required: string[];
 
