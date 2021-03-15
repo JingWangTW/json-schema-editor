@@ -1,5 +1,3 @@
-// I think there is some bugs  in either eslint or react to use forwardref
-// eslint-disable-next-line @typescript-eslint/no-use-before-define
 import React from "react";
 import AceEditor from "react-ace";
 import { Button, Form, FormControl, InputGroup, Modal } from "react-bootstrap";

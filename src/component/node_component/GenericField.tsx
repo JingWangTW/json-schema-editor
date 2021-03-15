@@ -1,7 +1,5 @@
 import "../../index.css";
 
-// I think there is some bugs  in either eslint or react to use forwardref
-// eslint-disable-next-line @typescript-eslint/no-use-before-define
 import React from "react";
 import { Accordion, Button, Col, Form, FormControl, InputGroup, Modal, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { AiOutlineDown } from "react-icons/ai";
