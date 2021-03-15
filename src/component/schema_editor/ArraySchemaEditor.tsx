@@ -121,6 +121,13 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
         const currentField = this.schema.recordCode(field, value);
 
         this.setState({ currentField });
+
+        try {
+            JSON.parse(value);
+            this.removeHint(HintTextType.Error.CANT_PARSE_JSON_CONST);
+        } catch (error) {
+            this.addHint(HintTextType.Error.CANT_PARSE_JSON_CONST);
+        }
     }
 
     render(): JSX.Element {
