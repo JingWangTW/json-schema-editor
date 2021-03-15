@@ -43,6 +43,7 @@ export interface IArrayEditorField extends IGenericField {
 
 export interface IBooleanEditorField extends IGenericField {
     default?: boolean;
+    const?: boolean;
 }
 
 export interface IIntegerEditorField extends IGenericField {

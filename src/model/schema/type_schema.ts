@@ -21,6 +21,7 @@ export interface IBooleanSchemaType extends IGenericSchemaType {
     type: DataType.Boolean;
 
     default?: boolean;
+    const?: boolean;
 }
 
 export type IIntegerSchemaType = IGenericSchemaType & {
