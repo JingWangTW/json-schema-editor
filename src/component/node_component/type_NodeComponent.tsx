@@ -25,4 +25,3 @@ export type IGenericFieldOptions = {
 };
 
 export type OmitGenericField<T extends IGenericSchemaType> = Omit<T, keyof IGenericField>;
-export type type_Hints = Partial<{ [K in "error" | "info" | "warn"]: string }>;

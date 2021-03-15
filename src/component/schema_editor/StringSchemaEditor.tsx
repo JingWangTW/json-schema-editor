@@ -3,6 +3,7 @@
 import React from "react";
 import { Col, Form, Row } from "react-bootstrap";
 
+import Hint, * as HintTextType from "../../model/Hint";
 import StringSchema from "../../model/schema/StringSchema";
 import { IStringSchemaType } from "../../model/schema/type_schema";
 import EditorOptionModal from "../node_component/EditorOptionModal";
@@ -45,11 +46,12 @@ class StringSchemaEditor extends SchemaEditor<IStringSchemaType, IStringEditorFi
 
         this.state = {
             currentField: this.schema.getDefaultField(),
+            hint: new Hint(),
         };
     }
 
     componentDidMount(): void {
-        if (this.state.currentField.minLength > this.state.currentField.maxLength) this.updateHint("warn", "Min Length > Max Length");
+        if (this.state.currentField.minLength > this.state.currentField.maxLength) this.addHint(HintTextType.Warn.MIN_GT_MAX_LENGTH);
     }
 
     componentDidUpdate(prevProps: ISchemaEditorProps<IStringSchemaType>, prevState: ISchemaEditorState<IStringEditorField>): void {
@@ -62,9 +64,9 @@ class StringSchemaEditor extends SchemaEditor<IStringSchemaType, IStringEditorFi
                 !(isNaN(prevState.currentField.maxLength) && isNaN(this.state.currentField.maxLength)))
         ) {
             if (this.state.currentField.minLength > this.state.currentField.maxLength) {
-                this.updateHint("warn", "Min Length > Max Length");
+                this.addHint(HintTextType.Warn.MIN_GT_MAX_LENGTH);
             } else {
-                this.updateHint("warn", undefined);
+                this.removeHint(HintTextType.Warn.MIN_GT_MAX_LENGTH);
             }
         }
     }

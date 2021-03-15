@@ -2,44 +2,59 @@
 // eslint-disable-next-line @typescript-eslint/no-use-before-define
 import React from "react";
 
+import Hint, * as HintTextType from "../../model/Hint";
+import { NextId } from "../../model/utility";
 import { EmptyState } from "../type_component";
-import { type_Hints } from "./type_NodeComponent";
 
-type IHintTextProps = { hint?: type_Hints };
+type IHintTextProps = { hint?: Hint };
 
 class HintText extends React.Component<IHintTextProps, EmptyState> {
     renderHint(): JSX.Element[] {
         const r: JSX.Element[] = [];
 
         if (this.props.hint) {
-            let key: keyof type_Hints;
+            let key: "warn" | "info" | "error";
+            const all_hint = this.props.hint.getAll();
 
-            for (key in this.props.hint) {
-                if (this.props.hint[key] !== undefined) {
+            for (key in all_hint) {
+                if (all_hint[key] !== undefined) {
                     switch (key) {
                         case "info":
                             r.push(
-                                <span style={{ color: "green" }}>
-                                    <b>Hint: </b>
-                                    {this.props.hint[key]}
-                                </span>
+                                ...(all_hint[key] as HintTextType.Info[]).map(h => {
+                                    return (
+                                        <span style={{ color: "green" }} key={NextId.next()}>
+                                            <b>Hint: </b>
+                                            {h}
+                                        </span>
+                                    );
+                                })
                             );
-                            r.push(<br />);
+
                             break;
                         case "warn":
                             r.push(
-                                <span style={{ color: "orange" }}>
-                                    <b>Warning: </b>
-                                    {this.props.hint[key]}
-                                </span>
+                                ...(all_hint[key] as HintTextType.Warn[]).map(h => {
+                                    return (
+                                        <span style={{ color: "orange" }} key={NextId.next()}>
+                                            <b>Warn: </b>
+                                            {h}
+                                        </span>
+                                    );
+                                })
                             );
                             r.push(<br />);
                             break;
                         case "error":
                             r.push(
-                                <span style={{ color: "red" }}>
-                                    <b>{`Error: ${this.props.hint[key]}`}</b>
-                                </span>
+                                ...(all_hint[key] as HintTextType.Error[]).map(h => {
+                                    return (
+                                        <span style={{ color: "red" }} key={NextId.next()}>
+                                            <b>Error: </b>
+                                            {h}
+                                        </span>
+                                    );
+                                })
                             );
                             r.push(<br />);
                             break;

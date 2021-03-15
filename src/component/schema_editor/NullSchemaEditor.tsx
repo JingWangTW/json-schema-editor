@@ -3,6 +3,7 @@
 import React from "react";
 import { Col, Form, Row } from "react-bootstrap";
 
+import Hint from "../../model/Hint";
 import NullSchema from "../../model/schema/NullSchema";
 import { INullSchemaType } from "../../model/schema/type_schema";
 import GenericField from "../node_component/GenericField";
@@ -41,6 +42,7 @@ class NullSchemaEditor extends SchemaEditor<INullSchemaType, INullEditorField> {
 
         this.state = {
             currentField: this.schema.getDefaultField(),
+            hint: new Hint(),
         };
     }
 

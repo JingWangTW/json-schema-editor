@@ -2,18 +2,18 @@
 // eslint-disable-next-line @typescript-eslint/no-use-before-define
 import React from "react";
 
+import Hint, * as HintTextType from "../../model/Hint";
 import { IChildrenSchemaType } from "../../model/schema/type_schema";
-import { NextId, getOrDefault } from "../../model/utility";
+import { NextId, arrayEquals, getOrDefault } from "../../model/utility";
 import { DataType, PartialBy } from "../../type";
 import HintText from "../node_component/HintText";
-import { type_Hints } from "../node_component/type_NodeComponent";
 import SchemaEditorFactory from "./SchemaEditorFactory";
 import { IChildProperty, IChildrenEditorProps, INewChildEditorProps, ISchemaEditorType } from "./type_SchemaEditor";
 
 interface ChildrenNodesState {
     children: Array<IChildProperty>;
 
-    hint?: type_Hints;
+    hint: Hint;
 }
 
 class ChildrenSchemaEditor extends React.Component<IChildrenEditorProps, ChildrenNodesState> {
@@ -24,6 +24,7 @@ class ChildrenSchemaEditor extends React.Component<IChildrenEditorProps, Childre
 
         this.state = {
             children,
+            hint: new Hint(),
         };
     }
 
@@ -42,7 +43,7 @@ class ChildrenSchemaEditor extends React.Component<IChildrenEditorProps, Childre
     }
 
     exportSchema(): IChildrenSchemaType {
-        if (this.state.hint?.error) throw new Error(this.state.hint.error);
+        if (this.state.hint.getError().length > 0) throw new Error(JSON.stringify(this.state.hint.getError()));
 
         return this.state.children.map(child => {
             const c: ISchemaEditorType = child.ref.current as ISchemaEditorType;
@@ -106,9 +107,9 @@ class ChildrenSchemaEditor extends React.Component<IChildrenEditorProps, Childre
         const findDuplicate = this.findNameDuplicate();
 
         if (findDuplicate) {
-            this.updateHint("error", "Find duplicated field name.");
+            this.addHint(HintTextType.Error.DUPLICATED_FIELD_NAME);
         } else {
-            this.updateHint("error");
+            this.removeHint(HintTextType.Error.DUPLICATED_FIELD_NAME);
         }
     }
 
@@ -144,27 +145,45 @@ class ChildrenSchemaEditor extends React.Component<IChildrenEditorProps, Childre
         }
     }
 
-    updateHint(hintType: keyof type_Hints, value?: string): void {
-        // clear value
-        if (value === undefined) {
-            if (this.state.hint && this.state.hint[hintType]) {
-                this.setState(prevState => ({
-                    hint: {
-                        ...prevState.hint,
-                        [hintType]: value,
-                    },
-                }));
-            }
+    addHint(text: HintTextType.Warn | HintTextType.Info | HintTextType.Error): void {
+        const originAllHint = this.state.hint.getAll();
+
+        this.state.hint.add(text);
+
+        // to avoid recursively update state
+        let change = false;
+
+        if (Hint.isWarnText(text)) {
+            if (originAllHint["warn"] === undefined || !arrayEquals(this.state.hint.getWarn(), originAllHint["warn"])) change = true;
+        } else if (Hint.isInfoText(text)) {
+            if (originAllHint["info"] === undefined || !arrayEquals(this.state.hint.getInfo(), originAllHint["info"])) change = true;
         } else {
-            // set value
-            if (!this.state.hint || !this.state.hint[hintType]) {
-                this.setState(prevState => ({
-                    hint: {
-                        ...prevState.hint,
-                        [hintType]: value,
-                    },
-                }));
-            }
+            if (originAllHint["error"] === undefined || !arrayEquals(this.state.hint.getError(), originAllHint["error"])) change = true;
+        }
+
+        if (change) {
+            this.setState({ hint: this.state.hint });
+        }
+    }
+
+    removeHint(text: HintTextType.Warn | HintTextType.Info | HintTextType.Error): void {
+        const originAllHint = this.state.hint.getAll();
+
+        this.state.hint.remove(text);
+
+        // to avoid recursively update state
+        let change = false;
+
+        if (Hint.isWarnText(text)) {
+            if (originAllHint["warn"] !== undefined && !arrayEquals(this.state.hint.getWarn(), originAllHint["warn"])) change = true;
+        } else if (Hint.isInfoText(text)) {
+            if (originAllHint["info"] !== undefined && !arrayEquals(this.state.hint.getInfo(), originAllHint["info"])) change = true;
+        } else {
+            if (originAllHint["error"] !== undefined && !arrayEquals(this.state.hint.getError(), originAllHint["error"])) change = true;
+        }
+
+        if (change) {
+            this.setState({ hint: this.state.hint });
         }
     }
 

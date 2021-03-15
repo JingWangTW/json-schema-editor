@@ -3,6 +3,7 @@
 import React from "react";
 import { Col, Form, Row } from "react-bootstrap";
 
+import Hint from "../../model/Hint";
 import BooleanSchema from "../../model/schema/BooleanSchema";
 import { IBooleanSchemaType } from "../../model/schema/type_schema";
 import EditorOptionModal from "../node_component/EditorOptionModal";
@@ -44,6 +45,7 @@ class BooleanSchemaEditor extends SchemaEditor<IBooleanSchemaType, IBooleanEdito
 
         this.state = {
             currentField: this.schema.getDefaultField(),
+            hint: new Hint(),
         };
     }
 

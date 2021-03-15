@@ -3,6 +3,7 @@
 import React from "react";
 import { Col, Form, Row } from "react-bootstrap";
 
+import Hint, * as HintTextType from "../../model/Hint";
 import IntegerSchema from "../../model/schema/IntegerSchema";
 import { IIntegerSchemaType } from "../../model/schema/type_schema";
 import EditorOptionModal from "../node_component/EditorOptionModal";
@@ -45,11 +46,12 @@ class IntegerSchemaEditor extends SchemaEditor<IIntegerSchemaType, IIntegerEdito
 
         this.state = {
             currentField: this.schema.getDefaultField(),
+            hint: new Hint(),
         };
     }
 
     componentDidMount(): void {
-        if (this.state.currentField.minimum > this.state.currentField.maximum) this.updateHint("warn", "Min Value > Max Value");
+        if (this.state.currentField.minimum > this.state.currentField.maximum) this.addHint(HintTextType.Warn.MIN_GT_MAX_VALUE);
     }
 
     componentDidUpdate(prevProps: ISchemaEditorProps<IIntegerSchemaType>, prevState: ISchemaEditorState<IIntegerEditorField>): void {
@@ -62,9 +64,9 @@ class IntegerSchemaEditor extends SchemaEditor<IIntegerSchemaType, IIntegerEdito
                 !(isNaN(prevState.currentField.maximum) && isNaN(this.state.currentField.maximum)))
         ) {
             if (this.state.currentField.maximum < this.state.currentField.minimum) {
-                this.updateHint("warn", "Min Value > Max Value");
+                this.addHint(HintTextType.Warn.MIN_GT_MAX_VALUE);
             } else {
-                this.updateHint("warn", undefined);
+                this.removeHint(HintTextType.Warn.MIN_GT_MAX_VALUE);
             }
         }
     }

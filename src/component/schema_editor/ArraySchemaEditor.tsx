@@ -3,6 +3,7 @@
 import React from "react";
 import { Col, Form, InputGroup, Row } from "react-bootstrap";
 
+import Hint, * as HintTextType from "../../model/Hint";
 import ArraySchema from "../../model/schema/ArraySchema";
 import { IArraySchemaType } from "../../model/schema/type_schema";
 import { DataType } from "../../type";
@@ -53,13 +54,14 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
 
         this.state = {
             currentField: this.schema.getDefaultField(),
+            hint: new Hint(),
         };
     }
 
     componentDidMount(): void {
         if (!this.props.schema) this.addChild();
         if (this.state.currentField.maxItems < this.state.currentField.minItems) {
-            this.updateHint("warn", "minItems > maxItems");
+            this.addHint(HintTextType.Warn.MIN_GT_MAX_ITEMS);
         }
     }
 
@@ -73,9 +75,9 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
                 !(isNaN(prevState.currentField.minItems) && isNaN(this.state.currentField.minItems)))
         ) {
             if (this.state.currentField.maxItems < this.state.currentField.minItems) {
-                this.updateHint("warn", "minItems > maxItems");
+                this.addHint(HintTextType.Warn.MIN_GT_MAX_ITEMS);
             } else {
-                this.updateHint("warn", undefined);
+                this.removeHint(HintTextType.Warn.MIN_GT_MAX_ITEMS);
             }
         }
     }
@@ -83,9 +85,9 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
     childrenDidUpdate(children: IChildProperty[]): void {
         if (this.childrenLength !== children.length) {
             if (children.length > 1) {
-                this.updateHint("info", "Ordinal index of each item under Array type is meaningful.");
+                this.addHint(HintTextType.Info.ARRAY_ITEM_INDEX_MATTER);
             } else {
-                this.updateHint("info");
+                this.removeHint(HintTextType.Info.ARRAY_ITEM_INDEX_MATTER);
             }
 
             this.childrenLength = children.length;

@@ -12,6 +12,12 @@ class NextId {
     }
 }
 
+function arrayEquals<T>(a: T[], b: T[]): boolean {
+    if (a === b) return true;
+    if (a.length !== b.length) return false;
+    return a.every(c => b.includes(c));
+}
+
 function getOrDefault<T>(optionalValue: T | undefined, defaultValue: T): T {
     if (optionalValue === undefined) return defaultValue;
     else return optionalValue;
@@ -29,4 +35,4 @@ function CloneReturnValue(target: unknown, key: string | symbol, descriptor: Pro
     return descriptor;
 }
 
-export { NextId, getOrDefault, CloneReturnValue };
+export { NextId, getOrDefault, CloneReturnValue, arrayEquals };

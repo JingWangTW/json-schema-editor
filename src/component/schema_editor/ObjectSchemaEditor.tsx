@@ -3,6 +3,7 @@
 import React from "react";
 import { Col, Form, Row } from "react-bootstrap";
 
+import Hint, * as HintTextType from "../../model/Hint";
 import ObjectSchema from "../../model/schema/ObjectSchema";
 import { IObjectSchemaType } from "../../model/schema/type_schema";
 import EditorOptionModal from "../node_component/EditorOptionModal";
@@ -47,12 +48,13 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectSchemaType, IObjectEditorFi
 
         this.state = {
             currentField: this.schema.getDefaultField(),
+            hint: new Hint(),
         };
     }
 
     componentDidMount(): void {
         if (this.state.currentField.maxProperties < this.state.currentField.minProperties) {
-            this.updateHint("warn", "minProperties > maxProperties");
+            this.addHint(HintTextType.Warn.MIN_GT_MAX_PROPERTIES);
         }
     }
 
@@ -66,9 +68,9 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectSchemaType, IObjectEditorFi
                 !(isNaN(prevState.currentField.minProperties) && isNaN(this.state.currentField.minProperties)))
         ) {
             if (this.state.currentField.maxProperties < this.state.currentField.minProperties) {
-                this.updateHint("warn", "minProperties > maxProperties");
+                this.addHint(HintTextType.Warn.MIN_GT_MAX_PROPERTIES);
             } else {
-                this.updateHint("warn");
+                this.removeHint(HintTextType.Warn.MIN_GT_MAX_PROPERTIES);
             }
         }
     }

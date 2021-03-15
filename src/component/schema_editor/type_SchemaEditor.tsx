@@ -1,6 +1,7 @@
+import Hint from "../../model/Hint";
 import { ISchemaType } from "../../model/schema/type_schema";
 import { DataType, PartialBy } from "../../type";
-import { IGenericField, type_Hints } from "../node_component/type_NodeComponent";
+import { IGenericField } from "../node_component/type_NodeComponent";
 import SchemaEditor from "./SchemaEditor";
 
 // Type to represent all schema editor
@@ -29,7 +30,7 @@ export interface ISchemaEditorProps<SchemaType extends ISchemaType> {
 export interface ISchemaEditorState<FieldType extends ISchemaEditorField> {
     currentField: Required<FieldType>;
 
-    hint?: type_Hints;
+    hint: Hint;
 }
 
 export interface IArrayEditorField extends IGenericField {
