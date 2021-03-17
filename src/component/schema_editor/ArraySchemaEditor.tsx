@@ -1,7 +1,6 @@
 import React from "react";
 import { Col, Form, InputGroup, Row } from "react-bootstrap";
 
-import Hint, * as HintTextType from "../../model/Hint";
 import ArraySchema from "../../model/schema/ArraySchema";
 import { IArraySchemaType } from "../../model/schema/type_schema";
 import { DataType } from "../../type";
@@ -11,7 +10,7 @@ import GenericField from "../node_component/GenericField";
 import HintText from "../node_component/HintText";
 import OptionsButtons from "../node_component/OptionsButtons";
 import SpaceFront from "../node_component/SpaceFront";
-import { IGenericFieldOptions, IOptionsButtonsAttr } from "../node_component/type_NodeComponent";
+import { Hint, IGenericFieldOptions, IOptionsButtonsAttr } from "../node_component/type_NodeComponent";
 import ChildrenSchemaEditor from "./ChildrenSchemaEditor";
 import SchemaEditor from "./SchemaEditor";
 import { IArrayEditorField, IChildProperty, ISchemaEditorProps, ISchemaEditorState } from "./type_SchemaEditor";
@@ -24,6 +23,7 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
     protected optionModalRef: React.RefObject<EditorOptionModal>;
     protected genericFieldRef: React.RefObject<GenericField>;
     protected childrenRef: React.RefObject<ChildrenSchemaEditor>;
+    private hintTextRef: React.RefObject<HintText>;
 
     private childrenLength: number;
 
@@ -33,6 +33,7 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
         this.optionModalRef = React.createRef<EditorOptionModal>();
         this.genericFieldRef = React.createRef<GenericField>();
         this.childrenRef = React.createRef<ChildrenSchemaEditor>();
+        this.hintTextRef = React.createRef<HintText>();
 
         this.schema = new ArraySchema(props.schema, props.field);
 
@@ -52,14 +53,13 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
 
         this.state = {
             currentField: this.schema.getDefaultField(),
-            hint: new Hint(),
         };
     }
 
     componentDidMount(): void {
         if (!this.props.schema) this.addChild();
         if (this.state.currentField.maxItems < this.state.currentField.minItems) {
-            this.addHint(HintTextType.Warn.MIN_GT_MAX_ITEMS);
+            this.hintTextRef.current?.add(Hint.Warn.MIN_GT_MAX_ITEMS);
         }
     }
 
@@ -73,9 +73,9 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
                 !(isNaN(prevState.currentField.minItems) && isNaN(this.state.currentField.minItems)))
         ) {
             if (this.state.currentField.maxItems < this.state.currentField.minItems) {
-                this.addHint(HintTextType.Warn.MIN_GT_MAX_ITEMS);
+                this.hintTextRef.current?.add(Hint.Warn.MIN_GT_MAX_ITEMS);
             } else {
-                this.removeHint(HintTextType.Warn.MIN_GT_MAX_ITEMS);
+                this.hintTextRef.current?.remove(Hint.Warn.MIN_GT_MAX_ITEMS);
             }
         }
     }
@@ -83,9 +83,9 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
     childrenDidUpdate(children: IChildProperty[]): void {
         if (this.childrenLength !== children.length) {
             if (children.length > 1) {
-                this.addHint(HintTextType.Info.ARRAY_ITEM_INDEX_MATTER);
+                this.hintTextRef.current?.add(Hint.Info.ARRAY_ITEM_INDEX_MATTER);
             } else {
-                this.removeHint(HintTextType.Info.ARRAY_ITEM_INDEX_MATTER);
+                this.hintTextRef.current?.remove(Hint.Info.ARRAY_ITEM_INDEX_MATTER);
             }
 
             this.childrenLength = children.length;
@@ -122,9 +122,9 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
 
         try {
             JSON.parse(value);
-            this.removeHint(HintTextType.Error.CANT_PARSE_JSON_CONST);
+            this.hintTextRef.current?.remove(Hint.Error.CANT_PARSE_JSON_CONST);
         } catch (error) {
-            this.addHint(HintTextType.Error.CANT_PARSE_JSON_CONST);
+            this.hintTextRef.current?.add(Hint.Error.CANT_PARSE_JSON_CONST);
         }
     }
 
@@ -135,7 +135,7 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
                     <SpaceFront depth={this.props.depth} />
 
                     <Col>
-                        <HintText hint={this.state.hint} />
+                        <HintText ref={this.hintTextRef} />
 
                         <Form>
                             <Form.Row>

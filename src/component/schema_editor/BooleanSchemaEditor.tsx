@@ -1,12 +1,10 @@
 import React from "react";
 import { Col, Form, Row } from "react-bootstrap";
 
-import Hint from "../../model/Hint";
 import BooleanSchema from "../../model/schema/BooleanSchema";
 import { IBooleanSchemaType } from "../../model/schema/type_schema";
 import EditorOptionModal from "../node_component/EditorOptionModal";
 import GenericField from "../node_component/GenericField";
-import HintText from "../node_component/HintText";
 import OptionsButtons from "../node_component/OptionsButtons";
 import SpaceFront from "../node_component/SpaceFront";
 import { IGenericFieldOptions, IOptionsButtonsAttr } from "../node_component/type_NodeComponent";
@@ -43,7 +41,6 @@ class BooleanSchemaEditor extends SchemaEditor<IBooleanSchemaType, IBooleanEdito
 
         this.state = {
             currentField: this.schema.getDefaultField(),
-            hint: new Hint(),
         };
     }
 
@@ -58,8 +55,6 @@ class BooleanSchemaEditor extends SchemaEditor<IBooleanSchemaType, IBooleanEdito
                     <SpaceFront depth={this.props.depth} />
 
                     <Col>
-                        <HintText hint={this.state.hint} />
-
                         <Form>
                             <Form.Row>
                                 <Col lg={11}>

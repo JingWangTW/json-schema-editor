@@ -1,7 +1,6 @@
 import React from "react";
 import { Col, Form, Row } from "react-bootstrap";
 
-import Hint, * as HintTextType from "../../model/Hint";
 import NumberSchema from "../../model/schema/NumberSchema";
 import { INumberSchemaType } from "../../model/schema/type_schema";
 import EditorOptionModal from "../node_component/EditorOptionModal";
@@ -10,7 +9,7 @@ import GenericField from "../node_component/GenericField";
 import HintText from "../node_component/HintText";
 import OptionsButtons from "../node_component/OptionsButtons";
 import SpaceFront from "../node_component/SpaceFront";
-import { IGenericFieldOptions, IOptionsButtonsAttr } from "../node_component/type_NodeComponent";
+import { Hint, IGenericFieldOptions, IOptionsButtonsAttr } from "../node_component/type_NodeComponent";
 import SchemaEditor from "./SchemaEditor";
 import { INumberEditorField, ISchemaEditorProps, ISchemaEditorState } from "./type_SchemaEditor";
 
@@ -21,12 +20,14 @@ class NumberSchemaEditor extends SchemaEditor<INumberSchemaType, INumberEditorFi
 
     protected optionModalRef: React.RefObject<EditorOptionModal>;
     protected genericFieldRef: React.RefObject<GenericField>;
+    private hintTextRef: React.RefObject<HintText>;
 
     constructor(props: ISchemaEditorProps<INumberSchemaType>) {
         super(props);
 
         this.optionModalRef = React.createRef<EditorOptionModal>();
         this.genericFieldRef = React.createRef<GenericField>();
+        this.hintTextRef = React.createRef<HintText>();
 
         this.schema = new NumberSchema(props.schema, props.field);
 
@@ -44,12 +45,11 @@ class NumberSchemaEditor extends SchemaEditor<INumberSchemaType, INumberEditorFi
 
         this.state = {
             currentField: this.schema.getDefaultField(),
-            hint: new Hint(),
         };
     }
 
     componentDidMount(): void {
-        if (this.state.currentField.minimum > this.state.currentField.maximum) this.addHint(HintTextType.Warn.MIN_GT_MAX_VALUE);
+        if (this.state.currentField.minimum > this.state.currentField.maximum) this.hintTextRef.current?.add(Hint.Warn.MIN_GT_MAX_VALUE);
     }
 
     componentDidUpdate(prevProps: ISchemaEditorProps<INumberSchemaType>, prevState: ISchemaEditorState<INumberEditorField>): void {
@@ -62,9 +62,9 @@ class NumberSchemaEditor extends SchemaEditor<INumberSchemaType, INumberEditorFi
                 !(isNaN(prevState.currentField.maximum) && isNaN(this.state.currentField.maximum)))
         ) {
             if (this.state.currentField.maximum < this.state.currentField.minimum) {
-                this.addHint(HintTextType.Warn.MIN_GT_MAX_VALUE);
+                this.hintTextRef.current?.add(Hint.Warn.MIN_GT_MAX_VALUE);
             } else {
-                this.removeHint(HintTextType.Warn.MIN_GT_MAX_VALUE);
+                this.hintTextRef.current?.remove(Hint.Warn.MIN_GT_MAX_VALUE);
             }
         }
     }
@@ -88,7 +88,7 @@ class NumberSchemaEditor extends SchemaEditor<INumberSchemaType, INumberEditorFi
                     <SpaceFront depth={this.props.depth} />
 
                     <Col>
-                        <HintText hint={this.state.hint} />
+                        <HintText ref={this.hintTextRef} />
 
                         <Form>
                             <Form.Row>

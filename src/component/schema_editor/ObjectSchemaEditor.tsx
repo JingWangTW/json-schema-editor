@@ -1,7 +1,6 @@
 import React from "react";
 import { Col, Form, InputGroup, Row } from "react-bootstrap";
 
-import Hint, * as HintTextType from "../../model/Hint";
 import ObjectSchema from "../../model/schema/ObjectSchema";
 import { IObjectSchemaType } from "../../model/schema/type_schema";
 import CodeField from "../node_component/CodeField";
@@ -10,7 +9,7 @@ import GenericField from "../node_component/GenericField";
 import HintText from "../node_component/HintText";
 import OptionsButtons from "../node_component/OptionsButtons";
 import SpaceFront from "../node_component/SpaceFront";
-import { IGenericFieldOptions, IOptionsButtonsAttr } from "../node_component/type_NodeComponent";
+import { Hint, IGenericFieldOptions, IOptionsButtonsAttr } from "../node_component/type_NodeComponent";
 import ChildrenSchemaEditor from "./ChildrenSchemaEditor";
 import SchemaEditor from "./SchemaEditor";
 import { IObjectEditorField, ISchemaEditorProps, ISchemaEditorState } from "./type_SchemaEditor";
@@ -23,6 +22,7 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectSchemaType, IObjectEditorFi
     protected optionModalRef: React.RefObject<EditorOptionModal>;
     protected genericFieldRef: React.RefObject<GenericField>;
     protected childrenRef: React.RefObject<ChildrenSchemaEditor>;
+    private hintTextRef: React.RefObject<HintText>;
 
     constructor(props: ISchemaEditorProps<IObjectSchemaType>) {
         super(props);
@@ -30,6 +30,7 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectSchemaType, IObjectEditorFi
         this.optionModalRef = React.createRef<EditorOptionModal>();
         this.genericFieldRef = React.createRef<GenericField>();
         this.childrenRef = React.createRef<ChildrenSchemaEditor>();
+        this.hintTextRef = React.createRef<HintText>();
 
         this.schema = new ObjectSchema(props.schema, props.field);
 
@@ -47,13 +48,12 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectSchemaType, IObjectEditorFi
 
         this.state = {
             currentField: this.schema.getDefaultField(),
-            hint: new Hint(),
         };
     }
 
     componentDidMount(): void {
         if (this.state.currentField.maxProperties < this.state.currentField.minProperties) {
-            this.addHint(HintTextType.Warn.MIN_GT_MAX_PROPERTIES);
+            this.hintTextRef.current?.add(Hint.Warn.MIN_GT_MAX_PROPERTIES);
         }
     }
 
@@ -67,9 +67,9 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectSchemaType, IObjectEditorFi
                 !(isNaN(prevState.currentField.minProperties) && isNaN(this.state.currentField.minProperties)))
         ) {
             if (this.state.currentField.maxProperties < this.state.currentField.minProperties) {
-                this.addHint(HintTextType.Warn.MIN_GT_MAX_PROPERTIES);
+                this.hintTextRef.current?.add(Hint.Warn.MIN_GT_MAX_PROPERTIES);
             } else {
-                this.removeHint(HintTextType.Warn.MIN_GT_MAX_PROPERTIES);
+                this.hintTextRef.current?.remove(Hint.Warn.MIN_GT_MAX_PROPERTIES);
             }
         }
     }
@@ -88,9 +88,9 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectSchemaType, IObjectEditorFi
 
         try {
             JSON.parse(value);
-            this.removeHint(HintTextType.Error.CANT_PARSE_JSON_CONST);
+            this.hintTextRef.current?.remove(Hint.Error.CANT_PARSE_JSON_CONST);
         } catch (error) {
-            this.addHint(HintTextType.Error.CANT_PARSE_JSON_CONST);
+            this.hintTextRef.current?.add(Hint.Error.CANT_PARSE_JSON_CONST);
         }
     }
 
@@ -101,7 +101,7 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectSchemaType, IObjectEditorFi
                     <SpaceFront depth={this.props.depth} />
 
                     <Col>
-                        <HintText hint={this.state.hint} />
+                        <HintText ref={this.hintTextRef} />
 
                         <Form>
                             <Form.Row>
