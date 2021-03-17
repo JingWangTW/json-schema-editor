@@ -1,11 +1,9 @@
 import React from "react";
 import { Col, Form, Row } from "react-bootstrap";
 
-import Hint from "../../model/Hint";
 import NullSchema from "../../model/schema/NullSchema";
 import { INullSchemaType } from "../../model/schema/type_schema";
 import GenericField from "../node_component/GenericField";
-import HintText from "../node_component/HintText";
 import OptionsButtons from "../node_component/OptionsButtons";
 import SpaceFront from "../node_component/SpaceFront";
 import { IGenericFieldOptions, IOptionsButtonsAttr } from "../node_component/type_NodeComponent";
@@ -40,7 +38,6 @@ class NullSchemaEditor extends SchemaEditor<INullSchemaType, INullEditorField> {
 
         this.state = {
             currentField: this.schema.getDefaultField(),
-            hint: new Hint(),
         };
     }
 
@@ -55,8 +52,6 @@ class NullSchemaEditor extends SchemaEditor<INullSchemaType, INullEditorField> {
                     <SpaceFront depth={this.props.depth} />
 
                     <Col>
-                        <HintText hint={this.state.hint} />
-
                         <Form>
                             <Form.Row>
                                 <Col lg={11}>

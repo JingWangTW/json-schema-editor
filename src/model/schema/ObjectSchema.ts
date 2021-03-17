@@ -87,7 +87,10 @@ class ObjectSchema extends Schema<IObjectSchemaType, IObjectEditorField> {
 
         const constant: { const?: Record<string, unknown> } = {};
 
-        constant.const = JSON.parse(this.currentField.const.replace(/\s/g, "")) as Record<string, unknown>;
+        const constantTemp = JSON.parse(this.currentField.const.replace(/\s/g, "")) as Record<string, unknown>;
+        if (Array.isArray(constantTemp) || typeof constantTemp !== "object")
+            throw new Error("const field in an Object DataType should be a valid object (array is invalid)");
+        if (Object.keys(constantTemp).length > 0) constant.const = constantTemp;
 
         const required: IObjectSchemaType["required"] = [];
         const properties: IObjectSchemaType["properties"] = {};

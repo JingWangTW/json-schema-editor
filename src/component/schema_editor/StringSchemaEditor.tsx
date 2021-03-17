@@ -1,7 +1,6 @@
 import React from "react";
 import { Col, Form, Row } from "react-bootstrap";
 
-import Hint, * as HintTextType from "../../model/Hint";
 import StringSchema from "../../model/schema/StringSchema";
 import { IStringSchemaType } from "../../model/schema/type_schema";
 import EditorOptionModal from "../node_component/EditorOptionModal";
@@ -10,7 +9,7 @@ import GenericField from "../node_component/GenericField";
 import HintText from "../node_component/HintText";
 import OptionsButtons from "../node_component/OptionsButtons";
 import SpaceFront from "../node_component/SpaceFront";
-import { IGenericFieldOptions, IOptionsButtonsAttr } from "../node_component/type_NodeComponent";
+import { Hint, IGenericFieldOptions, IOptionsButtonsAttr } from "../node_component/type_NodeComponent";
 import SchemaEditor from "./SchemaEditor";
 import { ISchemaEditorProps, ISchemaEditorState, IStringEditorField } from "./type_SchemaEditor";
 
@@ -21,12 +20,14 @@ class StringSchemaEditor extends SchemaEditor<IStringSchemaType, IStringEditorFi
 
     protected optionModalRef: React.RefObject<EditorOptionModal>;
     protected genericFieldRef: React.RefObject<GenericField>;
+    private hintTextRef: React.RefObject<HintText>;
 
     constructor(props: ISchemaEditorProps<IStringSchemaType>) {
         super(props);
 
         this.optionModalRef = React.createRef<EditorOptionModal>();
         this.genericFieldRef = React.createRef<GenericField>();
+        this.hintTextRef = React.createRef<HintText>();
 
         this.schema = new StringSchema(props.schema, props.field);
 
@@ -44,12 +45,12 @@ class StringSchemaEditor extends SchemaEditor<IStringSchemaType, IStringEditorFi
 
         this.state = {
             currentField: this.schema.getDefaultField(),
-            hint: new Hint(),
         };
     }
 
     componentDidMount(): void {
-        if (this.state.currentField.minLength > this.state.currentField.maxLength) this.addHint(HintTextType.Warn.MIN_GT_MAX_LENGTH);
+        if (this.state.currentField.minLength > this.state.currentField.maxLength)
+            this.hintTextRef.current?.add(Hint.Warn.MIN_GT_MAX_LENGTH);
     }
 
     componentDidUpdate(prevProps: ISchemaEditorProps<IStringSchemaType>, prevState: ISchemaEditorState<IStringEditorField>): void {
@@ -62,9 +63,9 @@ class StringSchemaEditor extends SchemaEditor<IStringSchemaType, IStringEditorFi
                 !(isNaN(prevState.currentField.maxLength) && isNaN(this.state.currentField.maxLength)))
         ) {
             if (this.state.currentField.minLength > this.state.currentField.maxLength) {
-                this.addHint(HintTextType.Warn.MIN_GT_MAX_LENGTH);
+                this.hintTextRef.current?.add(Hint.Warn.MIN_GT_MAX_LENGTH);
             } else {
-                this.removeHint(HintTextType.Warn.MIN_GT_MAX_LENGTH);
+                this.hintTextRef.current?.remove(Hint.Warn.MIN_GT_MAX_LENGTH);
             }
         }
     }
@@ -88,7 +89,7 @@ class StringSchemaEditor extends SchemaEditor<IStringSchemaType, IStringEditorFi
                     <SpaceFront depth={this.props.depth} />
 
                     <Col>
-                        <HintText hint={this.state.hint} />
+                        <HintText ref={this.hintTextRef} />
 
                         <Form>
                             <Form.Row>

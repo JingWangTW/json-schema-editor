@@ -1,74 +1,124 @@
 import React from "react";
 
-import Hint, * as HintTextType from "../../model/Hint";
 import { NextId } from "../../model/utility";
-import { EmptyState } from "../type_component";
+import { EmptyProps } from "../type_component";
 
-type IHintTextProps = { hint?: Hint };
+export enum Error {
+    DUPLICATED_FIELD_NAME = "Find duplicated field name",
+    CANT_PARSE_JSON_CONST = "Invalid JSON in const field",
+}
 
-class HintText extends React.Component<IHintTextProps, EmptyState> {
-    renderHint(): JSX.Element[] {
-        const r: JSX.Element[] = [];
+export enum Warn {
+    MIN_GT_MAX_ITEMS = "Min Items > Max Items",
+    MIN_GT_MAX_VALUE = "Min Value > Max Value",
+    MIN_GT_MAX_PROPERTIES = "Min Properties > Max Properties",
+    MIN_GT_MAX_LENGTH = "Min Length > Max Length",
+}
 
-        if (this.props.hint) {
-            let key: "warn" | "info" | "error";
-            const all_hint = this.props.hint.getAll();
+export enum Info {
+    ARRAY_ITEM_INDEX_MATTER = "Ordinal index of each item under Array type is meaningful",
+}
+interface IHintTextState {
+    error: Set<Error>;
+    info: Set<Info>;
+    warn: Set<Warn>;
+}
 
-            for (key in all_hint) {
-                if (all_hint[key] !== undefined) {
-                    switch (key) {
-                        case "info":
-                            r.push(
-                                ...(all_hint[key] as HintTextType.Info[]).map(h => {
-                                    return (
-                                        <span style={{ color: "green" }} key={NextId.next()}>
-                                            <b>Hint: </b>
-                                            {h}
-                                        </span>
-                                    );
-                                })
-                            );
+type HintType = keyof IHintTextState;
+type HintTextType = Warn | Error | Info;
 
-                            break;
-                        case "warn":
-                            r.push(
-                                ...(all_hint[key] as HintTextType.Warn[]).map(h => {
-                                    return (
-                                        <span style={{ color: "orange" }} key={NextId.next()}>
-                                            <b>Warn: </b>
-                                            {h}
-                                        </span>
-                                    );
-                                })
-                            );
-                            r.push(<br />);
-                            break;
-                        case "error":
-                            r.push(
-                                ...(all_hint[key] as HintTextType.Error[]).map(h => {
-                                    return (
-                                        <span style={{ color: "red" }} key={NextId.next()}>
-                                            <b>Error: </b>
-                                            {h}
-                                        </span>
-                                    );
-                                })
-                            );
-                            r.push(<br />);
-                            break;
-                    }
-                }
-            }
+class HintText extends React.Component<EmptyProps, IHintTextState> {
+    constructor(props: EmptyProps) {
+        super(props);
+
+        this.state = {
+            error: new Set<Error>(),
+            info: new Set<Info>(),
+            warn: new Set<Warn>(),
+        };
+    }
+
+    static isWarnText(text: string): text is Warn {
+        return Object.values(Warn).includes(text as Warn);
+    }
+
+    static isInfoText(text: string): text is Info {
+        return Object.values(Info).includes(text as Info);
+    }
+
+    static isErrorText(text: string): text is Error {
+        return Object.values(Error).includes(text as Error);
+    }
+
+    add(text: HintTextType): void {
+        if (HintText.isWarnText(text)) {
+            if (!this.state["warn"].has(text)) this._addHint("warn", text);
+        } else if (HintText.isInfoText(text)) {
+            if (!this.state["info"].has(text)) this._addHint("info", text);
+        } else if (HintText.isErrorText(text)) {
+            if (!this.state["error"].has(text)) this._addHint("error", text);
         }
-        return r;
+    }
+
+    remove(text: HintTextType): void {
+        if (HintText.isWarnText(text)) {
+            if (this.state["warn"].has(text)) this._removeHint("warn", text);
+        } else if (HintText.isInfoText(text)) {
+            if (this.state["info"].has(text)) this._removeHint("info", text);
+        } else if (HintText.isErrorText(text)) {
+            if (this.state["error"].has(text)) this._removeHint("error", text);
+        }
+    }
+
+    get(type: HintType): Warn[] | Error[] | Info[] {
+        switch (type) {
+            case "warn":
+                return Array.from(this.state["warn"]);
+            case "error":
+                return Array.from(this.state["error"]);
+            case "info":
+                return Array.from(this.state["info"]);
+        }
+    }
+
+    private _addHint<T extends HintType>(hintType: T, text: HintTextType): void {
+        if (hintType === "warn") this.state["warn"].add(text as Warn);
+        else if (hintType === "info") this.state["info"].add(text as Info);
+        else if (hintType === "error") this.state["error"].add(text as Error);
+
+        this.setState(this.state);
+    }
+
+    private _removeHint<T extends HintTextType>(hintType: HintType, text: T): void {
+        if (hintType === "warn") this.state["warn"].delete(text as Warn);
+        else if (hintType === "info") this.state["info"].delete(text as Info);
+        else if (hintType === "error") this.state["error"].delete(text as Error);
+
+        this.setState(this.state);
     }
 
     render(): JSX.Element {
-        if (this.props.hint) {
-            return <>{this.renderHint()}</>;
-        } else {
-            return <></>;
+        const renderElement: JSX.Element[] = [];
+        const colorMapping: Record<HintType, string> = {
+            error: "red",
+            info: "green",
+            warn: "orange",
+        };
+
+        let key: HintType;
+
+        for (key in this.state) {
+            this.state[key].forEach((text: HintTextType) => {
+                renderElement.push(
+                    <span style={{ color: colorMapping[key] }} key={NextId.next()}>
+                        <b>{`${key.charAt(0).toUpperCase()}${key.substring(1)}`}: </b>
+                        {text}
+                    </span>
+                );
+            });
         }
+
+        return <>{renderElement}</>;
     }
 }
 
