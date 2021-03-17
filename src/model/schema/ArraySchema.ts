@@ -123,7 +123,9 @@ class ArraySchema extends Schema<IArraySchemaType, IArrayEditorField> {
 
         const constant: { const?: [] } = {};
 
-        constant.const = JSON.parse(this.currentField.const.replace(/\s/g, "")) as [];
+        const constantTemp = JSON.parse(this.currentField.const.replace(/\s/g, ""));
+        if (!Array.isArray(constantTemp)) throw new Error("const field in an Array DataType should be a valid array");
+        if ((constantTemp as []).length > 0) constant.const = constantTemp as [];
 
         let items: IArraySchemaType["items"];
 
