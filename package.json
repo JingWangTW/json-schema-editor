@@ -1,7 +1,7 @@
 {
     "name": "json-schema-editor",
     "homepage": "https://jingwangtw.github.io/json-schema-editor",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "private": false,
     "dependencies": {
         "@testing-library/jest-dom": "^4.2.4",
