@@ -32,6 +32,7 @@ export interface ISchemaEditorState<FieldType extends ISchemaEditorField> {
 
 export interface IArrayEditorField extends IGenericField {
     const?: string;
+    default?: string;
 
     minItems?: number;
     maxItems?: number;

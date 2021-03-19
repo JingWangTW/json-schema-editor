@@ -21,6 +21,7 @@ class ArraySchema extends Schema<IArraySchemaType, IArrayEditorField> {
             ...genericField,
 
             const: schema && schema.const ? JSON.stringify(schema.const, null, 4) : "[]",
+            default: schema && schema.default ? JSON.stringify(schema.default, null, 4) : "[]",
 
             minItems: this.retrieveDefaultOptionValue("minItems", NaN, schema),
             maxItems: this.retrieveDefaultOptionValue("maxItems", NaN, schema),
@@ -33,8 +34,8 @@ class ArraySchema extends Schema<IArraySchemaType, IArrayEditorField> {
     }
 
     @CloneReturnValue
-    recordCode(field: "const", value: string): Required<IArrayEditorField> {
-        this.currentField.const = value;
+    recordCode(field: "const" | "default", value: string): Required<IArrayEditorField> {
+        this.currentField[field] = value;
 
         return this.currentField;
     }
@@ -92,6 +93,7 @@ class ArraySchema extends Schema<IArraySchemaType, IArrayEditorField> {
     @CloneReturnValue
     resetOptionField(): Required<IArrayEditorField> {
         this.currentField.const = this.defaultField.const;
+        this.currentField.default = this.defaultField.default;
 
         this.currentField.maxItems = this.defaultField.maxItems;
         this.currentField.minItems = this.defaultField.minItems;
@@ -103,6 +105,7 @@ class ArraySchema extends Schema<IArraySchemaType, IArrayEditorField> {
     @CloneReturnValue
     clearOptionField(): Required<IArrayEditorField> {
         this.currentField.const = "[]";
+        this.currentField.default = "[]";
 
         this.currentField.maxItems = NaN;
         this.currentField.minItems = NaN;
@@ -121,11 +124,26 @@ class ArraySchema extends Schema<IArraySchemaType, IArrayEditorField> {
         const minItems = this.exportSchemaWithoutUndefined("minItems", NaN);
         const maxItems = this.exportSchemaWithoutUndefined("maxItems", NaN);
 
-        const constant: { const?: [] } = {};
+        const constant: { const?: IArraySchemaType["const"] } = {};
+        const defaultValue: { default?: IArraySchemaType["default"] } = {};
 
         const constantTemp = JSON.parse(this.currentField.const.replace(/\s/g, ""));
-        if (!Array.isArray(constantTemp)) throw new Error("const field in an Array DataType should be a valid array");
-        if ((constantTemp as []).length > 0) constant.const = constantTemp as [];
+        if (
+            !(
+                (Array.isArray(constantTemp) && constantTemp.length === 0) ||
+                (typeof constantTemp === "object" && Object.keys(constantTemp).length === 0)
+            )
+        )
+            constant.const = constantTemp as IArraySchemaType["const"];
+
+        const defaultTemp = JSON.parse(this.currentField.default.replace(/\s/g, ""));
+        if (
+            !(
+                (Array.isArray(defaultTemp) && defaultTemp.length === 0) ||
+                (typeof defaultTemp === "object" && Object.keys(defaultTemp).length === 0)
+            )
+        )
+            defaultValue.default = defaultTemp as IArraySchemaType["default"];
 
         let items: IArraySchemaType["items"];
 
@@ -145,6 +163,7 @@ class ArraySchema extends Schema<IArraySchemaType, IArrayEditorField> {
             uniqueItems,
             items,
             ...constant,
+            ...defaultValue,
         };
     }
 }

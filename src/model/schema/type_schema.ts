@@ -9,7 +9,8 @@ export interface IGenericSchemaType {
 export interface IArraySchemaType extends IGenericSchemaType {
     type: DataType.Array;
 
-    const?: [];
+    const?: Record<string, unknown>;
+    default?: Record<string, unknown>;
 
     minItems?: number;
     maxItems?: number;
