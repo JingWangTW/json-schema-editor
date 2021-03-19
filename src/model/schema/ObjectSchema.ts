@@ -64,6 +64,9 @@ class ObjectSchema extends Schema<IObjectSchemaType, IObjectEditorField> {
 
     @CloneReturnValue
     resetOptionField(): Required<IObjectEditorField> {
+        this.currentField.const = this.defaultField.const;
+        this.currentField.default = this.defaultField.default;
+
         this.currentField.maxProperties = this.defaultField.maxProperties;
         this.currentField.minProperties = this.defaultField.minProperties;
 
@@ -72,6 +75,9 @@ class ObjectSchema extends Schema<IObjectSchemaType, IObjectEditorField> {
 
     @CloneReturnValue
     clearOptionField(): Required<IObjectEditorField> {
+        this.currentField.const = "{}";
+        this.currentField.default = "{}";
+
         this.currentField.maxProperties = NaN;
         this.currentField.minProperties = NaN;
 
@@ -90,14 +96,24 @@ class ObjectSchema extends Schema<IObjectSchemaType, IObjectEditorField> {
         const defaultValue: { default?: Record<string, unknown> } = {};
 
         const constantTemp = JSON.parse(this.currentField.const.replace(/\s/g, "")) as Record<string, unknown>;
-        if (Array.isArray(constantTemp) || typeof constantTemp !== "object")
-            throw new Error("const field in an Object DataType should be a valid object (array is invalid)");
-        else constant.const = constantTemp;
+
+        if (
+            !(
+                (Array.isArray(constantTemp) && constantTemp.length === 0) ||
+                (typeof constantTemp === "object" && Object.keys(constantTemp).length === 0)
+            )
+        )
+            constant.const = constantTemp;
 
         const defaultTemp = JSON.parse(this.currentField.default.replace(/\s/g, "")) as Record<string, unknown>;
-        if (Array.isArray(defaultTemp) || typeof defaultTemp !== "object")
-            throw new Error("default field in an Object DataType should be a valid object (array is invalid)");
-        else defaultValue.default = defaultTemp;
+
+        if (
+            !(
+                (Array.isArray(defaultTemp) && defaultTemp.length === 0) ||
+                (typeof defaultTemp === "object" && Object.keys(defaultTemp).length === 0)
+            )
+        )
+            defaultValue.default = defaultTemp;
 
         const required: IObjectSchemaType["required"] = [];
         const properties: IObjectSchemaType["properties"] = {};
