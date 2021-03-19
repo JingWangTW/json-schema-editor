@@ -92,28 +92,8 @@ class ObjectSchema extends Schema<IObjectSchemaType, IObjectEditorField> {
         const maxProperties = this.exportSchemaWithoutUndefined("maxProperties", NaN);
         const minProperties = this.exportSchemaWithoutUndefined("minProperties", NaN);
 
-        const constant: { const?: Record<string, unknown> } = {};
-        const defaultValue: { default?: Record<string, unknown> } = {};
-
-        const constantTemp = JSON.parse(this.currentField.const.replace(/\s/g, "")) as Record<string, unknown>;
-
-        if (
-            !(
-                (Array.isArray(constantTemp) && constantTemp.length === 0) ||
-                (typeof constantTemp === "object" && Object.keys(constantTemp).length === 0)
-            )
-        )
-            constant.const = constantTemp;
-
-        const defaultTemp = JSON.parse(this.currentField.default.replace(/\s/g, "")) as Record<string, unknown>;
-
-        if (
-            !(
-                (Array.isArray(defaultTemp) && defaultTemp.length === 0) ||
-                (typeof defaultTemp === "object" && Object.keys(defaultTemp).length === 0)
-            )
-        )
-            defaultValue.default = defaultTemp;
+        const constant = this.exportSchemaWithoutUndefined_code("const");
+        const defaultValue = this.exportSchemaWithoutUndefined_code("default");
 
         const required: IObjectSchemaType["required"] = [];
         const properties: IObjectSchemaType["properties"] = {};

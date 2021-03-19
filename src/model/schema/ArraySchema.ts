@@ -124,26 +124,8 @@ class ArraySchema extends Schema<IArraySchemaType, IArrayEditorField> {
         const minItems = this.exportSchemaWithoutUndefined("minItems", NaN);
         const maxItems = this.exportSchemaWithoutUndefined("maxItems", NaN);
 
-        const constant: { const?: IArraySchemaType["const"] } = {};
-        const defaultValue: { default?: IArraySchemaType["default"] } = {};
-
-        const constantTemp = JSON.parse(this.currentField.const.replace(/\s/g, ""));
-        if (
-            !(
-                (Array.isArray(constantTemp) && constantTemp.length === 0) ||
-                (typeof constantTemp === "object" && Object.keys(constantTemp).length === 0)
-            )
-        )
-            constant.const = constantTemp as IArraySchemaType["const"];
-
-        const defaultTemp = JSON.parse(this.currentField.default.replace(/\s/g, ""));
-        if (
-            !(
-                (Array.isArray(defaultTemp) && defaultTemp.length === 0) ||
-                (typeof defaultTemp === "object" && Object.keys(defaultTemp).length === 0)
-            )
-        )
-            defaultValue.default = defaultTemp as IArraySchemaType["default"];
+        const constant = this.exportSchemaWithoutUndefined_code("const");
+        const defaultValue = this.exportSchemaWithoutUndefined_code("default");
 
         let items: IArraySchemaType["items"];
 
