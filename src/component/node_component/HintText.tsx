@@ -107,9 +107,13 @@ class HintText extends React.Component<EmptyProps, IHintTextState> {
         };
 
         let key: HintType;
+        let hintCount = 0;
 
         for (key in this.state) {
             this.state[key].forEach((text: HintTextType) => {
+                if (hintCount > 0) renderElement.push(<br />);
+                hintCount++;
+
                 renderElement.push(
                     <span style={{ color: colorMapping[key] }} key={NextId.next()}>
                         <b>{`${key.charAt(0).toUpperCase()}${key.substring(1)}`}: </b>
