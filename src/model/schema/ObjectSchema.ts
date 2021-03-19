@@ -21,6 +21,7 @@ class ObjectSchema extends Schema<IObjectSchemaType, IObjectEditorField> {
             ...genericField,
 
             const: schema && schema.const ? JSON.stringify(schema.const, null, 4) : "{}",
+            default: schema && schema.default ? JSON.stringify(schema.default, null, 4) : "{}",
 
             maxProperties: this.retrieveDefaultOptionValue("maxProperties", NaN, schema),
             minProperties: this.retrieveDefaultOptionValue("minProperties", NaN, schema),
@@ -32,8 +33,8 @@ class ObjectSchema extends Schema<IObjectSchemaType, IObjectEditorField> {
     }
 
     @CloneReturnValue
-    recordCode(field: "const", value: string): Required<IObjectEditorField> {
-        this.currentField.const = value;
+    recordCode(field: "const" | "default", value: string): Required<IObjectEditorField> {
+        this.currentField[field] = value;
 
         return this.currentField;
     }
@@ -86,11 +87,17 @@ class ObjectSchema extends Schema<IObjectSchemaType, IObjectEditorField> {
         const minProperties = this.exportSchemaWithoutUndefined("minProperties", NaN);
 
         const constant: { const?: Record<string, unknown> } = {};
+        const defaultValue: { default?: Record<string, unknown> } = {};
 
         const constantTemp = JSON.parse(this.currentField.const.replace(/\s/g, "")) as Record<string, unknown>;
         if (Array.isArray(constantTemp) || typeof constantTemp !== "object")
             throw new Error("const field in an Object DataType should be a valid object (array is invalid)");
-        if (Object.keys(constantTemp).length > 0) constant.const = constantTemp;
+        else constant.const = constantTemp;
+
+        const defaultTemp = JSON.parse(this.currentField.default.replace(/\s/g, "")) as Record<string, unknown>;
+        if (Array.isArray(defaultTemp) || typeof defaultTemp !== "object")
+            throw new Error("default field in an Object DataType should be a valid object (array is invalid)");
+        else defaultValue.default = defaultTemp;
 
         const required: IObjectSchemaType["required"] = [];
         const properties: IObjectSchemaType["properties"] = {};
@@ -113,6 +120,7 @@ class ObjectSchema extends Schema<IObjectSchemaType, IObjectEditorField> {
             required,
             properties,
             ...constant,
+            ...defaultValue,
         };
     }
 }

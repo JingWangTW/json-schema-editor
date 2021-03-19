@@ -81,16 +81,30 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectSchemaType, IObjectEditorFi
         );
     }
 
-    recordCode(field: "const", value: string): void {
+    recordCode(field: "const" | "default", value: string): void {
         const currentField = this.schema.recordCode(field, value);
 
         this.setState({ currentField });
 
         try {
             JSON.parse(value);
-            this.hintTextRef.current?.remove(Hint.Error.CANT_PARSE_JSON_CONST);
+            switch (field) {
+                case "const":
+                    this.hintTextRef.current?.remove(Hint.Error.CANT_PARSE_JSON_CONST);
+                    break;
+                case "default":
+                    this.hintTextRef.current?.remove(Hint.Error.CANT_PARSE_JSON_DEFAULT);
+                    break;
+            }
         } catch (error) {
-            this.hintTextRef.current?.add(Hint.Error.CANT_PARSE_JSON_CONST);
+            switch (field) {
+                case "const":
+                    this.hintTextRef.current?.add(Hint.Error.CANT_PARSE_JSON_CONST);
+                    break;
+                case "default":
+                    this.hintTextRef.current?.add(Hint.Error.CANT_PARSE_JSON_DEFAULT);
+                    break;
+            }
         }
     }
 
@@ -165,6 +179,20 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectSchemaType, IObjectEditorFi
                                                         title="Object constant"
                                                         value={this.state.currentField.const}
                                                         update={this.recordCode.bind(this, "const")}
+                                                    />
+                                                </InputGroup>
+                                            </Col>
+                                        </Form.Group>
+                                        <Form.Group as={Row}>
+                                            <Form.Label column lg="2" htmlFor="Default">
+                                                Default
+                                            </Form.Label>
+                                            <Col lg="10">
+                                                <InputGroup>
+                                                    <CodeField
+                                                        title="Object default"
+                                                        value={this.state.currentField.default}
+                                                        update={this.recordCode.bind(this, "default")}
                                                     />
                                                 </InputGroup>
                                             </Col>

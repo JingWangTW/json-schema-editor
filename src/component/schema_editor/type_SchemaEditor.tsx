@@ -69,6 +69,7 @@ export interface INumberEditorField extends IGenericField {
 
 export interface IObjectEditorField extends IGenericField {
     const?: string;
+    default?: string;
 
     maxProperties?: number;
     minProperties?: number;

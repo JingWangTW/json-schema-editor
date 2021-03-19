@@ -6,6 +6,7 @@ import { EmptyProps } from "../type_component";
 export enum Error {
     DUPLICATED_FIELD_NAME = "Find duplicated field name",
     CANT_PARSE_JSON_CONST = "Invalid JSON in const field",
+    CANT_PARSE_JSON_DEFAULT = "Invalid JSON in default field",
 }
 
 export enum Warn {

@@ -54,6 +54,7 @@ export interface IObjectSchemaType extends IGenericSchemaType {
     type: DataType.Object;
 
     const?: Record<string, unknown>;
+    default?: Record<string, unknown>;
 
     properties: Record<string, ISchemaType>;
     required: string[];
