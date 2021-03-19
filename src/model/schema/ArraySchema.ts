@@ -1,7 +1,8 @@
 import React from "react";
 
+import { CodeFieldValue } from "../../component/node_component/type_NodeComponent";
 import { FieldWithoutType, IArrayEditorField, IChildProperty, ISchemaEditorType } from "../../component/schema_editor/type_SchemaEditor";
-import { DataType } from "../../type";
+import { DataType, KeysMatching } from "../../type";
 import { CloneReturnValue, NextId } from "../utility";
 import Schema from "./Schema";
 import { IArraySchemaType, IChildrenSchemaType, IGenericSchemaType } from "./type_schema";
@@ -20,8 +21,8 @@ class ArraySchema extends Schema<IArraySchemaType, IArrayEditorField> {
         this.defaultField = {
             ...genericField,
 
-            const: schema && schema.const ? JSON.stringify(schema.const, null, 4) : "[]",
-            default: schema && schema.default ? JSON.stringify(schema.default, null, 4) : "[]",
+            const: this.retrieveDefaultOptionValue_code("const", schema),
+            default: this.retrieveDefaultOptionValue_code("default", schema),
 
             minItems: this.retrieveDefaultOptionValue("minItems", NaN, schema),
             maxItems: this.retrieveDefaultOptionValue("maxItems", NaN, schema),
@@ -34,7 +35,7 @@ class ArraySchema extends Schema<IArraySchemaType, IArrayEditorField> {
     }
 
     @CloneReturnValue
-    recordCode(field: "const" | "default", value: string): Required<IArrayEditorField> {
+    recordCode(field: KeysMatching<IArrayEditorField, CodeFieldValue>, value: CodeFieldValue): Required<IArrayEditorField> {
         this.currentField[field] = value;
 
         return this.currentField;
@@ -104,8 +105,8 @@ class ArraySchema extends Schema<IArraySchemaType, IArrayEditorField> {
 
     @CloneReturnValue
     clearOptionField(): Required<IArrayEditorField> {
-        this.currentField.const = "[]";
-        this.currentField.default = "[]";
+        this.currentField.const = "" as CodeFieldValue;
+        this.currentField.default = "" as CodeFieldValue;
 
         this.currentField.maxItems = NaN;
         this.currentField.minItems = NaN;

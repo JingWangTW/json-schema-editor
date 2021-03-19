@@ -1,7 +1,8 @@
 import React from "react";
 
+import { CodeFieldValue } from "../../component/node_component/type_NodeComponent";
 import { FieldWithoutType, IChildProperty, IObjectEditorField, ISchemaEditorType } from "../../component/schema_editor/type_SchemaEditor";
-import { DataType } from "../../type";
+import { DataType, KeysMatching } from "../../type";
 import { CloneReturnValue, NextId } from "../utility";
 import Schema from "./Schema";
 import { IChildrenSchemaType, IObjectSchemaType } from "./type_schema";
@@ -20,8 +21,8 @@ class ObjectSchema extends Schema<IObjectSchemaType, IObjectEditorField> {
         this.defaultField = {
             ...genericField,
 
-            const: schema && schema.const ? JSON.stringify(schema.const, null, 4) : "{}",
-            default: schema && schema.default ? JSON.stringify(schema.default, null, 4) : "{}",
+            const: this.retrieveDefaultOptionValue_code("const", schema),
+            default: this.retrieveDefaultOptionValue_code("default", schema),
 
             maxProperties: this.retrieveDefaultOptionValue("maxProperties", NaN, schema),
             minProperties: this.retrieveDefaultOptionValue("minProperties", NaN, schema),
@@ -33,7 +34,7 @@ class ObjectSchema extends Schema<IObjectSchemaType, IObjectEditorField> {
     }
 
     @CloneReturnValue
-    recordCode(field: "const" | "default", value: string): Required<IObjectEditorField> {
+    recordCode(field: KeysMatching<IObjectEditorField, CodeFieldValue>, value: CodeFieldValue): Required<IObjectEditorField> {
         this.currentField[field] = value;
 
         return this.currentField;
@@ -75,8 +76,8 @@ class ObjectSchema extends Schema<IObjectSchemaType, IObjectEditorField> {
 
     @CloneReturnValue
     clearOptionField(): Required<IObjectEditorField> {
-        this.currentField.const = "{}";
-        this.currentField.default = "{}";
+        this.currentField.const = "" as CodeFieldValue;
+        this.currentField.default = "" as CodeFieldValue;
 
         this.currentField.maxProperties = NaN;
         this.currentField.minProperties = NaN;

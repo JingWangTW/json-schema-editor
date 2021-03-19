@@ -3,13 +3,14 @@ import { Col, Form, InputGroup, Row } from "react-bootstrap";
 
 import ObjectSchema from "../../model/schema/ObjectSchema";
 import { IObjectSchemaType } from "../../model/schema/type_schema";
+import { KeysMatching } from "../../type";
 import CodeField from "../node_component/CodeField";
 import EditorOptionModal from "../node_component/EditorOptionModal";
 import GenericField from "../node_component/GenericField";
 import HintText from "../node_component/HintText";
 import OptionsButtons from "../node_component/OptionsButtons";
 import SpaceFront from "../node_component/SpaceFront";
-import { Hint, IGenericFieldOptions, IOptionsButtonsAttr } from "../node_component/type_NodeComponent";
+import { CodeFieldValue, Hint, IGenericFieldOptions, IOptionsButtonsAttr } from "../node_component/type_NodeComponent";
 import ChildrenSchemaEditor from "./ChildrenSchemaEditor";
 import SchemaEditor from "./SchemaEditor";
 import { IObjectEditorField, ISchemaEditorProps, ISchemaEditorState } from "./type_SchemaEditor";
@@ -81,13 +82,14 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectSchemaType, IObjectEditorFi
         );
     }
 
-    recordCode(field: "const" | "default", value: string): void {
+    recordCode(field: KeysMatching<IObjectEditorField, CodeFieldValue>, value: CodeFieldValue): void {
         const currentField = this.schema.recordCode(field, value);
 
         this.setState({ currentField });
 
         try {
-            JSON.parse(value);
+            if (value.length !== 0) JSON.parse(value);
+
             switch (field) {
                 case "const":
                     this.hintTextRef.current?.remove(Hint.Error.CANT_PARSE_JSON_CONST);
