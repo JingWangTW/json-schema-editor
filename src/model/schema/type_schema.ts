@@ -9,7 +9,8 @@ export interface IGenericSchemaType {
 export interface IArraySchemaType extends IGenericSchemaType {
     type: DataType.Array;
 
-    const?: [];
+    const?: Record<string, unknown>;
+    default?: Record<string, unknown>;
 
     minItems?: number;
     maxItems?: number;
@@ -54,6 +55,7 @@ export interface IObjectSchemaType extends IGenericSchemaType {
     type: DataType.Object;
 
     const?: Record<string, unknown>;
+    default?: Record<string, unknown>;
 
     properties: Record<string, ISchemaType>;
     required: string[];

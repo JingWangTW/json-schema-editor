@@ -3,14 +3,14 @@ import { Col, Form, InputGroup, Row } from "react-bootstrap";
 
 import ArraySchema from "../../model/schema/ArraySchema";
 import { IArraySchemaType } from "../../model/schema/type_schema";
-import { DataType } from "../../type";
+import { DataType, KeysMatching } from "../../type";
 import CodeField from "../node_component/CodeField";
 import EditorOptionModal from "../node_component/EditorOptionModal";
 import GenericField from "../node_component/GenericField";
 import HintText from "../node_component/HintText";
 import OptionsButtons from "../node_component/OptionsButtons";
 import SpaceFront from "../node_component/SpaceFront";
-import { Hint, IGenericFieldOptions, IOptionsButtonsAttr } from "../node_component/type_NodeComponent";
+import { CodeFieldValue, Hint, IGenericFieldOptions, IOptionsButtonsAttr } from "../node_component/type_NodeComponent";
 import ChildrenSchemaEditor from "./ChildrenSchemaEditor";
 import SchemaEditor from "./SchemaEditor";
 import { IArrayEditorField, IChildProperty, ISchemaEditorProps, ISchemaEditorState } from "./type_SchemaEditor";
@@ -115,16 +115,31 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
         );
     }
 
-    recordCode(field: "const", value: string): void {
+    recordCode(field: KeysMatching<IArrayEditorField, CodeFieldValue>, value: CodeFieldValue): void {
         const currentField = this.schema.recordCode(field, value);
 
         this.setState({ currentField });
 
         try {
-            JSON.parse(value);
-            this.hintTextRef.current?.remove(Hint.Error.CANT_PARSE_JSON_CONST);
+            if (value.length !== 0) JSON.parse(value);
+
+            switch (field) {
+                case "const":
+                    this.hintTextRef.current?.remove(Hint.Error.CANT_PARSE_JSON_CONST);
+                    break;
+                case "default":
+                    this.hintTextRef.current?.remove(Hint.Error.CANT_PARSE_JSON_DEFAULT);
+                    break;
+            }
         } catch (error) {
-            this.hintTextRef.current?.add(Hint.Error.CANT_PARSE_JSON_CONST);
+            switch (field) {
+                case "const":
+                    this.hintTextRef.current?.add(Hint.Error.CANT_PARSE_JSON_CONST);
+                    break;
+                case "default":
+                    this.hintTextRef.current?.add(Hint.Error.CANT_PARSE_JSON_DEFAULT);
+                    break;
+            }
         }
     }
 
@@ -199,6 +214,20 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
                                                         title="Array constant"
                                                         value={this.state.currentField.const}
                                                         update={this.recordCode.bind(this, "const")}
+                                                    />
+                                                </InputGroup>
+                                            </Col>
+                                        </Form.Group>
+                                        <Form.Group as={Row}>
+                                            <Form.Label column lg="2" htmlFor="Default">
+                                                Default
+                                            </Form.Label>
+                                            <Col lg="10">
+                                                <InputGroup>
+                                                    <CodeField
+                                                        title="Array default"
+                                                        value={this.state.currentField.default}
+                                                        update={this.recordCode.bind(this, "default")}
                                                     />
                                                 </InputGroup>
                                             </Col>

@@ -1,7 +1,8 @@
 import React from "react";
 
+import { CodeFieldValue } from "../../component/node_component/type_NodeComponent";
 import { FieldWithoutType, IChildProperty, IObjectEditorField, ISchemaEditorType } from "../../component/schema_editor/type_SchemaEditor";
-import { DataType } from "../../type";
+import { DataType, KeysMatching } from "../../type";
 import { CloneReturnValue, NextId } from "../utility";
 import Schema from "./Schema";
 import { IChildrenSchemaType, IObjectSchemaType } from "./type_schema";
@@ -20,7 +21,8 @@ class ObjectSchema extends Schema<IObjectSchemaType, IObjectEditorField> {
         this.defaultField = {
             ...genericField,
 
-            const: schema && schema.const ? JSON.stringify(schema.const, null, 4) : "{}",
+            const: this.retrieveDefaultOptionValue_code("const", schema),
+            default: this.retrieveDefaultOptionValue_code("default", schema),
 
             maxProperties: this.retrieveDefaultOptionValue("maxProperties", NaN, schema),
             minProperties: this.retrieveDefaultOptionValue("minProperties", NaN, schema),
@@ -32,8 +34,8 @@ class ObjectSchema extends Schema<IObjectSchemaType, IObjectEditorField> {
     }
 
     @CloneReturnValue
-    recordCode(field: "const", value: string): Required<IObjectEditorField> {
-        this.currentField.const = value;
+    recordCode(field: KeysMatching<IObjectEditorField, CodeFieldValue>, value: CodeFieldValue): Required<IObjectEditorField> {
+        this.currentField[field] = value;
 
         return this.currentField;
     }
@@ -63,6 +65,9 @@ class ObjectSchema extends Schema<IObjectSchemaType, IObjectEditorField> {
 
     @CloneReturnValue
     resetOptionField(): Required<IObjectEditorField> {
+        this.currentField.const = this.defaultField.const;
+        this.currentField.default = this.defaultField.default;
+
         this.currentField.maxProperties = this.defaultField.maxProperties;
         this.currentField.minProperties = this.defaultField.minProperties;
 
@@ -71,6 +76,9 @@ class ObjectSchema extends Schema<IObjectSchemaType, IObjectEditorField> {
 
     @CloneReturnValue
     clearOptionField(): Required<IObjectEditorField> {
+        this.currentField.const = "" as CodeFieldValue;
+        this.currentField.default = "" as CodeFieldValue;
+
         this.currentField.maxProperties = NaN;
         this.currentField.minProperties = NaN;
 
@@ -85,12 +93,8 @@ class ObjectSchema extends Schema<IObjectSchemaType, IObjectEditorField> {
         const maxProperties = this.exportSchemaWithoutUndefined("maxProperties", NaN);
         const minProperties = this.exportSchemaWithoutUndefined("minProperties", NaN);
 
-        const constant: { const?: Record<string, unknown> } = {};
-
-        const constantTemp = JSON.parse(this.currentField.const.replace(/\s/g, "")) as Record<string, unknown>;
-        if (Array.isArray(constantTemp) || typeof constantTemp !== "object")
-            throw new Error("const field in an Object DataType should be a valid object (array is invalid)");
-        if (Object.keys(constantTemp).length > 0) constant.const = constantTemp;
+        const constant = this.exportSchemaWithoutUndefined_code("const");
+        const defaultValue = this.exportSchemaWithoutUndefined_code("default");
 
         const required: IObjectSchemaType["required"] = [];
         const properties: IObjectSchemaType["properties"] = {};
@@ -113,6 +117,7 @@ class ObjectSchema extends Schema<IObjectSchemaType, IObjectEditorField> {
             required,
             properties,
             ...constant,
+            ...defaultValue,
         };
     }
 }

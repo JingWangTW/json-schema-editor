@@ -3,14 +3,16 @@ import AceEditor from "react-ace";
 import { Button, Form, FormControl, InputGroup, Modal } from "react-bootstrap";
 import { TiPencil } from "react-icons/ti";
 
+import { CodeFieldValue } from "./type_NodeComponent";
+
 require("ace-builds/src-noconflict/mode-json");
 require("ace-builds/src-noconflict/theme-terminal");
 
 interface CodeFieldProps {
     title: string;
 
-    value: string;
-    update(value: string): void;
+    value: CodeFieldValue;
+    update(value: CodeFieldValue): void;
 }
 
 interface CodeFieldState {
@@ -36,7 +38,7 @@ class CodeField extends React.Component<CodeFieldProps, CodeFieldState> {
                 <FormControl
                     type="text"
                     onChange={(e): void => {
-                        this.props.update(e.target.value);
+                        this.props.update(e.target.value as CodeFieldValue);
                     }}
                     value={this.props.value}
                 />
@@ -64,7 +66,9 @@ class CodeField extends React.Component<CodeFieldProps, CodeFieldState> {
                                 mode="json"
                                 theme="terminal"
                                 name="Code"
-                                onChange={this.props.update}
+                                onChange={(e): void => {
+                                    this.props.update(e as CodeFieldValue);
+                                }}
                                 fontSize={14}
                                 showPrintMargin={true}
                                 showGutter={true}

@@ -1,7 +1,8 @@
 import React from "react";
 
+import { CodeFieldValue } from "../../component/node_component/type_NodeComponent";
 import { FieldWithoutType, IArrayEditorField, IChildProperty, ISchemaEditorType } from "../../component/schema_editor/type_SchemaEditor";
-import { DataType } from "../../type";
+import { DataType, KeysMatching } from "../../type";
 import { CloneReturnValue, NextId } from "../utility";
 import Schema from "./Schema";
 import { IArraySchemaType, IChildrenSchemaType, IGenericSchemaType } from "./type_schema";
@@ -20,7 +21,8 @@ class ArraySchema extends Schema<IArraySchemaType, IArrayEditorField> {
         this.defaultField = {
             ...genericField,
 
-            const: schema && schema.const ? JSON.stringify(schema.const, null, 4) : "[]",
+            const: this.retrieveDefaultOptionValue_code("const", schema),
+            default: this.retrieveDefaultOptionValue_code("default", schema),
 
             minItems: this.retrieveDefaultOptionValue("minItems", NaN, schema),
             maxItems: this.retrieveDefaultOptionValue("maxItems", NaN, schema),
@@ -33,8 +35,8 @@ class ArraySchema extends Schema<IArraySchemaType, IArrayEditorField> {
     }
 
     @CloneReturnValue
-    recordCode(field: "const", value: string): Required<IArrayEditorField> {
-        this.currentField.const = value;
+    recordCode(field: KeysMatching<IArrayEditorField, CodeFieldValue>, value: CodeFieldValue): Required<IArrayEditorField> {
+        this.currentField[field] = value;
 
         return this.currentField;
     }
@@ -92,6 +94,7 @@ class ArraySchema extends Schema<IArraySchemaType, IArrayEditorField> {
     @CloneReturnValue
     resetOptionField(): Required<IArrayEditorField> {
         this.currentField.const = this.defaultField.const;
+        this.currentField.default = this.defaultField.default;
 
         this.currentField.maxItems = this.defaultField.maxItems;
         this.currentField.minItems = this.defaultField.minItems;
@@ -102,7 +105,8 @@ class ArraySchema extends Schema<IArraySchemaType, IArrayEditorField> {
 
     @CloneReturnValue
     clearOptionField(): Required<IArrayEditorField> {
-        this.currentField.const = "[]";
+        this.currentField.const = "" as CodeFieldValue;
+        this.currentField.default = "" as CodeFieldValue;
 
         this.currentField.maxItems = NaN;
         this.currentField.minItems = NaN;
@@ -121,11 +125,8 @@ class ArraySchema extends Schema<IArraySchemaType, IArrayEditorField> {
         const minItems = this.exportSchemaWithoutUndefined("minItems", NaN);
         const maxItems = this.exportSchemaWithoutUndefined("maxItems", NaN);
 
-        const constant: { const?: [] } = {};
-
-        const constantTemp = JSON.parse(this.currentField.const.replace(/\s/g, ""));
-        if (!Array.isArray(constantTemp)) throw new Error("const field in an Array DataType should be a valid array");
-        if ((constantTemp as []).length > 0) constant.const = constantTemp as [];
+        const constant = this.exportSchemaWithoutUndefined_code("const");
+        const defaultValue = this.exportSchemaWithoutUndefined_code("default");
 
         let items: IArraySchemaType["items"];
 
@@ -145,6 +146,7 @@ class ArraySchema extends Schema<IArraySchemaType, IArrayEditorField> {
             uniqueItems,
             items,
             ...constant,
+            ...defaultValue,
         };
     }
 }

@@ -6,6 +6,7 @@ import { EmptyProps } from "../type_component";
 export enum Error {
     DUPLICATED_FIELD_NAME = "Find duplicated field name",
     CANT_PARSE_JSON_CONST = "Invalid JSON in const field",
+    CANT_PARSE_JSON_DEFAULT = "Invalid JSON in default field",
 }
 
 export enum Warn {
@@ -106,9 +107,13 @@ class HintText extends React.Component<EmptyProps, IHintTextState> {
         };
 
         let key: HintType;
+        let hintCount = 0;
 
         for (key in this.state) {
             this.state[key].forEach((text: HintTextType) => {
+                if (hintCount > 0) renderElement.push(<br />);
+                hintCount++;
+
                 renderElement.push(
                     <span style={{ color: colorMapping[key] }} key={NextId.next()}>
                         <b>{`${key.charAt(0).toUpperCase()}${key.substring(1)}`}: </b>

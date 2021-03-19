@@ -1,6 +1,6 @@
-import { IGenericField } from "../../component/node_component/type_NodeComponent";
+import { CodeFieldValue, IGenericField } from "../../component/node_component/type_NodeComponent";
 import { FieldWithoutType, ISchemaEditorField } from "../../component/schema_editor/type_SchemaEditor";
-import { DataType } from "../../type";
+import { DataType, KeysMatching } from "../../type";
 import { CloneReturnValue, NextId, getOrDefault } from "../utility";
 import { IGenericSchemaType, ISchemaType } from "./type_schema";
 
@@ -87,6 +87,17 @@ abstract class Schema<SchemaType extends ISchemaType, FieldType extends ISchemaE
         }
     }
 
+    protected retrieveDefaultOptionValue_code<T extends Extract<keyof SchemaType, KeysMatching<FieldType, CodeFieldValue>>>(
+        key: T,
+        schema?: SchemaType
+    ): CodeFieldValue {
+        if (schema && key in schema && schema[key] !== undefined) {
+            return JSON.stringify(schema[key], null, 4) as CodeFieldValue;
+        } else {
+            return "" as CodeFieldValue;
+        }
+    }
+
     protected exportSchemaWithoutUndefined<K extends keyof (SchemaType | FieldType)>(
         key: K,
         emptyValue: Required<FieldType>[K]
@@ -103,6 +114,28 @@ abstract class Schema<SchemaType extends ISchemaType, FieldType extends ISchemaE
                 temp[key] = this.currentField[key];
             }
         }
+
+        return temp;
+    }
+
+    protected exportSchemaWithoutUndefined_code<K extends Extract<keyof SchemaType, KeysMatching<FieldType, CodeFieldValue>>>(
+        key: K
+    ): Partial<Record<K, SchemaType[K]>> {
+        const temp: Partial<Record<K, SchemaType[K]>> = {};
+
+        const codeValueString = (this.currentField[key] as unknown) as CodeFieldValue;
+
+        if (codeValueString.length === 0) return {};
+
+        const codeParsed = JSON.parse(codeValueString);
+
+        if (
+            !(
+                (Array.isArray(codeParsed) && codeParsed.length === 0) ||
+                (typeof codeParsed === "object" && Object.keys(codeParsed).length === 0)
+            )
+        )
+            temp[key] = codeParsed;
 
         return temp;
     }

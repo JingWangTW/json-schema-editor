@@ -1,6 +1,6 @@
 import { ISchemaType } from "../../model/schema/type_schema";
 import { DataType, PartialBy } from "../../type";
-import { IGenericField } from "../node_component/type_NodeComponent";
+import { CodeFieldValue, IGenericField } from "../node_component/type_NodeComponent";
 import SchemaEditor from "./SchemaEditor";
 
 // Type to represent all schema editor
@@ -31,7 +31,8 @@ export interface ISchemaEditorState<FieldType extends ISchemaEditorField> {
 }
 
 export interface IArrayEditorField extends IGenericField {
-    const?: string;
+    const?: CodeFieldValue;
+    default?: CodeFieldValue;
 
     minItems?: number;
     maxItems?: number;
@@ -68,7 +69,8 @@ export interface INumberEditorField extends IGenericField {
 }
 
 export interface IObjectEditorField extends IGenericField {
-    const?: string;
+    const?: CodeFieldValue;
+    default?: CodeFieldValue;
 
     maxProperties?: number;
     minProperties?: number;

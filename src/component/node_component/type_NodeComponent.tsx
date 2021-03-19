@@ -29,3 +29,8 @@ export type OmitGenericField<T extends IGenericSchemaType> = Omit<T, keyof IGene
 
 export const Hint = { Warn, Info, Error };
 export type Hint = typeof Hint;
+
+// a type to represent code file value
+// It may change to a class or interface in the future
+// It's just used to type checking only
+export type CodeFieldValue = string & { attr: "This is a code field value" };
