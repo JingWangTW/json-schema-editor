@@ -210,7 +210,7 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
                                         <Form.Group as={Row}>
                                             <Form.Label column lg="2" htmlFor="Constant">
                                                 Constant
-                                                <InstructionIcon text="An instance would be valid if its value is equal to this keyword." />
+                                                <InstructionIcon text="An array instance would be valid if its value is equal to this keyword." />
                                             </Form.Label>
                                             <Col lg="10">
                                                 <InputGroup>
@@ -225,7 +225,7 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
                                         <Form.Group as={Row}>
                                             <Form.Label column lg="2" htmlFor="Default">
                                                 Default
-                                                <InstructionIcon text="This keyword can be used to supply a default JSON value associated with a particular schema." />
+                                                <InstructionIcon text="This keyword can be used to supply a default JSON value associated with this array schema." />
                                             </Form.Label>
                                             <Col lg="10">
                                                 <InputGroup>
@@ -247,7 +247,7 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
 
                                                 <Form.Check.Label>
                                                     Unique Items
-                                                    <InstructionIcon text="If checked, the instance validates successfully if all of its elements are unique." />
+                                                    <InstructionIcon text="If checked, an array instance validates successfully if all of its elements are unique." />
                                                 </Form.Check.Label>
                                             </Form.Check>
                                         </Form.Group>

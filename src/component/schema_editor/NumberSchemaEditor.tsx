@@ -120,7 +120,7 @@ class NumberSchemaEditor extends SchemaEditor<INumberSchemaType, INumberEditorFi
                                         <Form.Group as={Row} controlId="MinValue">
                                             <Form.Label column lg="2">
                                                 Min Value
-                                                <InstructionIcon text="An instance would be valid if its value is greater than or exactly equal to this keyword." />
+                                                <InstructionIcon text="A number instance would be valid if its value is greater than (or exactly equal to) this keyword." />
                                             </Form.Label>
                                             <Col lg="4">
                                                 <Form.Control
@@ -139,14 +139,14 @@ class NumberSchemaEditor extends SchemaEditor<INumberSchemaType, INumberEditorFi
                                                     type="checkbox"
                                                     style={{ height: "100%" }}
                                                 />
-                                                <InstructionIcon text="If checked, an instance would be valid if its value is strictly greater than this keyword." />
+                                                <InstructionIcon text="If checked, a number instance would be valid if its value is strictly greater than this keyword." />
                                             </Col>
                                         </Form.Group>
 
                                         <Form.Group as={Row} controlId="MaxValue">
                                             <Form.Label column lg="2">
                                                 Max Value
-                                                <InstructionIcon text="An instance would be valid if its value is less than or exactly equal to this keyword." />
+                                                <InstructionIcon text="A number instance would be valid if its value is less than (or exactly equal to) this keyword." />
                                             </Form.Label>
                                             <Col lg="4">
                                                 <Form.Control
@@ -165,14 +165,14 @@ class NumberSchemaEditor extends SchemaEditor<INumberSchemaType, INumberEditorFi
                                                     type="checkbox"
                                                     style={{ height: "100%" }}
                                                 />
-                                                <InstructionIcon text="If checked, an instance would be valid if its value is strictly less than this keyword." />
+                                                <InstructionIcon text="If checked, a number instance would be valid if its value is strictly less than this keyword." />
                                             </Col>
                                         </Form.Group>
 
                                         <Form.Group as={Row}>
                                             <Form.Label column lg="2" htmlFor="Default">
                                                 Default
-                                                <InstructionIcon text="This keyword can be used to supply a default JSON value associated with a particular schema." />
+                                                <InstructionIcon text="This keyword can be used to supply a default number value associated with this number schema." />
                                             </Form.Label>
                                             <Col lg="4">
                                                 <Form.Control
@@ -184,7 +184,7 @@ class NumberSchemaEditor extends SchemaEditor<INumberSchemaType, INumberEditorFi
                                             </Col>
                                             <Form.Label column lg="2" htmlFor="MultipleOf">
                                                 Multiple Of
-                                                <InstructionIcon text="An instance would be valid if division by this keyword's value result in an integer." />
+                                                <InstructionIcon text="A number instance would be valid if division by this keyword's value result in an integer." />
                                             </Form.Label>
                                             <Col lg="4">
                                                 <Form.Control
@@ -199,7 +199,7 @@ class NumberSchemaEditor extends SchemaEditor<INumberSchemaType, INumberEditorFi
                                         <Form.Group as={Row}>
                                             <Form.Label column lg="2" htmlFor="const">
                                                 Constant
-                                                <InstructionIcon text="An instance would be valid if its value is equal to this keyword." />
+                                                <InstructionIcon text="A number instance would be valid if its value is equal to this keyword." />
                                             </Form.Label>
                                             <Col lg="4">
                                                 <Form.Control

@@ -121,7 +121,7 @@ class StringSchemaEditor extends SchemaEditor<IStringSchemaType, IStringEditorFi
                                         <Form.Group as={Row}>
                                             <Form.Label column lg="2" htmlFor="Default">
                                                 Default
-                                                <InstructionIcon text="This keyword can be used to supply a default JSON value associated with a particular schema." />
+                                                <InstructionIcon text="This keyword can be used to supply a default string value associated with this string schema." />
                                             </Form.Label>
                                             <Col lg="10">
                                                 <Form.Control
@@ -136,7 +136,7 @@ class StringSchemaEditor extends SchemaEditor<IStringSchemaType, IStringEditorFi
                                         <Form.Group as={Row}>
                                             <Form.Label column lg="2" htmlFor="MinLength">
                                                 Min Length
-                                                <InstructionIcon text="An string instance would be valid if its length is greate than or equal to this keyword." />
+                                                <InstructionIcon text="A string instance would be valid if its length is greate than or equal to this keyword." />
                                             </Form.Label>
                                             <Col lg="4">
                                                 <Form.Control
@@ -149,7 +149,7 @@ class StringSchemaEditor extends SchemaEditor<IStringSchemaType, IStringEditorFi
                                             </Col>
                                             <Form.Label column lg="2" htmlFor="MaxLength">
                                                 Max Length
-                                                <InstructionIcon text="An string instance would be valid if its length is less than or equal to this keyword." />
+                                                <InstructionIcon text="A string instance would be valid if its length is less than or equal to this keyword." />
                                             </Form.Label>
                                             <Col lg="4">
                                                 <Form.Control
@@ -220,7 +220,7 @@ class StringSchemaEditor extends SchemaEditor<IStringSchemaType, IStringEditorFi
                                         <Form.Group as={Row} controlId="const">
                                             <Form.Label column lg="2">
                                                 Constant
-                                                <InstructionIcon text="An instance would be valid if its value is equal to this keyword." />
+                                                <InstructionIcon text="A string instance would be valid if its value is equal to this keyword." />
                                             </Form.Label>
                                             <Col lg="10">
                                                 <Form.Control

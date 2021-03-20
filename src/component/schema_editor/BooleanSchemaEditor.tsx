@@ -85,7 +85,7 @@ class BooleanSchemaEditor extends SchemaEditor<IBooleanSchemaType, IBooleanEdito
                                         <Form.Group as={Row}>
                                             <Form.Label column lg="2" htmlFor="default">
                                                 Default
-                                                <InstructionIcon text="This keyword can be used to supply a default JSON value associated with a particular schema." />
+                                                <InstructionIcon text="This keyword can be used to supply a default boolean value associated with this boolean schema." />
                                             </Form.Label>
                                             <Col lg={4}>
                                                 <Form.Control
@@ -112,7 +112,7 @@ class BooleanSchemaEditor extends SchemaEditor<IBooleanSchemaType, IBooleanEdito
                                             </Col>
                                             <Form.Label column lg="2" htmlFor="const">
                                                 Constant
-                                                <InstructionIcon text="An instance would be valid if its value is equal to this keyword." />
+                                                <InstructionIcon text="A boolean instance would be valid if its value is equal to this keyword." />
                                             </Form.Label>
                                             <Col lg={4}>
                                                 <Form.Control

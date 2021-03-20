@@ -151,7 +151,7 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectSchemaType, IObjectEditorFi
                                         <Form.Group as={Row}>
                                             <Form.Label column lg="2" htmlFor="MinProperties">
                                                 Min Properties
-                                                <InstructionIcon text="The numbers of properties in the object instance should be greater than or equal to this keyword." />
+                                                <InstructionIcon text="The numbers of properties in an object instance should be greater than or equal to this keyword." />
                                             </Form.Label>
                                             <Col className="col-option-form-value">
                                                 <Form.Control
@@ -164,7 +164,7 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectSchemaType, IObjectEditorFi
                                             </Col>
                                             <Form.Label column lg="2" htmlFor="MaxProperties">
                                                 Max Properties
-                                                <InstructionIcon text="The numbers of properties in the object instance should be less than or equal to this keyword." />
+                                                <InstructionIcon text="The numbers of properties in an object instance should be less than or equal to this keyword." />
                                             </Form.Label>
                                             <Col className="col-option-form-value">
                                                 <Form.Control
@@ -179,7 +179,7 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectSchemaType, IObjectEditorFi
                                         <Form.Group as={Row}>
                                             <Form.Label column lg="2" htmlFor="Constant">
                                                 Constant
-                                                <InstructionIcon text="An instance would be valid if its value is equal to this keyword." />
+                                                <InstructionIcon text="An object instance would be valid if its value is equal to this keyword." />
                                             </Form.Label>
                                             <Col lg="10">
                                                 <InputGroup>
@@ -194,7 +194,7 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectSchemaType, IObjectEditorFi
                                         <Form.Group as={Row}>
                                             <Form.Label column lg="2" htmlFor="Default">
                                                 Default
-                                                <InstructionIcon text="This keyword can be used to supply a default JSON value associated with a particular schema." />
+                                                <InstructionIcon text="This keyword can be used to supply a default JSON value associated with this object schema" />
                                             </Form.Label>
                                             <Col lg="10">
                                                 <InputGroup>
