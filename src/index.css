@@ -15,3 +15,8 @@ div.node-option-btn-block {
     flex: 0 0 30px;
     cursor: pointer;
 }
+
+div.col-option-form-value {
+    display: flex;
+    align-items: center;
+}

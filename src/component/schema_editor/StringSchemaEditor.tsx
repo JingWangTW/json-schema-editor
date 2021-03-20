@@ -7,6 +7,7 @@ import EditorOptionModal from "../node_component/EditorOptionModal";
 import EnumField from "../node_component/EnumField";
 import GenericField from "../node_component/GenericField";
 import HintText from "../node_component/HintText";
+import InstructionIcon from "../node_component/InstructionIcon";
 import OptionsButtons from "../node_component/OptionsButtons";
 import SpaceFront from "../node_component/SpaceFront";
 import { Hint, IGenericFieldOptions, IOptionsButtonsAttr } from "../node_component/type_NodeComponent";
@@ -120,6 +121,7 @@ class StringSchemaEditor extends SchemaEditor<IStringSchemaType, IStringEditorFi
                                         <Form.Group as={Row}>
                                             <Form.Label column lg="2" htmlFor="Default">
                                                 Default
+                                                <InstructionIcon text="This keyword can be used to supply a default string value associated with this string schema." />
                                             </Form.Label>
                                             <Col lg="10">
                                                 <Form.Control
@@ -134,6 +136,7 @@ class StringSchemaEditor extends SchemaEditor<IStringSchemaType, IStringEditorFi
                                         <Form.Group as={Row}>
                                             <Form.Label column lg="2" htmlFor="MinLength">
                                                 Min Length
+                                                <InstructionIcon text="A string instance would be valid if its length is greate than or equal to this keyword." />
                                             </Form.Label>
                                             <Col lg="4">
                                                 <Form.Control
@@ -146,6 +149,7 @@ class StringSchemaEditor extends SchemaEditor<IStringSchemaType, IStringEditorFi
                                             </Col>
                                             <Form.Label column lg="2" htmlFor="MaxLength">
                                                 Max Length
+                                                <InstructionIcon text="A string instance would be valid if its length is less than or equal to this keyword." />
                                             </Form.Label>
                                             <Col lg="4">
                                                 <Form.Control
@@ -201,6 +205,7 @@ class StringSchemaEditor extends SchemaEditor<IStringSchemaType, IStringEditorFi
                                         <Form.Group as={Row} controlId="Pattern">
                                             <Form.Label column lg="2">
                                                 Pattern
+                                                <InstructionIcon text="The value of this keyword should be a regular expression. A string instance is valid if the regular expression mathes the string instance." />
                                             </Form.Label>
                                             <Col lg="10">
                                                 <Form.Control
@@ -215,6 +220,7 @@ class StringSchemaEditor extends SchemaEditor<IStringSchemaType, IStringEditorFi
                                         <Form.Group as={Row} controlId="const">
                                             <Form.Label column lg="2">
                                                 Constant
+                                                <InstructionIcon text="A string instance would be valid if its value is equal to this keyword." />
                                             </Form.Label>
                                             <Col lg="10">
                                                 <Form.Control
