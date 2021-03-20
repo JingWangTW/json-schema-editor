@@ -1,3 +1,5 @@
+import "../../index.css";
+
 import React from "react";
 import { Col, Form, InputGroup, Row } from "react-bootstrap";
 
@@ -8,6 +10,7 @@ import CodeField from "../node_component/CodeField";
 import EditorOptionModal from "../node_component/EditorOptionModal";
 import GenericField from "../node_component/GenericField";
 import HintText from "../node_component/HintText";
+import InstructionIcon from "../node_component/InstructionIcon";
 import OptionsButtons from "../node_component/OptionsButtons";
 import SpaceFront from "../node_component/SpaceFront";
 import { CodeFieldValue, Hint, IGenericFieldOptions, IOptionsButtonsAttr } from "../node_component/type_NodeComponent";
@@ -146,10 +149,11 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectSchemaType, IObjectEditorFi
                                 >
                                     <Form>
                                         <Form.Group as={Row}>
-                                            <Form.Label column lg="auto" htmlFor="MinProperties">
+                                            <Form.Label column lg="2" htmlFor="MinProperties">
                                                 Min Properties
+                                                <InstructionIcon text="The numbers of properties in the object instance should be greater than or equal to this keyword." />
                                             </Form.Label>
-                                            <Col>
+                                            <Col className="col-option-form-value">
                                                 <Form.Control
                                                     type="number"
                                                     min="0"
@@ -158,10 +162,11 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectSchemaType, IObjectEditorFi
                                                     onChange={this.recordField.bind(this, "minProperties")}
                                                 />
                                             </Col>
-                                            <Form.Label column lg="auto" htmlFor="MaxProperties">
+                                            <Form.Label column lg="2" htmlFor="MaxProperties">
                                                 Max Properties
+                                                <InstructionIcon text="The numbers of properties in the object instance should be less than or equal to this keyword." />
                                             </Form.Label>
-                                            <Col>
+                                            <Col className="col-option-form-value">
                                                 <Form.Control
                                                     type="number"
                                                     min="0"
@@ -174,6 +179,7 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectSchemaType, IObjectEditorFi
                                         <Form.Group as={Row}>
                                             <Form.Label column lg="2" htmlFor="Constant">
                                                 Constant
+                                                <InstructionIcon text="An instance would be valid if its value is equal to this keyword." />
                                             </Form.Label>
                                             <Col lg="10">
                                                 <InputGroup>
@@ -188,6 +194,7 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectSchemaType, IObjectEditorFi
                                         <Form.Group as={Row}>
                                             <Form.Label column lg="2" htmlFor="Default">
                                                 Default
+                                                <InstructionIcon text="This keyword can be used to supply a default JSON value associated with a particular schema." />
                                             </Form.Label>
                                             <Col lg="10">
                                                 <InputGroup>
