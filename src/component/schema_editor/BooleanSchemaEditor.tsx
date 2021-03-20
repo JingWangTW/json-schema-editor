@@ -5,6 +5,7 @@ import BooleanSchema from "../../model/schema/BooleanSchema";
 import { IBooleanSchemaType } from "../../model/schema/type_schema";
 import EditorOptionModal from "../node_component/EditorOptionModal";
 import GenericField from "../node_component/GenericField";
+import InstructionIcon from "../node_component/InstructionIcon";
 import OptionsButtons from "../node_component/OptionsButtons";
 import SpaceFront from "../node_component/SpaceFront";
 import { IGenericFieldOptions, IOptionsButtonsAttr } from "../node_component/type_NodeComponent";
@@ -84,6 +85,7 @@ class BooleanSchemaEditor extends SchemaEditor<IBooleanSchemaType, IBooleanEdito
                                         <Form.Group as={Row}>
                                             <Form.Label column lg="2" htmlFor="default">
                                                 Default
+                                                <InstructionIcon text="This keyword can be used to supply a default JSON value associated with a particular schema." />
                                             </Form.Label>
                                             <Col lg={4}>
                                                 <Form.Control
@@ -110,6 +112,7 @@ class BooleanSchemaEditor extends SchemaEditor<IBooleanSchemaType, IBooleanEdito
                                             </Col>
                                             <Form.Label column lg="2" htmlFor="const">
                                                 Constant
+                                                <InstructionIcon text="An instance would be valid if its value is equal to this keyword." />
                                             </Form.Label>
                                             <Col lg={4}>
                                                 <Form.Control
