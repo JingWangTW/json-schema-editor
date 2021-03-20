@@ -3,6 +3,7 @@ import { Button, Col, Form, FormControl, InputGroup, Row } from "react-bootstrap
 import { FaMinus, FaPlus } from "react-icons/fa";
 
 import { EmptyState } from "../type_component";
+import InstructionIcon from "./InstructionIcon";
 
 interface EnumFieldProps<T> {
     type: "number" | "text";
@@ -22,7 +23,14 @@ class EnumField<T extends string | number> extends React.Component<EnumFieldProp
                     this.props.value.map((enumeration, index: number) => (
                         <Form.Group as={Row} key={index}>
                             <Form.Label column lg="2">
-                                {index === 0 ? "Enum" : ""}
+                                {index === 0 ? (
+                                    <span>
+                                        Enum
+                                        <InstructionIcon text="An instance would be valid if its valie is equal to one of the elements in this keyword's array value." />
+                                    </span>
+                                ) : (
+                                    ""
+                                )}
                             </Form.Label>
                             <Col lg={this.props.width}>
                                 {index === this.props.value.length - 1 ? (
@@ -66,6 +74,7 @@ class EnumField<T extends string | number> extends React.Component<EnumFieldProp
                     <Form.Group as={Row}>
                         <Form.Label column lg="2">
                             Enum
+                            <InstructionIcon text="An instance would be valid if its valie is equal to one of the elements in this keyword's array value." />
                         </Form.Label>
                         <Col lg="10">
                             <Row>
