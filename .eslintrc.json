@@ -7,7 +7,7 @@
         "plugin:@typescript-eslint/eslint-recommended",
         "plugin:@typescript-eslint/recommended",
         "plugin:json/recommended",
-        "prettier/@typescript-eslint",
+        "prettier",
         "next/core-web-vitals"
     ],
     "parser": "@typescript-eslint/parser",
