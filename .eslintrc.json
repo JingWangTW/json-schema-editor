@@ -6,7 +6,9 @@
         "plugin:react/recommended",
         "plugin:@typescript-eslint/eslint-recommended",
         "plugin:@typescript-eslint/recommended",
-        "prettier/@typescript-eslint"
+        "plugin:json/recommended",
+        "prettier/@typescript-eslint",
+        "next/core-web-vitals"
     ],
     "parser": "@typescript-eslint/parser",
     "env": {
@@ -25,7 +27,8 @@
     "plugins": [
         "react",
         "@typescript-eslint",
-        "prettier"
+        "prettier",
+        "jest"
     ],
     "settings": {
         "react": {
