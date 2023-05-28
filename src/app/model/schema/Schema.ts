@@ -17,13 +17,13 @@ abstract class Schema<SchemaType extends ISchemaType, FieldType extends ISchemaE
     public recordField(fieldName: keyof FieldType, changeEvent: React.ChangeEvent<HTMLInputElement>): Required<FieldType> {
         switch (typeof this.currentField[fieldName]) {
             case "string":
-                this.currentField[fieldName] = (changeEvent.target.value.toString() as unknown) as FieldType[keyof FieldType];
+                this.currentField[fieldName] = changeEvent.target.value.toString() as unknown as FieldType[keyof FieldType];
                 break;
             case "boolean":
-                this.currentField[fieldName] = (changeEvent.target.checked as unknown) as FieldType[keyof FieldType];
+                this.currentField[fieldName] = changeEvent.target.checked as unknown as FieldType[keyof FieldType];
                 break;
             case "number":
-                this.currentField[fieldName] = (parseInt(changeEvent.target.value) as unknown) as FieldType[keyof FieldType];
+                this.currentField[fieldName] = parseInt(changeEvent.target.value) as unknown as FieldType[keyof FieldType];
                 break;
         }
 
@@ -106,7 +106,7 @@ abstract class Schema<SchemaType extends ISchemaType, FieldType extends ISchemaE
 
         // NaN === Nan get false
         if (typeof emptyValue === "number" && isNaN(emptyValue)) {
-            if (!isNaN((this.currentField[key] as unknown) as number)) {
+            if (!isNaN(this.currentField[key] as unknown as number)) {
                 temp[key] = this.currentField[key];
             }
         } else {
@@ -123,7 +123,7 @@ abstract class Schema<SchemaType extends ISchemaType, FieldType extends ISchemaE
     ): Partial<Record<K, SchemaType[K]>> {
         const temp: Partial<Record<K, SchemaType[K]>> = {};
 
-        const codeValueString = (this.currentField[key] as unknown) as CodeFieldValue;
+        const codeValueString = this.currentField[key] as unknown as CodeFieldValue;
 
         if (codeValueString.length === 0) return {};
 
