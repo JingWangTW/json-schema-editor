@@ -46,8 +46,10 @@
         "dev": "next dev",
         "build": "next build",
         "start": "next start",
-        "lint": "eslint . --ext .js,.jsx,.ts,.tsx --quiet",
-        "lint-fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
+        "format:check": "prettier --check .",
+        "format:write": "prettier --write .",
+        "lint": "eslint . --ext .js,.json --quiet",
+        "lint:fix": "eslint . --ext .js,.json --fix",
         "precommit": "lint-staged",
         "commit": "git-cz"
     },
@@ -64,9 +66,13 @@
         }
     },
     "lint-staged": {
-        "src/**/*.{js,ts,tsx,ts}": [
-            "eslint --fix \"src/**/*.{ts,tsx,js,jsx}\"",
-            "eslint \"src/**/*.{ts,tsx,js,jsx}\""
+        "{src,app,pages}/**/*.{js,ts,tsx,ts}": [
+            "prettier --write",
+            "eslint --fix",
+            "eslint"
+        ],
+        "*.{css,html}": [
+            "prettier --write"
         ]
     },
     "commitlint": {
