@@ -154,7 +154,7 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
                         <HintText ref={this.hintTextRef} />
 
                         <Form>
-                            <Form.Row>
+                            <Row>
                                 <Col lg={11}>
                                     <GenericField
                                         ref={this.genericFieldRef}
@@ -253,7 +253,7 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
                                         </Form.Group>
                                     </Form>
                                 </EditorOptionModal>
-                            </Form.Row>
+                            </Row>
                         </Form>
                     </Col>
                 </Row>

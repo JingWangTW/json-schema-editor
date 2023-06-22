@@ -93,7 +93,7 @@ class StringSchemaEditor extends SchemaEditor<IStringSchemaType, IStringEditorFi
                         <HintText ref={this.hintTextRef} />
 
                         <Form>
-                            <Form.Row>
+                            <Row>
                                 <Col lg={11}>
                                     <GenericField
                                         ref={this.genericFieldRef}
@@ -242,7 +242,7 @@ class StringSchemaEditor extends SchemaEditor<IStringSchemaType, IStringEditorFi
                                         />
                                     </Form>
                                 </EditorOptionModal>
-                            </Form.Row>
+                            </Row>
                         </Form>
                     </Col>
                 </Row>

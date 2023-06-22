@@ -92,7 +92,7 @@ class NumberSchemaEditor extends SchemaEditor<INumberSchemaType, INumberEditorFi
                         <HintText ref={this.hintTextRef} />
 
                         <Form>
-                            <Form.Row>
+                            <Row>
                                 <Col lg={11}>
                                     <GenericField
                                         ref={this.genericFieldRef}
@@ -222,7 +222,7 @@ class NumberSchemaEditor extends SchemaEditor<INumberSchemaType, INumberEditorFi
                                         />
                                     </Form>
                                 </EditorOptionModal>
-                            </Form.Row>
+                            </Row>
                         </Form>
                     </Col>
                 </Row>

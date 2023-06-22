@@ -57,7 +57,7 @@ class BooleanSchemaEditor extends SchemaEditor<IBooleanSchemaType, IBooleanEdito
 
                     <Col>
                         <Form>
-                            <Form.Row>
+                            <Row>
                                 <Col lg={11}>
                                     <GenericField
                                         ref={this.genericFieldRef}
@@ -140,7 +140,7 @@ class BooleanSchemaEditor extends SchemaEditor<IBooleanSchemaType, IBooleanEdito
                                         </Form.Group>
                                     </Form>
                                 </EditorOptionModal>
-                            </Form.Row>
+                            </Row>
                         </Form>
                     </Col>
                 </Row>

@@ -1,5 +1,3 @@
-import "../../index.css";
-
 import React from "react";
 import { Col, Form, InputGroup, Row } from "react-bootstrap";
 
@@ -123,7 +121,7 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectSchemaType, IObjectEditorFi
                         <HintText ref={this.hintTextRef} />
 
                         <Form>
-                            <Form.Row>
+                            <Row>
                                 <Col lg={11}>
                                     <GenericField
                                         ref={this.genericFieldRef}
@@ -208,7 +206,7 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectSchemaType, IObjectEditorFi
                                         </Form.Group>
                                     </Form>
                                 </EditorOptionModal>
-                            </Form.Row>
+                            </Row>
                         </Form>
                     </Col>
                 </Row>
