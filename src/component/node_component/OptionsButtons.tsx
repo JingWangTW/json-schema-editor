@@ -1,5 +1,3 @@
-import "../../index.css";
-
 import React from "react";
 import { Dropdown, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { AiOutlineSetting } from "react-icons/ai";

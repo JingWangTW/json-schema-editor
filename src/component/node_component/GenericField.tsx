@@ -1,5 +1,3 @@
-import "../../index.css";
-
 import React from "react";
 import { Accordion, Button, Col, Form, FormControl, InputGroup, Modal, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { AiOutlineDown } from "react-icons/ai";

@@ -1,11 +1,10 @@
-import "./index.css";
-
 import React from "react";
+
 import App from "../src/component/App";
 
 class Home extends React.Component {
     render(): JSX.Element {
-        return <App />
+        return <App />;
     }
 }
 
