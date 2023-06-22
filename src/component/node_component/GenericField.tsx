@@ -110,6 +110,7 @@ class GenericField extends React.Component<IGenericFieldProps<ISchemaType, IGene
 
                                     <Form.Control
                                         placeholder="items"
+                                        disabled={this.state.isNameFieldReadonly}
                                         readOnly={this.state.isNameFieldReadonly}
                                         value={this.state.currentField.name}
                                         onChange={this.changeName.bind(this)}
