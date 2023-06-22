@@ -1,5 +1,17 @@
 import React from "react";
-import { Accordion, Button, Col, Form, FormControl, InputGroup, Modal, OverlayTrigger, Row, Tooltip } from "react-bootstrap";
+import {
+    Accordion,
+    Button,
+    Col,
+    Form,
+    FormControl,
+    InputGroup,
+    Modal,
+    OverlayTrigger,
+    Row,
+    Tooltip,
+    useAccordionButton,
+} from "react-bootstrap";
 import { AiOutlineDown } from "react-icons/ai";
 import { TiPencil } from "react-icons/ti";
 
@@ -25,6 +37,16 @@ interface IGenericFieldState {
 
     isDescriptionModalShow: boolean;
     isCommentFieldShow: boolean;
+}
+
+function ToggleCommentButton({ eventKey }: { eventKey: string }): JSX.Element {
+    const decoratedOnClick = useAccordionButton(eventKey);
+
+    return (
+        <span onClick={decoratedOnClick}>
+            <AiOutlineDown color="blue" />
+        </span>
+    );
 }
 
 class GenericField extends React.Component<IGenericFieldProps<ISchemaType, IGenericField>, IGenericFieldState> {
@@ -169,14 +191,7 @@ class GenericField extends React.Component<IGenericFieldProps<ISchemaType, IGene
                         </Row>
                     </Col>
                     <Col lg="auto" style={{ cursor: "pointer" }}>
-                        <Accordion defaultActiveKey="0" className="node-option-block">
-                            <Accordion.Item eventKey="0">
-                                <Accordion.Header>Accordion Item #1</Accordion.Header>
-                                <Accordion.Body>
-                                    <AiOutlineDown color="blue" />
-                                </Accordion.Body>
-                            </Accordion.Item>
-                        </Accordion>
+                        <ToggleCommentButton eventKey="0" />
                     </Col>
                 </Row>
             </Accordion>
