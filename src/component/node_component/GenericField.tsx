@@ -106,8 +106,7 @@ class GenericField extends React.Component<IGenericFieldProps<ISchemaType, IGene
                                 </InputGroup>
                             </Col>
                             <Col lg={1} className="pe-1">
-                                <Form.Control
-                                    as="select"
+                                <Form.Select
                                     placeholder="DataType"
                                     onChange={this.changeType.bind(this)}
                                     value={this.state.currentField.type}
@@ -119,7 +118,7 @@ class GenericField extends React.Component<IGenericFieldProps<ISchemaType, IGene
                                     <option value={DataType.Number}>Number</option>
                                     <option value={DataType.Null}>Null</option>
                                     <option value={DataType.Boolean}>Boolean</option>
-                                </Form.Control>
+                                </Form.Select>
                             </Col>
                             <Col lg={4} className="pe-1">
                                 <Form.Control

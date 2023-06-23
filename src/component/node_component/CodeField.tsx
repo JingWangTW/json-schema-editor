@@ -42,11 +42,10 @@ class CodeField extends React.Component<CodeFieldProps, CodeFieldState> {
                     }}
                     value={this.props.value}
                 />
-                <InputGroup.Append>
-                    <Button variant="outline-primary" onClick={this.setDisplayCodeModal.bind(this, true)}>
-                        <TiPencil />
-                    </Button>
-                </InputGroup.Append>
+
+                <Button variant="outline-primary" onClick={this.setDisplayCodeModal.bind(this, true)}>
+                    <TiPencil />
+                </Button>
                 <Modal
                     onHide={this.setDisplayCodeModal.bind(this, false)}
                     show={this.state.isShowModal}
