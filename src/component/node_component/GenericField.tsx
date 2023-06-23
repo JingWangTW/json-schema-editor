@@ -1,17 +1,5 @@
 import React from "react";
-import {
-    Accordion,
-    Button,
-    Col,
-    Form,
-    FormControl,
-    InputGroup,
-    Modal,
-    OverlayTrigger,
-    Row,
-    Tooltip,
-    useAccordionButton,
-} from "react-bootstrap";
+import { Accordion, Button, Col, Form, InputGroup, Modal, OverlayTrigger, Row, Tooltip, useAccordionButton } from "react-bootstrap";
 import { AiOutlineDown } from "react-icons/ai";
 import { TiPencil } from "react-icons/ti";
 
@@ -98,7 +86,7 @@ class GenericField extends React.Component<IGenericFieldProps<ISchemaType, IGene
                 <Row>
                     <Col>
                         <Row>
-                            <Col lg={3}>
+                            <Col lg={3} className="pe-1">
                                 <InputGroup>
                                     <OverlayTrigger trigger={["hover", "focus"]} overlay={<Tooltip id="add-tooltip"> Required </Tooltip>}>
                                         <InputGroup.Checkbox
@@ -117,7 +105,7 @@ class GenericField extends React.Component<IGenericFieldProps<ISchemaType, IGene
                                     />
                                 </InputGroup>
                             </Col>
-                            <Col lg={1}>
+                            <Col lg={1} className="pe-1">
                                 <Form.Control
                                     as="select"
                                     placeholder="DataType"
@@ -133,16 +121,16 @@ class GenericField extends React.Component<IGenericFieldProps<ISchemaType, IGene
                                     <option value={DataType.Boolean}>Boolean</option>
                                 </Form.Control>
                             </Col>
-                            <Col lg={4}>
+                            <Col lg={4} className="pe-1">
                                 <Form.Control
                                     placeholder="Titile"
                                     value={this.state.currentField.title}
                                     onChange={this.recordField.bind(this, "title")}
                                 />
                             </Col>
-                            <Col lg={4}>
+                            <Col lg={4} className="pe-1">
                                 <InputGroup>
-                                    <FormControl
+                                    <Form.Control
                                         type="text"
                                         id="Description"
                                         placeholder="Description"
@@ -150,11 +138,9 @@ class GenericField extends React.Component<IGenericFieldProps<ISchemaType, IGene
                                         onChange={this.recordField.bind(this, "description")}
                                     />
                                     <OverlayTrigger trigger={["hover", "focus"]} overlay={<Tooltip id="add-tooltip"> Edit </Tooltip>}>
-                                        <InputGroup>
-                                            <Button variant="outline-primary" onClick={this.setDisplayDescriptionModal.bind(this, true)}>
-                                                <TiPencil />
-                                            </Button>
-                                        </InputGroup>
+                                        <Button variant="outline-primary" onClick={this.setDisplayDescriptionModal.bind(this, true)}>
+                                            <TiPencil />
+                                        </Button>
                                     </OverlayTrigger>
                                 </InputGroup>
 
