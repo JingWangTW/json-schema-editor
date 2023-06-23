@@ -31,7 +31,7 @@ function ToggleCommentButton({ eventKey }: { eventKey: string }): JSX.Element {
     const decoratedOnClick = useAccordionButton(eventKey);
 
     return (
-        <span onClick={decoratedOnClick}>
+        <span onClick={decoratedOnClick} className="node-option-block">
             <AiOutlineDown color="blue" />
         </span>
     );
@@ -84,7 +84,7 @@ class GenericField extends React.Component<IGenericFieldProps<ISchemaType, IGene
         return (
             <Accordion>
                 <Row>
-                    <Col>
+                    <Col className="pe-0">
                         <Row>
                             <Col lg={3} className="pe-1">
                                 <InputGroup>
@@ -127,7 +127,7 @@ class GenericField extends React.Component<IGenericFieldProps<ISchemaType, IGene
                                     onChange={this.recordField.bind(this, "title")}
                                 />
                             </Col>
-                            <Col lg={4} className="pe-1">
+                            <Col lg={4} className="pe-3">
                                 <InputGroup>
                                     <Form.Control
                                         type="text"
