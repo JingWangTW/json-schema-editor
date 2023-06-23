@@ -59,10 +59,10 @@ class GenericField extends React.Component<IGenericFieldProps<ISchemaType, IGene
         this.setState({ currentField });
     }
 
-    changeType(changeEvent: React.ChangeEvent<HTMLInputElement>): void {
+    changeType(changeEvent: React.ChangeEvent<HTMLSelectElement>): void {
         changeEvent.preventDefault();
 
-        const newType = changeEvent.target.value as DataType;
+        const newType = changeEvent.currentTarget.value as DataType;
 
         if (Object.values(DataType).includes(newType)) {
             this.props.changeType(newType);
