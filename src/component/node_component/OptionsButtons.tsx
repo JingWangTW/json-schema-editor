@@ -62,7 +62,7 @@ function NodeOptionsButtons(props: INodeOptionsButtonsProps): JSX.Element {
 
             {props.buttonOptions.hasChild !== props.buttonOptions.hasSibling && (
                 <div className="node-option-btn-block" onClick={props.buttonOptions.hasChild ? props.addChild : props.addSibling}>
-                    <OverlayTrigger trigger={["hover", "focus"]} overlay={<Tooltip id={addToolTipId}> Add </Tooltip>}>
+                    <OverlayTrigger overlay={<Tooltip id={addToolTipId}> Add </Tooltip>}>
                         <span>
                             <FaPlus color="green" />
                         </span>
@@ -72,7 +72,7 @@ function NodeOptionsButtons(props: INodeOptionsButtonsProps): JSX.Element {
 
             {props.buttonOptions.isDeleteable && (
                 <div className="node-option-btn-block" onClick={props.delete}>
-                    <OverlayTrigger trigger={["hover", "focus"]} overlay={<Tooltip id="delete-tooltip"> Delete </Tooltip>}>
+                    <OverlayTrigger overlay={<Tooltip id="delete-tooltip"> Delete </Tooltip>}>
                         <span>
                             <FaRegTrashAlt color="red" />
                         </span>
@@ -82,7 +82,7 @@ function NodeOptionsButtons(props: INodeOptionsButtonsProps): JSX.Element {
 
             {props.buttonOptions.isOptionExist && (
                 <div className="node-option-btn-block" onClick={props.showOptionModal}>
-                    <OverlayTrigger trigger={["hover", "focus"]} overlay={<Tooltip id="option-tooltip"> Option </Tooltip>}>
+                    <OverlayTrigger overlay={<Tooltip id="option-tooltip"> Option </Tooltip>}>
                         <span>
                             <AiOutlineSetting />
                         </span>

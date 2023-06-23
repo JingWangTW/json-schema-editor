@@ -9,18 +9,16 @@ interface IInstructionIconProps {
 }
 
 class InstructionIcon extends React.Component<IInstructionIconProps, EmptyState> {
-    renderText(props: unknown): JSX.Element {
-        return (
-            <Tooltip id="button-tooltip" {...props}>
-                {this.props.text}
-            </Tooltip>
-        );
-    }
-
     render(): JSX.Element {
         return (
-            <OverlayTrigger placement="auto" delay={{ show: 250, hide: 400 }} overlay={this.renderText.bind(this)}>
-                <AiOutlineQuestionCircle />
+            <OverlayTrigger
+                placement="auto"
+                delay={{ show: 250, hide: 400 }}
+                overlay={<Tooltip id="button-tooltip">{this.props.text}</Tooltip>}
+            >
+                <span>
+                    <AiOutlineQuestionCircle />
+                </span>
             </OverlayTrigger>
         );
     }

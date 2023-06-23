@@ -88,12 +88,14 @@ class GenericField extends React.Component<IGenericFieldProps<ISchemaType, IGene
                         <Row>
                             <Col lg={3} className="pe-1">
                                 <InputGroup>
-                                    <OverlayTrigger trigger={["hover", "focus"]} overlay={<Tooltip id="add-tooltip"> Required </Tooltip>}>
-                                        <InputGroup.Checkbox
-                                            checked={this.state.currentField.required}
-                                            disabled={this.state.isRequiredFieldReadonly}
-                                            onChange={this.recordField.bind(this, "required")}
-                                        />
+                                    <OverlayTrigger overlay={<Tooltip id="add-tooltip"> Required </Tooltip>}>
+                                        <span>
+                                            <InputGroup.Checkbox
+                                                checked={this.state.currentField.required}
+                                                disabled={this.state.isRequiredFieldReadonly}
+                                                onChange={this.recordField.bind(this, "required")}
+                                            />
+                                        </span>
                                     </OverlayTrigger>
 
                                     <Form.Control
@@ -136,7 +138,7 @@ class GenericField extends React.Component<IGenericFieldProps<ISchemaType, IGene
                                         value={this.state.currentField.description}
                                         onChange={this.recordField.bind(this, "description")}
                                     />
-                                    <OverlayTrigger trigger={["hover", "focus"]} overlay={<Tooltip id="add-tooltip"> Edit </Tooltip>}>
+                                    <OverlayTrigger overlay={<Tooltip id="add-tooltip"> Edit </Tooltip>}>
                                         <Button variant="outline-primary" onClick={this.setDisplayDescriptionModal.bind(this, true)}>
                                             <TiPencil />
                                         </Button>
