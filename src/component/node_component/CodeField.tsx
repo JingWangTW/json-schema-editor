@@ -1,6 +1,6 @@
 import React from "react";
 import AceEditor from "react-ace";
-import { Button, Form, FormControl, InputGroup, Modal } from "react-bootstrap";
+import { Button, Form, InputGroup, Modal } from "react-bootstrap";
 import { TiPencil } from "react-icons/ti";
 
 import { CodeFieldValue } from "./type_NodeComponent";
@@ -34,8 +34,8 @@ class CodeField extends React.Component<CodeFieldProps, CodeFieldState> {
 
     render(): JSX.Element {
         return (
-            <>
-                <FormControl
+            <InputGroup>
+                <Form.Control
                     type="text"
                     onChange={(e): void => {
                         this.props.update(e.target.value as CodeFieldValue);
@@ -84,7 +84,7 @@ class CodeField extends React.Component<CodeFieldProps, CodeFieldState> {
                         </Form.Group>
                     </Modal.Body>
                 </Modal>
-            </>
+            </InputGroup>
         );
     }
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import { Col, Form, InputGroup, Row } from "react-bootstrap";
+import { Col, Form, Row } from "react-bootstrap";
 
 import ArraySchema from "../../model/schema/ArraySchema";
 import { IArraySchemaType } from "../../model/schema/type_schema";
@@ -213,13 +213,11 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
                                                 <InstructionIcon text="An array instance would be valid if its value is equal to this keyword." />
                                             </Form.Label>
                                             <Col lg="10">
-                                                <InputGroup>
-                                                    <CodeField
-                                                        title="Array constant"
-                                                        value={this.state.currentField.const}
-                                                        update={this.recordCode.bind(this, "const")}
-                                                    />
-                                                </InputGroup>
+                                                <CodeField
+                                                    title="Array constant"
+                                                    value={this.state.currentField.const}
+                                                    update={this.recordCode.bind(this, "const")}
+                                                />
                                             </Col>
                                         </Form.Group>
                                         <Form.Group as={Row}>
@@ -228,13 +226,11 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
                                                 <InstructionIcon text="This keyword can be used to supply a default JSON value associated with this array schema." />
                                             </Form.Label>
                                             <Col lg="10">
-                                                <InputGroup>
-                                                    <CodeField
-                                                        title="Array default"
-                                                        value={this.state.currentField.default}
-                                                        update={this.recordCode.bind(this, "default")}
-                                                    />
-                                                </InputGroup>
+                                                <CodeField
+                                                    title="Array default"
+                                                    value={this.state.currentField.default}
+                                                    update={this.recordCode.bind(this, "default")}
+                                                />
                                             </Col>
                                         </Form.Group>
                                         <Form.Group>
