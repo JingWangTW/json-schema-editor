@@ -88,9 +88,7 @@ class BooleanSchemaEditor extends SchemaEditor<IBooleanSchemaType, IBooleanEdito
                                                 <InstructionIcon text="This keyword can be used to supply a default boolean value associated with this boolean schema." />
                                             </Form.Label>
                                             <Col lg={4}>
-                                                <Form.Control
-                                                    as="select"
-                                                    custom
+                                                <Form.Select
                                                     onChange={this.recordField.bind(this, "default")}
                                                     value={
                                                         this.state.currentField.default === undefined
@@ -108,16 +106,14 @@ class BooleanSchemaEditor extends SchemaEditor<IBooleanSchemaType, IBooleanEdito
                                                     </option>
                                                     <option value={"true"}>True</option>
                                                     <option value={"false"}>False</option>
-                                                </Form.Control>
+                                                </Form.Select>
                                             </Col>
                                             <Form.Label column lg="2" htmlFor="const">
                                                 Constant
                                                 <InstructionIcon text="A boolean instance would be valid if its value is equal to this keyword." />
                                             </Form.Label>
                                             <Col lg={4}>
-                                                <Form.Control
-                                                    as="select"
-                                                    custom
+                                                <Form.Select
                                                     onChange={this.recordField.bind(this, "const")}
                                                     value={
                                                         this.state.currentField.const === undefined
@@ -135,7 +131,7 @@ class BooleanSchemaEditor extends SchemaEditor<IBooleanSchemaType, IBooleanEdito
                                                     </option>
                                                     <option value={"true"}>True</option>
                                                     <option value={"false"}>False</option>
-                                                </Form.Control>
+                                                </Form.Select>
                                             </Col>
                                         </Form.Group>
                                     </Form>
