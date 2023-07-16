@@ -1,4 +1,5 @@
 /*dropdown button for comment block*/
+
 span.node-option-block {
     display: inline-flex;
     height: 100%;
@@ -27,7 +28,11 @@ span.required-checkbox-wrapper {
 }
 
 /* Hacked to have the same style as have no previous */
-span.required-checkbox-wrapper > span.input-group-text{
+span.required-checkbox-wrapper > span.input-group-text {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
+}
+
+div.editor-option-modal-body div.row:not(:first-child) {
+    margin-top: 14px;
 }

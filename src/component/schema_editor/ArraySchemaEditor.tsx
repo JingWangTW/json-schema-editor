@@ -233,19 +233,21 @@ class ArraySchemaEditor extends SchemaEditor<IArraySchemaType, IArrayEditorField
                                                 />
                                             </Col>
                                         </Form.Group>
-                                        <Form.Group>
-                                            <Form.Check type="checkbox" id="uniqueCheckbox">
-                                                <Form.Check.Input
-                                                    type="checkbox"
-                                                    checked={this.state.currentField.uniqueItems}
-                                                    onChange={this.recordField.bind(this, "uniqueItems")}
-                                                />
+                                        <Form.Group as={Row}>
+                                            <Col log="12">
+                                                <Form.Check type="checkbox" id="uniqueCheckbox">
+                                                    <Form.Check.Input
+                                                        type="checkbox"
+                                                        checked={this.state.currentField.uniqueItems}
+                                                        onChange={this.recordField.bind(this, "uniqueItems")}
+                                                    />
 
-                                                <Form.Check.Label>
-                                                    Unique Items
-                                                    <InstructionIcon text="If checked, an array instance validates successfully if all of its elements are unique." />
-                                                </Form.Check.Label>
-                                            </Form.Check>
+                                                    <Form.Check.Label>
+                                                        Unique Items
+                                                        <InstructionIcon text="If checked, an array instance validates successfully if all of its elements are unique." />
+                                                    </Form.Check.Label>
+                                                </Form.Check>
+                                            </Col>
                                         </Form.Group>
                                     </Form>
                                 </EditorOptionModal>

@@ -35,7 +35,7 @@ class EditorOptionModal extends React.Component<PropsWithChildren<EditorOptionMo
                 <Modal.Header closeButton>
                     <Modal.Title id="option-modal">Advanced Options</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>{this.props.children}</Modal.Body>
+                <Modal.Body className="editor-option-modal-body">{this.props.children}</Modal.Body>
                 <Modal.Footer>
                     <Button variant="outline-secondary" onClick={this.props.clearOptionFieldForm}>
                         Clear

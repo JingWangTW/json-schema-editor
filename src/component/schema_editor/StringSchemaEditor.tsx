@@ -232,14 +232,18 @@ class StringSchemaEditor extends SchemaEditor<IStringSchemaType, IStringEditorFi
                                             </Col>
                                         </Form.Group>
 
-                                        <EnumField
-                                            type="text"
-                                            width={10}
-                                            value={this.state.currentField.enum}
-                                            add={(): void => this.updateEnum()}
-                                            update={this.updateEnum.bind(this)}
-                                            delete={(index: number): void => this.updateEnum(index)}
-                                        />
+                                        <Form.Group as={Row} contolId="enum">
+                                            <Col lg="12">
+                                                <EnumField
+                                                    type="text"
+                                                    width={10}
+                                                    value={this.state.currentField.enum}
+                                                    add={(): void => this.updateEnum()}
+                                                    update={this.updateEnum.bind(this)}
+                                                    delete={(index: number): void => this.updateEnum(index)}
+                                                />
+                                            </Col>
+                                        </Form.Group>
                                     </Form>
                                 </EditorOptionModal>
                             </Row>
