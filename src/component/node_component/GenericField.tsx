@@ -89,7 +89,8 @@ class GenericField extends React.Component<IGenericFieldProps<ISchemaType, IGene
                             <Col lg={3} className="pe-1">
                                 <InputGroup>
                                     <OverlayTrigger overlay={<Tooltip id="add-tooltip"> Required </Tooltip>}>
-                                        <span>
+                                        {/*  triggering components must be able to accept a ref since <OverlayTrigger> will attempt to add one.  */}
+                                        <span style={{ display: "flex" }} className="required-checkbox-wrapper">
                                             <InputGroup.Checkbox
                                                 checked={this.state.currentField.required}
                                                 disabled={this.state.isRequiredFieldReadonly}

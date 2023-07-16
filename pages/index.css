@@ -20,3 +20,14 @@ div.col-option-form-value {
     display: flex;
     align-items: center;
 }
+
+/* Hacked to act liked a dummy DOM. */
+span.required-checkbox-wrapper {
+    display: flex;
+}
+
+/* Hacked to have the same style as have no previous */
+span.required-checkbox-wrapper > span.input-group-text{
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
