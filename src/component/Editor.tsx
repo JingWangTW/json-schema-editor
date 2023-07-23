@@ -1,6 +1,5 @@
 import Ajv from "ajv";
-import draft_04_meta from "ajv-draft-04/src/refs/json-schema-draft-04.json";
-import draft_06_meta from "ajv/lib/refs/json-schema-draft-06.json";
+import draft_06_meta from "ajv/dist/refs/json-schema-draft-06.json";
 import React from "react";
 import { Button, Toast } from "react-bootstrap";
 
@@ -41,15 +40,14 @@ class Editor extends React.Component<EmptyProps, IEditorState> {
                 const text = await event.target.files[0].text();
                 const schema = JSON.parse(text);
 
-                const validator = new Ajv({ schemaId: "auto" });
-                validator.addMetaSchema(draft_04_meta);
+                const validator = new Ajv();
                 validator.addMetaSchema(draft_06_meta);
 
                 const result = validator.validateSchema(schema);
 
                 if (!result) {
                     this.setState({
-                        error: "Parsing Schema Error! We only support draft-04/06/07",
+                        error: "Parsing Schema Error! We only support draft-06/07",
                     });
                 } else {
                     this.rootSchemaEditorKey = NextId.next("key").toString();
