@@ -1,7 +1,5 @@
-import "../../index.css";
-
 import React from "react";
-import { Col, Form, InputGroup, Row } from "react-bootstrap";
+import { Col, Form, Row } from "react-bootstrap";
 
 import ObjectSchema from "../../model/schema/ObjectSchema";
 import { IObjectSchemaType } from "../../model/schema/type_schema";
@@ -123,7 +121,7 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectSchemaType, IObjectEditorFi
                         <HintText ref={this.hintTextRef} />
 
                         <Form>
-                            <Form.Row>
+                            <Row>
                                 <Col lg={11}>
                                     <GenericField
                                         ref={this.genericFieldRef}
@@ -182,13 +180,11 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectSchemaType, IObjectEditorFi
                                                 <InstructionIcon text="An object instance would be valid if its value is equal to this keyword." />
                                             </Form.Label>
                                             <Col lg="10">
-                                                <InputGroup>
-                                                    <CodeField
-                                                        title="Object constant"
-                                                        value={this.state.currentField.const}
-                                                        update={this.recordCode.bind(this, "const")}
-                                                    />
-                                                </InputGroup>
+                                                <CodeField
+                                                    title="Object constant"
+                                                    value={this.state.currentField.const}
+                                                    update={this.recordCode.bind(this, "const")}
+                                                />
                                             </Col>
                                         </Form.Group>
                                         <Form.Group as={Row}>
@@ -197,18 +193,16 @@ class ObjectSchemaEditor extends SchemaEditor<IObjectSchemaType, IObjectEditorFi
                                                 <InstructionIcon text="This keyword can be used to supply a default JSON value associated with this object schema" />
                                             </Form.Label>
                                             <Col lg="10">
-                                                <InputGroup>
-                                                    <CodeField
-                                                        title="Object default"
-                                                        value={this.state.currentField.default}
-                                                        update={this.recordCode.bind(this, "default")}
-                                                    />
-                                                </InputGroup>
+                                                <CodeField
+                                                    title="Object default"
+                                                    value={this.state.currentField.default}
+                                                    update={this.recordCode.bind(this, "default")}
+                                                />
                                             </Col>
                                         </Form.Group>
                                     </Form>
                                 </EditorOptionModal>
-                            </Form.Row>
+                            </Row>
                         </Form>
                     </Col>
                 </Row>

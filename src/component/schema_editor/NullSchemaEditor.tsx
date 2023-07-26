@@ -53,7 +53,7 @@ class NullSchemaEditor extends SchemaEditor<INullSchemaType, INullEditorField> {
 
                     <Col>
                         <Form>
-                            <Form.Row>
+                            <Row>
                                 <Col lg={11}>
                                     <GenericField
                                         ref={this.genericFieldRef}
@@ -72,7 +72,7 @@ class NullSchemaEditor extends SchemaEditor<INullSchemaType, INullEditorField> {
                                         showOptionModal={this.showOptionModal.bind(this, true)}
                                     />
                                 </Col>
-                            </Form.Row>
+                            </Row>
                         </Form>
                     </Col>
                 </Row>

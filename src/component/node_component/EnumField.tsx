@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Col, Form, FormControl, InputGroup, Row } from "react-bootstrap";
+import { Button, Col, Form, InputGroup, Row } from "react-bootstrap";
 import { FaMinus, FaPlus } from "react-icons/fa";
 
 import { EmptyState } from "../type_component";
@@ -35,36 +35,30 @@ class EnumField<T extends string | number> extends React.Component<EnumFieldProp
                             <Col lg={this.props.width}>
                                 {index === this.props.value.length - 1 ? (
                                     <InputGroup>
-                                        <FormControl
+                                        <Form.Control
                                             type={this.props.type}
                                             id={index.toString()}
                                             onChange={this.props.update.bind(this, index)}
                                             value={enumeration}
                                         />
-                                        <InputGroup.Append>
-                                            <Button variant="outline-danger" onClick={this.props.delete.bind(this, index)}>
-                                                <FaMinus />
-                                            </Button>
-                                        </InputGroup.Append>
-                                        <InputGroup.Append>
-                                            <Button variant="outline-success" onClick={this.props.add}>
-                                                <FaPlus />
-                                            </Button>
-                                        </InputGroup.Append>
+                                        <Button variant="outline-danger" onClick={this.props.delete.bind(this, index)}>
+                                            <FaMinus />
+                                        </Button>
+                                        <Button variant="outline-success" onClick={this.props.add}>
+                                            <FaPlus />
+                                        </Button>
                                     </InputGroup>
                                 ) : (
                                     <InputGroup>
-                                        <FormControl
+                                        <Form.Control
                                             type={this.props.type}
                                             id={index.toString()}
                                             onChange={this.props.update.bind(this, index)}
                                             value={enumeration}
                                         />
-                                        <InputGroup.Append>
-                                            <Button variant="outline-danger" onClick={this.props.delete.bind(this, index)}>
-                                                <FaMinus />
-                                            </Button>
-                                        </InputGroup.Append>
+                                        <Button variant="outline-danger" onClick={this.props.delete.bind(this, index)}>
+                                            <FaMinus />
+                                        </Button>
                                     </InputGroup>
                                 )}
                             </Col>

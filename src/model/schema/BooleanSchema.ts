@@ -54,7 +54,7 @@ class BooleanSchema extends Schema<IBooleanSchemaType, IBooleanEditorField> {
 
     @CloneReturnValue
     clearOptionField(): Required<IBooleanEditorField> {
-        this.currentField.default = (undefined as unknown) as boolean;
+        this.currentField.default = undefined as unknown as boolean;
 
         return this.currentField;
     }
@@ -64,8 +64,8 @@ class BooleanSchema extends Schema<IBooleanSchemaType, IBooleanEditorField> {
 
         const genericSchema: IGenericSchemaType = this.getGenericSchemaFromField(this.currentField);
 
-        const defaultValue = this.exportSchemaWithoutUndefined("default", (undefined as unknown) as boolean);
-        const constValue = this.exportSchemaWithoutUndefined("const", (undefined as unknown) as boolean);
+        const defaultValue = this.exportSchemaWithoutUndefined("default", undefined as unknown as boolean);
+        const constValue = this.exportSchemaWithoutUndefined("const", undefined as unknown as boolean);
 
         return {
             type,

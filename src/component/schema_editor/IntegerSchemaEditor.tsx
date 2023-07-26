@@ -92,7 +92,7 @@ class IntegerSchemaEditor extends SchemaEditor<IIntegerSchemaType, IIntegerEdito
                         <HintText ref={this.hintTextRef} />
 
                         <Form>
-                            <Form.Row>
+                            <Row>
                                 <Col lg={11}>
                                     <GenericField
                                         ref={this.genericFieldRef}
@@ -212,17 +212,21 @@ class IntegerSchemaEditor extends SchemaEditor<IIntegerSchemaType, IIntegerEdito
                                             </Col>
                                         </Form.Group>
 
-                                        <EnumField
-                                            width={4}
-                                            type="number"
-                                            value={this.state.currentField.enum}
-                                            add={(): void => this.updateEnum()}
-                                            update={this.updateEnum.bind(this)}
-                                            delete={(index: number): void => this.updateEnum(index)}
-                                        />
+                                        <Form.Group as={Row} contolId="enum">
+                                            <Col lg="12">
+                                                <EnumField
+                                                    width={4}
+                                                    type="number"
+                                                    value={this.state.currentField.enum}
+                                                    add={(): void => this.updateEnum()}
+                                                    update={this.updateEnum.bind(this)}
+                                                    delete={(index: number): void => this.updateEnum(index)}
+                                                />
+                                            </Col>
+                                        </Form.Group>
                                     </Form>
                                 </EditorOptionModal>
-                            </Form.Row>
+                            </Row>
                         </Form>
                     </Col>
                 </Row>

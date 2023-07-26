@@ -1,12 +1,13 @@
+import "@uiw/react-textarea-code-editor/dist.css";
+
+import dynamic from "next/dynamic";
 import React from "react";
-import AceEditor from "react-ace";
-import { Button, Form, FormControl, InputGroup, Modal } from "react-bootstrap";
+import { Button, Form, InputGroup, Modal } from "react-bootstrap";
 import { TiPencil } from "react-icons/ti";
 
 import { CodeFieldValue } from "./type_NodeComponent";
 
-require("ace-builds/src-noconflict/mode-json");
-require("ace-builds/src-noconflict/theme-terminal");
+const CodeEditor = dynamic(() => import("@uiw/react-textarea-code-editor").then(mod => mod.default), { ssr: false });
 
 interface CodeFieldProps {
     title: string;
@@ -34,19 +35,18 @@ class CodeField extends React.Component<CodeFieldProps, CodeFieldState> {
 
     render(): JSX.Element {
         return (
-            <>
-                <FormControl
+            <InputGroup>
+                <Form.Control
                     type="text"
                     onChange={(e): void => {
                         this.props.update(e.target.value as CodeFieldValue);
                     }}
                     value={this.props.value}
                 />
-                <InputGroup.Append>
-                    <Button variant="outline-primary" onClick={this.setDisplayCodeModal.bind(this, true)}>
-                        <TiPencil />
-                    </Button>
-                </InputGroup.Append>
+
+                <Button variant="outline-primary" onClick={this.setDisplayCodeModal.bind(this, true)}>
+                    <TiPencil />
+                </Button>
                 <Modal
                     onHide={this.setDisplayCodeModal.bind(this, false)}
                     show={this.state.isShowModal}
@@ -60,7 +60,23 @@ class CodeField extends React.Component<CodeFieldProps, CodeFieldState> {
 
                     <Modal.Body>
                         <Form.Group>
-                            <AceEditor
+                            <CodeEditor
+                                value={this.props.value}
+                                language="json"
+                                placeholder="Please enter JSON here."
+                                onChange={(e): void => {
+                                    this.props.update(e.target.value as CodeFieldValue);
+                                }}
+                                padding={15}
+                                style={{
+                                    fontSize: 12,
+                                    backgroundColor: "#f5f5f5",
+                                    fontFamily:
+                                        "'Courier New',ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace",
+                                }}
+                                data-color-mode="dark"
+                            />
+                            {/* <AceEditor
                                 placeholder="Placeholder Text"
                                 width="100%"
                                 mode="json"
@@ -81,11 +97,11 @@ class CodeField extends React.Component<CodeFieldProps, CodeFieldState> {
                                     showLineNumbers: true,
                                     tabSize: 4,
                                 }}
-                            />
+                            /> */}
                         </Form.Group>
                     </Modal.Body>
                 </Modal>
-            </>
+            </InputGroup>
         );
     }
 }

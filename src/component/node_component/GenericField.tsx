@@ -1,7 +1,5 @@
-import "../../index.css";
-
 import React from "react";
-import { Accordion, Button, Col, Form, FormControl, InputGroup, Modal, OverlayTrigger, Tooltip } from "react-bootstrap";
+import { Accordion, Button, Col, Form, InputGroup, Modal, OverlayTrigger, Row, Tooltip, useAccordionButton } from "react-bootstrap";
 import { AiOutlineDown } from "react-icons/ai";
 import { TiPencil } from "react-icons/ti";
 
@@ -29,6 +27,16 @@ interface IGenericFieldState {
     isCommentFieldShow: boolean;
 }
 
+function ToggleCommentButton({ eventKey }: { eventKey: string }): JSX.Element {
+    const decoratedOnClick = useAccordionButton(eventKey);
+
+    return (
+        <span onClick={decoratedOnClick} className="node-option-block">
+            <AiOutlineDown color="blue" />
+        </span>
+    );
+}
+
 class GenericField extends React.Component<IGenericFieldProps<ISchemaType, IGenericField>, IGenericFieldState> {
     constructor(props: IGenericFieldProps<ISchemaType, IGenericField>) {
         super(props);
@@ -54,7 +62,7 @@ class GenericField extends React.Component<IGenericFieldProps<ISchemaType, IGene
     changeType(changeEvent: React.ChangeEvent<HTMLSelectElement>): void {
         changeEvent.preventDefault();
 
-        const newType = changeEvent.target.value as DataType;
+        const newType = changeEvent.currentTarget.value as DataType;
 
         if (Object.values(DataType).includes(newType)) {
             this.props.changeType(newType);
@@ -75,33 +83,33 @@ class GenericField extends React.Component<IGenericFieldProps<ISchemaType, IGene
     render(): JSX.Element {
         return (
             <Accordion>
-                <Form.Row>
-                    <Col>
-                        <Form.Row>
-                            <Col lg={3}>
+                <Row>
+                    <Col className="pe-0">
+                        <Row>
+                            <Col lg={3} className="pe-1">
                                 <InputGroup>
-                                    <OverlayTrigger trigger={["hover", "focus"]} overlay={<Tooltip id="add-tooltip"> Required </Tooltip>}>
-                                        <InputGroup.Prepend>
+                                    <OverlayTrigger overlay={<Tooltip id="add-tooltip"> Required </Tooltip>}>
+                                        {/*  triggering components must be able to accept a ref since <OverlayTrigger> will attempt to add one.  */}
+                                        <span style={{ display: "flex" }} className="required-checkbox-wrapper">
                                             <InputGroup.Checkbox
                                                 checked={this.state.currentField.required}
                                                 disabled={this.state.isRequiredFieldReadonly}
                                                 onChange={this.recordField.bind(this, "required")}
                                             />
-                                        </InputGroup.Prepend>
+                                        </span>
                                     </OverlayTrigger>
 
                                     <Form.Control
                                         placeholder="items"
+                                        disabled={this.state.isNameFieldReadonly}
                                         readOnly={this.state.isNameFieldReadonly}
                                         value={this.state.currentField.name}
                                         onChange={this.changeName.bind(this)}
                                     />
                                 </InputGroup>
                             </Col>
-                            <Col lg={1}>
-                                <Form.Control
-                                    as="select"
-                                    custom
+                            <Col lg={1} className="pe-1">
+                                <Form.Select
                                     placeholder="DataType"
                                     onChange={this.changeType.bind(this)}
                                     value={this.state.currentField.type}
@@ -113,30 +121,28 @@ class GenericField extends React.Component<IGenericFieldProps<ISchemaType, IGene
                                     <option value={DataType.Number}>Number</option>
                                     <option value={DataType.Null}>Null</option>
                                     <option value={DataType.Boolean}>Boolean</option>
-                                </Form.Control>
+                                </Form.Select>
                             </Col>
-                            <Col lg={4}>
+                            <Col lg={4} className="pe-1">
                                 <Form.Control
                                     placeholder="Titile"
                                     value={this.state.currentField.title}
                                     onChange={this.recordField.bind(this, "title")}
                                 />
                             </Col>
-                            <Col lg={4}>
+                            <Col lg={4} className="pe-3">
                                 <InputGroup>
-                                    <FormControl
+                                    <Form.Control
                                         type="text"
                                         id="Description"
                                         placeholder="Description"
                                         value={this.state.currentField.description}
                                         onChange={this.recordField.bind(this, "description")}
                                     />
-                                    <OverlayTrigger trigger={["hover", "focus"]} overlay={<Tooltip id="add-tooltip"> Edit </Tooltip>}>
-                                        <InputGroup.Append>
-                                            <Button variant="outline-primary" onClick={this.setDisplayDescriptionModal.bind(this, true)}>
-                                                <TiPencil />
-                                            </Button>
-                                        </InputGroup.Append>
+                                    <OverlayTrigger overlay={<Tooltip id="add-tooltip"> Edit </Tooltip>}>
+                                        <Button variant="outline-primary" onClick={this.setDisplayDescriptionModal.bind(this, true)}>
+                                            <TiPencil />
+                                        </Button>
                                     </OverlayTrigger>
                                 </InputGroup>
 
@@ -171,14 +177,12 @@ class GenericField extends React.Component<IGenericFieldProps<ISchemaType, IGene
                                     />
                                 </Accordion.Collapse>
                             </Col>
-                        </Form.Row>
+                        </Row>
                     </Col>
                     <Col lg="auto" style={{ cursor: "pointer" }}>
-                        <Accordion.Toggle eventKey="0" as="span" className="node-option-block">
-                            <AiOutlineDown color="blue" />
-                        </Accordion.Toggle>
+                        <ToggleCommentButton eventKey="0" />
                     </Col>
-                </Form.Row>
+                </Row>
             </Accordion>
         );
     }
