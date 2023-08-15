@@ -108,7 +108,7 @@ class IntegerSchemaEditor extends SchemaEditor<IIntegerSchemaType, IIntegerEdito
                                         delete={this.delete.bind(this)}
                                         addChild={this.addChild.bind(this)}
                                         addSibling={this.addSibling.bind(this)}
-                                        showOptionModal={this.showOptionModal.bind(this, true)}
+                                        showOptionModal={this.showOptionModal.bind(this)}
                                     />
                                 </Col>
                                 <EditorOptionModal

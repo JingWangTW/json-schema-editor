@@ -80,7 +80,7 @@ class Editor extends React.Component<EmptyProps, IEditorState> {
             document.body.removeChild(anchorElement);
         } catch (e) {
             this.setState({
-                error: `Find Error: ${e.message} Please check and export again.`,
+                error: `Find Error: ${(e as Error).message} Please check and export again.`,
             });
         }
     }

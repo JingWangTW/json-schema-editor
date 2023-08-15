@@ -14,13 +14,18 @@ abstract class Schema<SchemaType extends ISchemaType, FieldType extends ISchemaE
     abstract exportSchema(): SchemaType;
 
     @CloneReturnValue
-    public recordField(fieldName: keyof FieldType, changeEvent: React.ChangeEvent<HTMLInputElement>): Required<FieldType> {
+    public recordField(
+        fieldName: keyof FieldType,
+        changeEvent: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    ): Required<FieldType> {
         switch (typeof this.currentField[fieldName]) {
             case "string":
                 this.currentField[fieldName] = changeEvent.target.value.toString() as unknown as FieldType[keyof FieldType];
                 break;
             case "boolean":
-                this.currentField[fieldName] = changeEvent.target.checked as unknown as FieldType[keyof FieldType];
+                // It's really ugly here, is there any better way to avoid this?
+                this.currentField[fieldName] = (changeEvent as React.ChangeEvent<HTMLInputElement>).target
+                    .checked as unknown as FieldType[keyof FieldType];
                 break;
             case "number":
                 this.currentField[fieldName] = parseInt(changeEvent.target.value) as unknown as FieldType[keyof FieldType];

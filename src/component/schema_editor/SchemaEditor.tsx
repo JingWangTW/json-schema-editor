@@ -42,7 +42,10 @@ abstract class SchemaEditor<SchemaType extends ISchemaType, FieldType extends IS
         return this.schema.getCurrentField();
     }
 
-    recordField(fieldName: keyof OmitGenericField<FieldType>, changeEvent: React.ChangeEvent<HTMLInputElement>): void {
+    recordField(
+        fieldName: keyof OmitGenericField<FieldType>,
+        changeEvent: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    ): void {
         const currentField = this.schema.recordField(fieldName, changeEvent);
 
         this.setState({ currentField });
