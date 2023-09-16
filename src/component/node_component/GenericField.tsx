@@ -125,7 +125,7 @@ class GenericField extends React.Component<IGenericFieldProps<ISchemaType, IGene
                             </Col>
                             <Col lg={4} className="pe-1">
                                 <Form.Control
-                                    placeholder="Titile"
+                                    placeholder="Title"
                                     value={this.state.currentField.title}
                                     onChange={this.recordField.bind(this, "title")}
                                 />
