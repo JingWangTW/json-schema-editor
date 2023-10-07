@@ -43,48 +43,53 @@ class ArraySchema extends Schema<IArraySchemaType, IArrayEditorField> {
 
     generateChildrenPropertyFromSchema(schema: IArraySchemaType): IChildProperty[] {
         if (schema.items) {
-            if (schema.items instanceof Array) {
-                return schema.items.map(s => {
-                    return {
-                        type: s.type,
-                        selfId: NextId.next("child").toString(),
+            // schema.items shoulb only be an array or object
+            if (schema.items instanceof Array || schema.items instanceof Object) {
+                if (schema.items instanceof Array) {
+                    return schema.items.map(s => {
+                        return {
+                            type: s.type,
+                            selfId: NextId.next("child").toString(),
 
-                        hasSibling: true,
-                        isDeleteable: true,
-                        isRequiredFieldReadonly: true,
-                        isNameFieldReadonly: true,
+                            hasSibling: true,
+                            isDeleteable: true,
+                            isRequiredFieldReadonly: true,
+                            isNameFieldReadonly: true,
 
-                        ref: React.createRef<ISchemaEditorType>(),
+                            ref: React.createRef<ISchemaEditorType>(),
 
-                        field: {
-                            name: "items",
-                            required: true,
+                            field: {
+                                name: "items",
+                                required: true,
+                            },
+
+                            schema: s,
+                        };
+                    });
+                } else {
+                    return [
+                        {
+                            type: schema.items.type,
+                            selfId: NextId.next("child").toString(),
+
+                            hasSibling: true,
+                            isDeleteable: true,
+                            isRequiredFieldReadonly: true,
+                            isNameFieldReadonly: true,
+
+                            ref: React.createRef<ISchemaEditorType>(),
+
+                            field: {
+                                name: "items",
+                                required: true,
+                            },
+
+                            schema: schema.items,
                         },
-
-                        schema: s,
-                    };
-                });
+                    ];
+                }
             } else {
-                return [
-                    {
-                        type: schema.type,
-                        selfId: NextId.next("child").toString(),
-
-                        hasSibling: true,
-                        isDeleteable: true,
-                        isRequiredFieldReadonly: true,
-                        isNameFieldReadonly: true,
-
-                        ref: React.createRef<ISchemaEditorType>(),
-
-                        field: {
-                            name: "items",
-                            required: true,
-                        },
-
-                        schema: schema.items,
-                    },
-                ];
+                throw new Error("ArrayScema.items should only be an array or an obejct.");
             }
         } else {
             return [];
