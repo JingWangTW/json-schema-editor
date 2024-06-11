@@ -109,11 +109,8 @@ class GenericField extends React.Component<IGenericFieldProps<ISchemaType, IGene
                                 </InputGroup>
                             </Col>
                             <Col lg={1} className="pe-1">
-                                <Form.Select
-                                    placeholder="DataType"
-                                    onChange={this.changeType.bind(this)}
-                                    value={this.state.currentField.type}
-                                >
+                                <Form.Select onChange={this.changeType.bind(this)} value={this.state.currentField.type} required>
+                                    <option value="">DataType</option>
                                     <option value={DataType.Object}>Object</option>
                                     <option value={DataType.Array}>Array</option>
                                     <option value={DataType.String}>String</option>
